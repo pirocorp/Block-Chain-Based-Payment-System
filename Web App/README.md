@@ -12,3 +12,7 @@ Real blockchain implementations such as bitcoin and others, use private keys, pu
 How do you prove that blockchain transactions are yours? The answer is the signature. In the cryptocurrency world, asymmetric cryptography is used to make signatures of messages (transactions) that are sent from the wallet to the server (blockchain node) and verify that the messages were sent by the original sender.
 
 ![Signing Data](./Signing_Data.png)
+
+### Wallet
+
+Blockchain wallets are digital wallets that allow users to store and manage their crypto. The wallet is a user interface that allows users to interact with a cryptocurrency node.
