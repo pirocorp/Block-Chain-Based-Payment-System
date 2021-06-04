@@ -113,3 +113,39 @@ public class Block
 }
 
 ```
+
+### Blockchain
+
+Blockchain is a transaction record that is shared and stored on a distributed computer, unchanged and open to the public. Blockchain stores transactions by grouping them into groups called block.
+
+The number of transactions that can be entered into a block may not exceed the specified limit. This adds scarcity to the system.
+
+Having a block in the blockchain occurs every certain period of time.
+
+
+#### IBlockChain interface
+
+```csharp
+public interface IBlockChain 
+{
+    public int Count { get; }
+    
+    public Block LastBlock { get; }
+    
+    public Block GenesisBlock { get; }
+    
+    public void AddTransaction(Transaction transaction);
+    
+    // Adds new block to the chain and clears transaction pool
+    // This is the operation referred to as mining.
+    public void AddBlock();
+    
+    public decimal GetBalance(string address);    
+    
+    public IEnumerable<Block> GetBlocks(int pageNumber, int resultPerPage);
+    
+    public IEnumerable<Transaction> GetTransactions(string address);
+}
+```
+
+[Block Chain Example](./Bitcoin_Blockchain.png)
