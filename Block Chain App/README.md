@@ -129,23 +129,23 @@ Having a block in the blockchain occurs every certain period of time.
 ```csharp
 public interface IBlockChain 
 {
-    public int Count { get; }
+    int Count { get; }
     
-    public Block LastBlock { get; }
+    Block LastBlock { get; }
     
-    public Block GenesisBlock { get; }
+    Block GenesisBlock { get; }
     
-    public void AddTransaction(Transaction transaction);
+    void AddTransaction(Transaction transaction);
     
     // Adds new block to the chain and clears transaction pool
     // This is the operation referred to as mining.
-    public void AddBlock();
+    void AddBlock();
     
-    public decimal GetBalance(string address);    
+    decimal GetBalance(string address);    
     
-    public IEnumerable<Block> GetBlocks(int pageNumber, int resultPerPage);
+    IEnumerable<Block> GetBlocks(int pageNumber, int resultPerPage);
     
-    public IEnumerable<Transaction> GetTransactions(string address);
+    IEnumerable<Transaction> GetTransactions(string address);
 }
 ```
 
@@ -162,4 +162,28 @@ Coinbase transactions are special transactions provided to nodes creating new bl
 
 According to the Proof of Stake consensus, users need to stake tokens to participate in the verification and creation of blocks in the blockchain.
 
+#### Staker - participant in the verification and creation of blocks
+
+```csharp
+public class Staker
+{
+    public string Address { get; set; }
+
+    public double Amount { get; set; }
+}
+```
+
+#### IStake interface
+
+```csharp
+public interface IStake
+{
+    IEnumerable<Staker> Stakers { get; }
+    
+    void Add(string address, double amount);
+    
+    // Select stacker as block maker. The fees from transactions in block will go to the 'creator' of the block. Returns the address of 'creator'.
+    string GetBlockValidator();
+}
+```
 
