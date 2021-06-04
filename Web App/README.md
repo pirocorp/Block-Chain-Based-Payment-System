@@ -55,3 +55,21 @@ public interface IWallet
     bool SendTransaction(Transaction transaction);
 }
 ```
+
+#### IBlockExplorer interface
+
+```csharp
+
+public interface IBlockExplorer 
+{
+    Block GenesisBlock();
+    
+    Block LastBlock();
+    
+    IEnumerable<Block> GetAllBlocks(long pageNumber, int pageSize);
+    
+    Block GetBlock(string hash);
+}
+
+```
+
