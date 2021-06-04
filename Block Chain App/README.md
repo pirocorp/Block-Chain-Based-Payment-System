@@ -197,7 +197,7 @@ option csharp_namespace = "GrpcService";
 service BChainService {
   rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
   rpc LastBlock(EmptyRequest)  returns (BlockResponse);
-  rpc SendCoin(SendRequest)  returns (TransactionResponse);
+  rpc SendTransaction(SendRequest)  returns (TransactionResponse);
   rpc GetBlocks(BlockRequest) returns (BlocksResponse);
   rpc GetBalance(AccountRequest) returns (BalanceResponse);
   rpc GetTransactions(AccountRequest) returns (TransactionsResponse);
