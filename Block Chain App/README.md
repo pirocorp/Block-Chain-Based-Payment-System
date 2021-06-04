@@ -22,10 +22,10 @@ Transactions are the main reason for making blockchain so peers can send money t
         public string Recipient { get; set; }
 
         // Amount is send
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
         
         // Fee (cost) associated with this transaction
-        public double Fee { get; set; }
+        public decimal Fee { get; set; }
   }
 ```
 
@@ -55,4 +55,60 @@ public interface ITransactionPool
 
 Blockchain is a chain of data blocks. A block can be assumed as a group or batch of transactions, or a block can be considered as a page in a ledger.
 
+![Block](./Block.png)
 
+#### Block Header
+Block header is some data belonging to a block that is used as a unique identity of the block. The block hash was created by hashing the block header through the SHA256 algorithm. It is essentially a digital fingerprint of the block. Below is the block header class.
+
+#### BlockHeader class
+
+```csharp
+public class BlockHeader
+{
+    public int Version { get; set; }
+    
+    // PreviousHash is the hash of the previous block.
+    // For root block it will be null
+    public string PreviousHash { get; set; }
+    
+    // The root hash of Merkle Tree (Hash Tree). 
+    // The Hash Tree made from hashes of transactions in the block.
+    public string MerkleRoot { get; set; }
+    
+    // Unix timestamps or Epoch timestamps of time of block creation
+    public long TimeStamp { get; set; }
+    
+    // Will use constant dificulty but for now is here
+    public int Difficulty { get; set; }
+    
+    // The creator of the block identified by the public key.
+    // Validators get reward from accumulated transaction fees.
+    public string Validator { get; set; }
+}
+```
+
+##### Calculating MerkleRoot
+
+Merkle root or Merkle hash is the hash of all the hashes of all transactions within a block on the blockchain network. The Merkle root, which is the top of the Merkle Tree, was discovered by Ralph Merkel in 1979.
+
+[Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree)
+
+#### Block class
+
+```csharp
+public class Block
+{
+    // The hash of the block. The hash act as the unique identity of the given      block in the blockchain.
+    public string Hash { get; private set; }
+
+    // The sequence amount of blocks.
+    public long Height { get; set; }
+
+    public BlockHeader BlockHeader { get; set; }
+    
+    // Transactions are collections of transactions that occur.
+    // Settled transactions
+    public IEnumerable<Transaction> Transactions { get; set; }
+}
+
+```
