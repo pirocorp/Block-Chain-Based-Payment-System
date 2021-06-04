@@ -129,23 +129,23 @@ Having a block in the blockchain occurs every certain period of time.
 ```csharp
 public interface IBlockChain 
 {
-    public int Count { get; }
+    int Count { get; }
     
-    public Block LastBlock { get; }
+    Block LastBlock { get; }
     
-    public Block GenesisBlock { get; }
+    Block GenesisBlock { get; }
     
-    public void AddTransaction(Transaction transaction);
+    void AddTransaction(Transaction transaction);
     
     // Adds new block to the chain and clears transaction pool
     // This is the operation referred to as mining.
-    public void AddBlock();
+    void AddBlock();
     
-    public decimal GetBalance(string address);    
+    decimal GetBalance(string address);    
     
-    public IEnumerable<Block> GetBlocks(int pageNumber, int resultPerPage);
+    IEnumerable<Block> GetBlocks(int pageNumber, int resultPerPage);
     
-    public IEnumerable<Transaction> GetTransactions(string address);
+    IEnumerable<Transaction> GetTransactions(string address);
 }
 ```
 
@@ -162,4 +162,118 @@ Coinbase transactions are special transactions provided to nodes creating new bl
 
 According to the Proof of Stake consensus, users need to stake tokens to participate in the verification and creation of blocks in the blockchain.
 
+#### Staker - participant in the verification and creation of blocks
 
+```csharp
+public class Staker
+{
+    public string Address { get; set; }
+
+    public double Amount { get; set; }
+}
+```
+
+#### IStake interface
+
+```csharp
+public interface IStake
+{
+    IEnumerable<Staker> Stakers { get; }
+    
+    void Add(string address, double amount);
+    
+    // Select stacker as block maker. The fees from transactions in block will go to the 'creator' of the block. Returns the address of 'creator'.
+    string GetBlockValidator();
+}
+```
+
+### gRPC Comunication
+
+```proto
+syntax = "proto3";
+
+option csharp_namespace = "GrpcService";
+
+service BChainService {
+  rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
+  rpc LastBlock(EmptyRequest)  returns (BlockResponse);
+  rpc SendCoin(SendRequest)  returns (TransactionResponse);
+  rpc GetBlocks(BlockRequest) returns (BlocksResponse);
+  rpc GetBalance(AccountRequest) returns (BalanceResponse);
+  rpc GetTransactions(AccountRequest) returns (TransactionsResponse);
+}
+
+message EmptyRequest {
+}
+
+message TransactionInput{
+  int64 time_stamp = 1;
+  string sender_address = 2;
+  string signature = 3;
+}
+
+message TransactionOutput{
+  string recipient_address = 1;
+  double amount = 2;
+  double fee = 3;
+}
+
+message SendRequest{
+  string transaction_id = 1;
+  string public_key = 2;
+  TransactionInput transaction_input = 3;
+  TransactionOutput transaction_output = 4;
+}
+
+message AccountRequest{
+  string address = 1;
+}
+
+message BlockRequest{
+  int32 page_number = 1;
+  int32 result_per_page = 2; 
+}
+
+message SearchRequest {
+  string query = 1;
+  int32 page_number = 2;
+  int32 result_per_page = 3; 
+}
+
+message TransactionModel {
+  string TransactionID = 1;
+  int64 TimeStamp = 2;
+  string Sender = 3;
+  string Recipient = 4;
+  double Amount = 5;
+  double Fee = 6;
+}
+
+message BlockModel {
+  int64 Height = 1;
+  int64 TimeStamp = 2;
+  string PrevHash = 3;
+  string Hash = 4;
+  repeated TransactionModel Transactions = 5;
+}
+
+message BlockResponse {
+  BlockModel block = 1;
+}
+
+message TransactionResponse {
+  string result = 1;
+}
+
+message BlocksResponse {
+  repeated BlockModel blocks = 1;
+}
+
+message BalanceResponse {
+  double balance = 1;
+}
+
+message TransactionsResponse {
+  repeated TransactionModel transactions = 1;
+}
+```
