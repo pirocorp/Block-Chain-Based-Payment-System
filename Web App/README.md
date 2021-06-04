@@ -16,3 +16,42 @@ How do you prove that blockchain transactions are yours? The answer is the signa
 ### Wallet
 
 Blockchain wallets are digital wallets that allow users to store and manage their crypto. The wallet is a user interface that allows users to interact with a cryptocurrency node.
+
+#### Account class
+
+```
+public class Account
+{
+    // Can restore public and private keys. So it is equivalent to a password.
+    public BigInteger SecretNumber { get; set; }
+    
+    // Public key can be shared.
+    public string PublicKey { get; set; }
+    
+    // Addresses is computed from Public Key using hash function
+    public string Address { get; set; }    
+    
+    // Private key may never be known by any except the owner
+    public string PrivateKey { get; set; }
+}
+```
+
+#### IWallet interface
+
+```csharp
+public interface IWallet
+{
+    // Signs transaction in client application. This sign will be validated on the server. It will be recived in gRPC Communication SendTransaction method in BChainService
+    string CreateSignature(string transaction);
+    
+    Account CreateAccount();
+    
+    Account RestoreAccount(BigInteger secret);
+    
+    decimal GetBalance(string address);
+    
+    IEnumerable<Transaction> GetTransactionHistory(string address);
+    
+    bool SendTransaction(Transaction transaction);
+}
+```
