@@ -7,5 +7,6 @@ Payment System Using Block Chain Technology for Clearing (Settling) the Transact
 ![Project Architecture][Project_Architecture]
 
 ## Applications
-[Block Chain App](../Block%20Chain%20App/README.md)
+[Block Chain App](../Block Chain App/README.md)
+
 [Web App](../Web%20App/README.md)
