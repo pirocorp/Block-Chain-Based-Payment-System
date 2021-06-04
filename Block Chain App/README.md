@@ -92,6 +92,7 @@ public class BlockHeader
 Merkle root or Merkle hash is the hash of all the hashes of all transactions within a block on the blockchain network. The Merkle root, which is the top of the Merkle Tree, was discovered by Ralph Merkel in 1979.
 
 [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree)
+[Merkle Tree](https://nakamoto.com/merkle-trees/)
 ![Merkle Tree](./Merkle_Tree.png)
 
 #### Block class
@@ -149,3 +150,16 @@ public interface IBlockChain
 ```
 
 ![Block Chain Example](./Bitcoin_Blockchain.png)
+
+
+### Coinbase Transaction
+
+Coinbase transactions are special transactions provided to nodes creating new blocks. Transactions contain Block rewards and accumulated transaction fees. Coinbase transactions are always at the top of the order of transactions in the block.
+
+![Block Reward](./Block_Reward.png)
+
+### Stake
+
+According to the Proof of Stake consensus, users need to stake tokens to participate in the verification and creation of blocks in the blockchain.
+
+
