@@ -92,6 +92,7 @@ public class BlockHeader
 Merkle root or Merkle hash is the hash of all the hashes of all transactions within a block on the blockchain network. The Merkle root, which is the top of the Merkle Tree, was discovered by Ralph Merkel in 1979.
 
 [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree)
+
 [Merkle Tree](https://nakamoto.com/merkle-trees/)
 ![Merkle Tree](./Merkle_Tree.png)
 
