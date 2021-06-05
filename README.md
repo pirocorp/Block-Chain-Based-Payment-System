@@ -1,7 +1,7 @@
 [Project_Architecture]: ./Project_Architecture.png "Logo Title Text 2"
 
 # Block Chain Based Payment System
-Payment System Using Block Chain Technology for Clearing (Settling) the Transactions
+Payment system using block chain technology for clearing (settling) the transactions.
 
 ## Project Architecture
 ![Project Architecture][Project_Architecture]
