@@ -74,3 +74,15 @@ public interface IBlockExplorer
 
 ```
 
+#### INotification interface
+
+```csharp
+public interface INotification
+{
+    bool Register();
+    
+    string GetNewBlock();
+}
+```
+
+[ASP.NET Core SignalR .NET Client](https://docs.microsoft.com/en-us/aspnet/core/signalr/dotnet-client?view=aspnetcore-5.0&tabs=visual-studio)
