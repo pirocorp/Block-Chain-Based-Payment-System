@@ -20,7 +20,7 @@ Blockchain wallets are digital wallets that allow users to store and manage thei
 
 #### Account class
 
-```
+```csharp
 public class Account
 {
     // Can restore public and private keys. So it is equivalent to a password.
