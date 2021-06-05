@@ -231,6 +231,7 @@ message SendRequest{
 
 message AccountRequest{
   string address = 1;
+  string signature = 2;
 }
 
 message BlockRequest{
