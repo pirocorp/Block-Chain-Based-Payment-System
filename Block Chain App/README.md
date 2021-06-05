@@ -94,6 +94,7 @@ Merkle root or Merkle hash is the hash of all the hashes of all transactions wit
 [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree)
 
 [Merkle Tree](https://nakamoto.com/merkle-trees/)
+
 ![Merkle Tree](./Merkle_Tree.png)
 
 #### Block class
