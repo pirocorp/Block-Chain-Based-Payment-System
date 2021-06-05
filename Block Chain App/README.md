@@ -289,7 +289,7 @@ public abstract class NotificationHub : Hub
 {
 	public abstract string Register();
 	
-	// Will send Merkle Root
+	// Will send new block hash
 	public abstract void SendMessage(string message);
 }
 ```
