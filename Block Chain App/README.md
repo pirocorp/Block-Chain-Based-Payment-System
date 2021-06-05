@@ -289,7 +289,7 @@ public abstract class NotificationHub : Hub
 {
 	public abstract string Register();
 	
-	// Will send new block hash
+	// Will broadcast new block hash
 	public abstract void SendMessage(string message);
 }
 ```
