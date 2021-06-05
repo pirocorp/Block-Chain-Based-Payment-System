@@ -63,7 +63,7 @@ public interface ITransactionPool
 
 Blockchain is a chain of data blocks. A block can be assumed as a group or batch of transactions, or a block can be considered as a page in a ledger.
 
-![Block](./Block.png)
+![Block](./Block%20Chain%20App/Block.png)
 
 #### Block Header
 Block header is some data belonging to a block that is used as a unique identity of the block. The block hash was created by hashing the block header through the SHA256 algorithm. It is essentially a digital fingerprint of the block. Below is the block header class.
@@ -103,7 +103,7 @@ Merkle root or Merkle hash is the hash of all the hashes of all transactions wit
 
 [Merkle Tree](https://nakamoto.com/merkle-trees/)
 
-![Merkle Tree](./Merkle_Tree.png)
+![Merkle Tree](./Block%20Chain%20App/Merkle_Tree.png)
 
 #### Block class
 
@@ -159,14 +159,14 @@ public interface IBlockChain
 }
 ```
 
-![Block Chain Example](./Bitcoin_Blockchain.png)
+![Block Chain Example](./Block%20Chain%20App/Bitcoin_Blockchain.png)
 
 
 ### Coinbase Transaction
 
 Coinbase transactions are special transactions provided to nodes creating new blocks. Transactions contain Block rewards and accumulated transaction fees. Coinbase transactions are always at the top of the order of transactions in the block.
 
-![Block Reward](./Block_Reward.png)
+![Block Reward](./Block%20Chain%20App/Block_Reward.png)
 
 ### Stake
 
