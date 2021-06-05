@@ -293,5 +293,8 @@ public abstract class NotificationHub : Hub
 	public abstract void SendMessage(string message);
 }
 ```
+[Build Real-time Applications with ASP.NET Core SignalR](https://www.codemag.com/article/1807061/Build-Real-time-Applications-with-ASP.NET-Core-SignalR)
 
 [SignalR : To Send Real-time Notifications With ASP.NET Core](https://www.zealousweb.com/signalr-to-send-real-time-notifications-with-asp-net-core/)
+
+[The Simplest Thing Possible: Creating Push Notifications with SignalR](https://www.codemag.com/article/1210071/The-Simplest-Thing-Possible-Creating-Push-Notifications-with-SignalR)
