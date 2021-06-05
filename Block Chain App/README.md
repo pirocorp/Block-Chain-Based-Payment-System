@@ -189,7 +189,9 @@ public interface IStake
 }
 ```
 
-### gRPC Comunication
+## Comunication
+
+### gRPC 
 
 ```proto
 syntax = "proto3";
@@ -277,5 +279,17 @@ message BalanceResponse {
 
 message TransactionsResponse {
   repeated TransactionModel transactions = 1;
+}
+```
+
+### SignalR
+
+```csharp
+public abstract class NotificationHub : Hub
+{
+	public abstract string Register();
+	
+	// Will send Merkle Root
+	public abstract void SendMessage(string message);
 }
 ```
