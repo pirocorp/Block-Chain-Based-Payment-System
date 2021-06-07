@@ -381,10 +381,5 @@ public abstract class NotificationHub : Hub
 
 [The Simplest Thing Possible: Creating Push Notifications with SignalR](https://www.codemag.com/article/1210071/The-Simplest-Thing-Possible-Creating-Push-Notifications-with-SignalR)
 
-### Non state change communication
-Non state change communication can be anonymous or authorized. 
-
-![Non state change communication](./Non_State_Change_Requests.png)
-
 ### State change comunication
 ![State change communication](./Transaction_Flow.png)
