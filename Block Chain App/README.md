@@ -203,8 +203,6 @@ service BChainService {
   rpc LastBlock(EmptyRequest)  returns (BlockResponse);
   rpc SendTransaction(SendRequest)  returns (TransactionResponse);
   rpc GetBlocks(BlockRequest) returns (BlocksResponse);
-  rpc GetBalance(AccountRequest) returns (BalanceResponse);
-  rpc GetTransactions(AccountRequest) returns (TransactionsResponse);
 }
 
 message EmptyRequest {
@@ -227,11 +225,6 @@ message SendRequest{
   string public_key = 2;
   TransactionInput transaction_input = 3;
   TransactionOutput transaction_output = 4;
-}
-
-message AccountRequest{
-  string address = 1;
-  string signature = 2;
 }
 
 message BlockRequest{
@@ -274,13 +267,6 @@ message BlocksResponse {
   repeated BlockModel blocks = 1;
 }
 
-message BalanceResponse {
-  double balance = 1;
-}
-
-message TransactionsResponse {
-  repeated TransactionModel transactions = 1;
-}
 ```
 
 ### SignalR

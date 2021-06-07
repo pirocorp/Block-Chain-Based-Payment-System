@@ -295,14 +295,27 @@ option csharp_namespace = "GrpcService";
 
 service BChainService {
   rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
-  rpc LastBlock(EmptyRequest)  returns (BlockResponse);
-  rpc SendTransaction(SendRequest)  returns (TransactionResponse);
-  rpc GetBlocks(BlockRequest) returns (BlocksResponse);
-  rpc GetBalance(AccountRequest) returns (BalanceResponse);
-  rpc GetTransactions(AccountRequest) returns (TransactionsResponse);
+  rpc LastBlock(EmptyRequest) returns (BlockResponse);
+  rpc GetBlockByHash(HashRequest) returns (BlockModel);
+  rpc GetBlockByHeight(HeightRequest) returns (BlockModel);
+  rpc GetBlocks(BlockRequest) returns (stream BlockModel);
+  rpc SendTransaction(SendRequest) returns (TransactionResponse);  
 }
 
 message EmptyRequest {
+}
+
+message HashRequest {
+  string hash = 1;
+}
+
+message HeightRequest {
+  int64 height = 1;
+}
+
+message BlockRequest{
+  int32 page_number = 1;
+  int32 result_per_page = 2; 
 }
 
 message TransactionInput{
@@ -322,16 +335,6 @@ message SendRequest{
   string public_key = 2;
   TransactionInput transaction_input = 3;
   TransactionOutput transaction_output = 4;
-}
-
-message AccountRequest{
-  string address = 1;
-  string signature = 2;
-}
-
-message BlockRequest{
-  int32 page_number = 1;
-  int32 result_per_page = 2; 
 }
 
 message SearchRequest {
@@ -364,18 +367,6 @@ message BlockResponse {
 message TransactionResponse {
   string result = 1;
 }
-
-message BlocksResponse {
-  repeated BlockModel blocks = 1;
-}
-
-message BalanceResponse {
-  double balance = 1;
-}
-
-message TransactionsResponse {
-  repeated TransactionModel transactions = 1;
-}
 ```
 
 ### SignalR
@@ -394,11 +385,6 @@ public abstract class NotificationHub : Hub
 [SignalR : To Send Real-time Notifications With ASP.NET Core](https://www.zealousweb.com/signalr-to-send-real-time-notifications-with-asp-net-core/)
 
 [The Simplest Thing Possible: Creating Push Notifications with SignalR](https://www.codemag.com/article/1210071/The-Simplest-Thing-Possible-Creating-Push-Notifications-with-SignalR)
-
-### Non state change communication
-Non state change communication can be anonymous or authorized. 
-
-![Non state change communication](./Non_State_Change_Requests.png)
 
 ### State change comunication
 ![State change communication](./Transaction_Flow.png)
