@@ -9,7 +9,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{E8CD9E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web App", "Web App", "{1C6E038E-772C-4C26-AC86-9B562F6F99EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentSystem.Common", "Common\PaymentSystem.Common\PaymentSystem.Common.csproj", "{4AFD5AF6-1649-4DA1-ACCB-02498EE64549}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.Common", "Common\PaymentSystem.Common\PaymentSystem.Common.csproj", "{4AFD5AF6-1649-4DA1-ACCB-02498EE64549}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{0144B288-421B-4AF7-93CC-BD7490085E0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8AB5293F-E220-49F5-B2D4-522D3E07D645}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{01B8CF7D-D7C4-4B80-977B-9FDA4C9F3C0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{0B77F40F-6022-4C6F-919D-43A6E45EAA8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Web.Infrastructure", "Block Chain App\src\Web\PaymentSystem.BlockChain.Web.Infrastructure\PaymentSystem.BlockChain.Web.Infrastructure.csproj", "{DB403CAC-325B-474A-BD78-A987DD4468BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Services.Data", "Block Chain App\src\Services\PaymentSystem.BlockChain.Services.Data\PaymentSystem.BlockChain.Services.Data.csproj", "{D4463042-096A-4F57-9C00-A75C78B2F4BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Services.Mapping", "Block Chain App\src\Services\PaymentSystem.BlockChain.Services.Mapping\PaymentSystem.BlockChain.Services.Mapping.csproj", "{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Data", "Block Chain App\src\Data\PaymentSystem.BlockChain.Data\PaymentSystem.BlockChain.Data.csproj", "{FBD86C3E-10D2-4A31-9030-8F00C8794413}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Data.Models", "Block Chain App\src\Data\PaymentSystem.BlockChain.Data.Models\PaymentSystem.BlockChain.Data.Models.csproj", "{94FF62AA-ED6C-4191-83D4-DB0142620B10}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Web", "Block Chain App\src\Web\PaymentSystem.BlockChain.Web\PaymentSystem.BlockChain.Web.csproj", "{3EEE8B0A-7020-47E0-9310-2470FDF9E079}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,12 +41,46 @@ Global
 		{4AFD5AF6-1649-4DA1-ACCB-02498EE64549}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AFD5AF6-1649-4DA1-ACCB-02498EE64549}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AFD5AF6-1649-4DA1-ACCB-02498EE64549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB403CAC-325B-474A-BD78-A987DD4468BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB403CAC-325B-474A-BD78-A987DD4468BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB403CAC-325B-474A-BD78-A987DD4468BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB403CAC-325B-474A-BD78-A987DD4468BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4463042-096A-4F57-9C00-A75C78B2F4BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4463042-096A-4F57-9C00-A75C78B2F4BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4463042-096A-4F57-9C00-A75C78B2F4BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4463042-096A-4F57-9C00-A75C78B2F4BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBD86C3E-10D2-4A31-9030-8F00C8794413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD86C3E-10D2-4A31-9030-8F00C8794413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD86C3E-10D2-4A31-9030-8F00C8794413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD86C3E-10D2-4A31-9030-8F00C8794413}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94FF62AA-ED6C-4191-83D4-DB0142620B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94FF62AA-ED6C-4191-83D4-DB0142620B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94FF62AA-ED6C-4191-83D4-DB0142620B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94FF62AA-ED6C-4191-83D4-DB0142620B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EEE8B0A-7020-47E0-9310-2470FDF9E079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EEE8B0A-7020-47E0-9310-2470FDF9E079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EEE8B0A-7020-47E0-9310-2470FDF9E079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EEE8B0A-7020-47E0-9310-2470FDF9E079}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4AFD5AF6-1649-4DA1-ACCB-02498EE64549} = {E8CD9E59-2914-4FF6-870C-D5C720F40FEB}
+		{0144B288-421B-4AF7-93CC-BD7490085E0C} = {283CEA6E-BFC4-4249-A375-7E2A55127F4A}
+		{8AB5293F-E220-49F5-B2D4-522D3E07D645} = {283CEA6E-BFC4-4249-A375-7E2A55127F4A}
+		{01B8CF7D-D7C4-4B80-977B-9FDA4C9F3C0E} = {283CEA6E-BFC4-4249-A375-7E2A55127F4A}
+		{0B77F40F-6022-4C6F-919D-43A6E45EAA8F} = {283CEA6E-BFC4-4249-A375-7E2A55127F4A}
+		{DB403CAC-325B-474A-BD78-A987DD4468BD} = {0144B288-421B-4AF7-93CC-BD7490085E0C}
+		{D4463042-096A-4F57-9C00-A75C78B2F4BE} = {01B8CF7D-D7C4-4B80-977B-9FDA4C9F3C0E}
+		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E} = {01B8CF7D-D7C4-4B80-977B-9FDA4C9F3C0E}
+		{FBD86C3E-10D2-4A31-9030-8F00C8794413} = {0B77F40F-6022-4C6F-919D-43A6E45EAA8F}
+		{94FF62AA-ED6C-4191-83D4-DB0142620B10} = {0B77F40F-6022-4C6F-919D-43A6E45EAA8F}
+		{3EEE8B0A-7020-47E0-9310-2470FDF9E079} = {0144B288-421B-4AF7-93CC-BD7490085E0C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF77BB34-F2E6-4095-83E0-FF4B7DC16EC5}

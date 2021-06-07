@@ -2,7 +2,11 @@
 namespace PaymentSystem.Common.Data.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.EntityFrameworkCore;
+
+    [Index(nameof(Height))]
     public class Block
     {
         public Block()
@@ -11,6 +15,7 @@ namespace PaymentSystem.Common.Data.Models
         }
 
         // The hash of the block. The hash act as the unique identity of the given block in the block chain.
+        [Key]
         public string Hash { get; set; }
 
         // The sequence amount of blocks.

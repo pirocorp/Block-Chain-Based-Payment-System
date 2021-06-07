@@ -1,6 +1,9 @@
 ﻿#pragma warning disable 8618
 namespace PaymentSystem.Common.Data.Models
 {
+    using Microsoft.EntityFrameworkCore;
+
+    [Owned]
     public class BlockHeader
     {
         public int Version { get; set; }
