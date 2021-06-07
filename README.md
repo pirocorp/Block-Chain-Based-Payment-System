@@ -295,12 +295,27 @@ option csharp_namespace = "GrpcService";
 
 service BChainService {
   rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
-  rpc LastBlock(EmptyRequest)  returns (BlockResponse);
-  rpc SendTransaction(SendRequest)  returns (TransactionResponse);
-  rpc GetBlocks(BlockRequest) returns (BlocksResponse);
+  rpc LastBlock(EmptyRequest) returns (BlockResponse);
+  rpc GetBlockByHash(HashRequest) returns (BlockModel);
+  rpc GetBlockByHeight(HeightRequest) returns (BlockModel);
+  rpc GetBlocks(BlockRequest) returns (stream BlockModel);
+  rpc SendTransaction(SendRequest) returns (TransactionResponse);  
 }
 
 message EmptyRequest {
+}
+
+message HashRequest {
+  string hash = 1;
+}
+
+message HeightRequest {
+  int64 height = 1;
+}
+
+message BlockRequest{
+  int32 page_number = 1;
+  int32 result_per_page = 2; 
 }
 
 message TransactionInput{
@@ -320,11 +335,6 @@ message SendRequest{
   string public_key = 2;
   TransactionInput transaction_input = 3;
   TransactionOutput transaction_output = 4;
-}
-
-message BlockRequest{
-  int32 page_number = 1;
-  int32 result_per_page = 2; 
 }
 
 message SearchRequest {
@@ -357,11 +367,6 @@ message BlockResponse {
 message TransactionResponse {
   string result = 1;
 }
-
-message BlocksResponse {
-  repeated BlockModel blocks = 1;
-}
-
 ```
 
 ### SignalR
