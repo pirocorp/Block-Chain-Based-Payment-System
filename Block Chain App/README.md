@@ -199,72 +199,86 @@ syntax = "proto3";
 option csharp_namespace = "GrpcService";
 
 service BChainService {
-  rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
-  rpc LastBlock(EmptyRequest)  returns (BlockResponse);
-  rpc SendTransaction(SendRequest)  returns (TransactionResponse);
-  rpc GetBlocks(BlockRequest) returns (BlocksResponse);
+	rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
+	rpc LastBlock(EmptyRequest) returns (BlockResponse);
+	rpc GetBlockByHash(HashRequest) returns (BlockModel);
+	rpc GetBlockByHeight(HeightRequest) returns (BlockModel);
+	rpc GetBlocks(BlockRequest) returns (stream BlockModel);
+	rpc SendTransaction(SendRequest) returns (TransactionResponse);  
 }
 
 message EmptyRequest {
 }
 
-message TransactionInput{
-  int64 time_stamp = 1;
-  string sender_address = 2;
-  string signature = 3;
+message HashRequest {
+	string hash = 1;
 }
 
-message TransactionOutput{
-  string recipient_address = 1;
-  double amount = 2;
-  double fee = 3;
-}
-
-message SendRequest{
-  string transaction_id = 1;
-  string public_key = 2;
-  TransactionInput transaction_input = 3;
-  TransactionOutput transaction_output = 4;
+message HeightRequest {
+	int64 height = 1;
 }
 
 message BlockRequest{
-  int32 page_number = 1;
-  int32 result_per_page = 2; 
+	int32 page_number = 1;
+	int32 result_per_page = 2; 
+}
+
+message TransactionInput{
+	int64 time_stamp = 1;
+	string sender_address = 2;
+	string signature = 3;
+}
+
+message TransactionOutput{
+	string recipient_address = 1;
+	double amount = 2;
+	double fee = 3;
+}
+
+message SendRequest{
+	string transaction_id = 1;
+	string public_key = 2;
+	TransactionInput transaction_input = 3;
+	TransactionOutput transaction_output = 4;
 }
 
 message SearchRequest {
-  string query = 1;
-  int32 page_number = 2;
-  int32 result_per_page = 3; 
+	string query = 1;
+	int32 page_number = 2;
+	int32 result_per_page = 3; 
 }
 
 message TransactionModel {
-  string TransactionID = 1;
-  int64 TimeStamp = 2;
-  string Sender = 3;
-  string Recipient = 4;
-  double Amount = 5;
-  double Fee = 6;
+	string Hash = 1;
+	int64 TimeStamp = 2;
+	string Sender = 3;
+	string Recipient = 4;
+	double Amount = 5;
+	double Fee = 6;
+}
+
+message BlockHeader {
+	int32 Version = 1;
+	string PreviousHash = 2;
+	string MerkleRoot = 3;
+	int64 TimeStamp = 4;
+	int32 Difficulty = 5;
+	string Validator = 6;
 }
 
 message BlockModel {
-  int64 Height = 1;
-  int64 TimeStamp = 2;
-  string PrevHash = 3;
-  string Hash = 4;
-  repeated TransactionModel Transactions = 5;
+	string Hash = 1;
+	int64 Height = 2;
+	BlockHeader BlockHeader = 3;
+	repeated TransactionModel Transactions = 4;
 }
 
 message BlockResponse {
-  BlockModel block = 1;
+	BlockModel block = 1;
 }
 
 message TransactionResponse {
-  string result = 1;
-}
-
-message BlocksResponse {
-  repeated BlockModel blocks = 1;
+	string result = 1;
 }
 
 ```
