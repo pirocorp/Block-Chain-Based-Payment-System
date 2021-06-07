@@ -267,13 +267,6 @@ message BlocksResponse {
   repeated BlockModel blocks = 1;
 }
 
-message BalanceResponse {
-  double balance = 1;
-}
-
-message TransactionsResponse {
-  repeated TransactionModel transactions = 1;
-}
 ```
 
 ### SignalR
