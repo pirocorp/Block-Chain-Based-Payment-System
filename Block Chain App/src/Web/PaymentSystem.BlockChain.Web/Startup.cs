@@ -10,6 +10,7 @@
 
     using PaymentSystem.BlockChain.Data;
     using PaymentSystem.BlockChain.Data.Seeding;
+    using PaymentSystem.BlockChain.Services.Data;
     using PaymentSystem.BlockChain.Services.Mapping;
 
     public class Startup
@@ -36,6 +37,9 @@
                     .AllowAnyHeader()
                     .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
             }));
+
+            // Domain Services
+            services.AddSingleton<ITransactionPool, TransactionPool>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +65,7 @@
             app.UseEndpoints(
                 endpoints =>
                 {
-                    endpoints.MapGrpcService<BlockchainService>();
+                    // endpoints.MapGrpcService<BlockchainService>();
 
                     endpoints.MapGet("/", async context =>
                     {

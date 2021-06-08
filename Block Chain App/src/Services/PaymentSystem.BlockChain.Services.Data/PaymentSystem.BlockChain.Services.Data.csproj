@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Common\PaymentSystem.Common\PaymentSystem.Common.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data.Models\PaymentSystem.BlockChain.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data\PaymentSystem.BlockChain.Data.csproj" />
     <ProjectReference Include="..\PaymentSystem.BlockChain.Services.Mapping\PaymentSystem.BlockChain.Services.Mapping.csproj" />
   </ItemGroup>
 

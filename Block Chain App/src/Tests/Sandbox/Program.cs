@@ -5,21 +5,15 @@
     using System.IO;
     using System.Threading.Tasks;
 
-    using PaymentSystem.BlockChain.Data;
-    using PaymentSystem.BlockChain.Data.Common;
-    using PaymentSystem.BlockChain.Data.Common.Repositories;
-    using PaymentSystem.BlockChain.Data.Models;
-    using PaymentSystem.BlockChain.Data.Repositories;
-    using PaymentSystem.BlockChain.Data.Seeding;
-    using PaymentSystem.BlockChain.Services.Data;
-    using PaymentSystem.BlockChain.Services.Messaging;
-
     using CommandLine;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+
+    using PaymentSystem.BlockChain.Data;
+    using PaymentSystem.BlockChain.Data.Seeding;
 
     public static class Program
     {
@@ -52,9 +46,6 @@
         {
             var sw = Stopwatch.StartNew();
 
-            var settingsService = serviceProvider.GetService<ISettingsService>();
-            Console.WriteLine($"Count of settings: {settingsService.GetCount()}");
-
             Console.WriteLine(sw.Elapsed);
             return await Task.FromResult(0);
         }
@@ -71,17 +62,6 @@
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
                     .UseLoggerFactory(new LoggerFactory()));
-
-            services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped<IDbQueryRunner, DbQueryRunner>();
-
-            // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
     }
 }

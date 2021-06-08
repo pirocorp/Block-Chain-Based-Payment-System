@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\stylecop.json" />
+    <AdditionalFiles Include="..\..\..\..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,14 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PaymentSystem.BlockChain.Common\PaymentSystem.BlockChain.Common.csproj" />
-    <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data.Common\PaymentSystem.BlockChain.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data.Models\PaymentSystem.BlockChain.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data\PaymentSystem.BlockChain.Data.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services.Data\PaymentSystem.BlockChain.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services.Mapping\PaymentSystem.BlockChain.Services.Mapping.csproj" />
-    <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services.Messaging\PaymentSystem.BlockChain.Services.Messaging.csproj" />
-    <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services\PaymentSystem.BlockChain.Services.csproj" />
   </ItemGroup>
 
 </Project>

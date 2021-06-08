@@ -2,12 +2,13 @@
 
 option csharp_namespace = "PaymentSystem.Common.GrpcService";
 
-service BChainService {
+service ComunicationService {
 	rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
 	rpc LastBlock(EmptyRequest) returns (BlockResponse);
 	rpc GetBlockByHash(HashRequest) returns (BlockModel);
 	rpc GetBlockByHeight(HeightRequest) returns (BlockModel);
-	rpc GetBlocks(BlockRequest) returns (stream BlockModel);
+	rpc GetBlocks(BlockRequest) returns (BlocksResponse);
+	rpc GetBlockChain(BlockChainRequest) returns (stream BlockModel);
 	rpc SendTransaction(SendRequest) returns (TransactionResponse);  
 }
 
@@ -22,24 +23,28 @@ message HeightRequest {
 	int64 height = 1;
 }
 
-message BlockRequest{
+message BlockRequest {
 	int32 page_number = 1;
 	int32 result_per_page = 2; 
 }
 
-message TransactionInput{
+message TransactionInput {
 	int64 time_stamp = 1;
 	string sender_address = 2;
 	string signature = 3;
 }
 
-message TransactionOutput{
+message TransactionOutput {
 	string recipient_address = 1;
 	double amount = 2;
 	double fee = 3;
 }
 
-message SendRequest{
+message BlockChainRequest {
+	int64 height = 1;
+}
+
+message SendRequest {
 	string transaction_id = 1;
 	string public_key = 2;
 	TransactionInput transaction_input = 3;
@@ -79,6 +84,10 @@ message BlockModel {
 
 message BlockResponse {
 	BlockModel block = 1;
+}
+
+message BlocksResponse {
+	repeated BlockModel blocks = 1;
 }
 
 message TransactionResponse {
