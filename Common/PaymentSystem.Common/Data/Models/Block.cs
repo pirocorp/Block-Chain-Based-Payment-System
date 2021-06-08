@@ -5,7 +5,7 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    [Index(nameof(Height))]
+    [Index(nameof(Height), IsUnique = true)]
     public class Block
     {
         public Block()

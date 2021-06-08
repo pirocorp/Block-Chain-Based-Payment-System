@@ -66,7 +66,7 @@
             app.UseEndpoints(
                 endpoints =>
                 {
-                    // endpoints.MapGrpcService<BlockchainService>();
+                    // endpoints.MapGrpcService<GrpcCommunicationService>();
 
                     endpoints.MapGet("/", async context =>
                     {
