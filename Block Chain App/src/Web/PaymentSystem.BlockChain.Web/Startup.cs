@@ -39,8 +39,9 @@
             }));
 
             // Domain Services
-            services.AddSingleton<ITransactionPool, TransactionPool>();
+            services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IBlockChainService, BlockChainService>();
+            services.AddSingleton<ITransactionPool, TransactionPool>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,6 +4,8 @@
     {
         public const int BlockChainBatchSize = 100;
 
+        public const double WelcomeBonus = 500;
+
         public static class Block
         {
             public const int Version = 1;
