@@ -17,13 +17,16 @@
     {
         private readonly ApplicationDbContext context;
         private readonly ITransactionPool transactionPool;
+        private readonly IAccountService accountService;
 
         public BlockChainService(
             ApplicationDbContext context,
-            ITransactionPool transactionPool)
+            ITransactionPool transactionPool,
+            IAccountService accountService)
         {
             this.context = context;
             this.transactionPool = transactionPool;
+            this.accountService = accountService;
         }
 
         public async Task<int> Count()
@@ -105,6 +108,11 @@
             block.Hash = this.GenerateBlockHash(block);
 
             await this.context.AddAsync(block);
+
+            foreach (var transaction in transactions)
+            {
+                // adjust accounts balances according transactions
+            }
         }
 
         private static string DoubleHash(string left, string right)

@@ -10,6 +10,6 @@
 
         Task Deposit(string address, double amount);
 
-        Task<bool> Withdraw(string address, double amount);
+        Task<bool> TryWithdraw(string address, double amount);
     }
 }

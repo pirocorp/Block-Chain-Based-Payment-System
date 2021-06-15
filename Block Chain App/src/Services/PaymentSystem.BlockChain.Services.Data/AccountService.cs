@@ -50,7 +50,7 @@
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<bool> Withdraw(string address, double amount)
+        public async Task<bool> TryWithdraw(string address, double amount)
         {
             var account = await this.GetAccount(address);
 

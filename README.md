@@ -396,3 +396,13 @@ public abstract class NotificationHub : Hub
 
 ### State change comunication
 ![State change communication](./Transaction_Flow.png)
+
+
+#### TODOs
+- Add System account and way to restore private and public keys for system account.
+- Initial block seeder with ico transactions.
+- Validate that account has required balance when added to transaction pool and when cleared.
+- Update balance for every transaction. 
+- All transaction fees goes to system account.
+- Notification must be signed.
+- gRPC method for gething parth of block chain.
