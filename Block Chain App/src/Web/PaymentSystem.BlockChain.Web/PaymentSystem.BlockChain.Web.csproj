@@ -28,6 +28,5 @@
     <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services.Data\PaymentSystem.BlockChain.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services.Mapping\PaymentSystem.BlockChain.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services\PaymentSystem.BlockChain.Services.csproj" />
-    <ProjectReference Include="..\PaymentSystem.BlockChain.Web.Infrastructure\PaymentSystem.BlockChain.Web.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

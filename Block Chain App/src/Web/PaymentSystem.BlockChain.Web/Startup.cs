@@ -1,5 +1,6 @@
 ﻿namespace PaymentSystem.BlockChain.Web
 {
+    using Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -56,14 +57,8 @@
         {
             // AutoMapperConfig.RegisterMappings();
 
-            // Seed data on application startup
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                dbContext.Database.Migrate();
-
-                new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
-            }
+            app.ApplyMigrations();
+            app.SeedData();
 
             if (env.IsDevelopment())
             {

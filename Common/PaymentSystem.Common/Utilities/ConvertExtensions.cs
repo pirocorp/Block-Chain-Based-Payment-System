@@ -1,7 +1,9 @@
 ﻿namespace PaymentSystem.Common.Utilities
 {
     using System;
+    using System.Globalization;
     using System.Linq;
+    using System.Numerics;
 
     public static class ConvertExtensions
     {
@@ -13,5 +15,11 @@
 
         public static string BytesToHex(this byte[] bytes)
             => Convert.ToHexString(bytes).ToUpper();
+
+        public static string BigIntegerToHex(this BigInteger input)
+            => input.ToString("X");
+
+        public static BigInteger HexToBigInteger(this string input)
+            => BigInteger.Parse(input, NumberStyles.AllowHexSpecifier);
     }
 }
