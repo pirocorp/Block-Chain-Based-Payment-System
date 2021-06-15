@@ -9,7 +9,7 @@ service ComunicationService {
 	rpc GetBlockByHeight(HeightRequest) returns (BlockModel);
 	rpc GetBlocks(BlockRequest) returns (BlocksResponse);
 	rpc GetBlockChain(BlockChainRequest) returns (stream BlockModel);
-	rpc SendTransaction(SendRequest) returns (TransactionResponse);  
+	rpc AddTransactionToPool(SendRequest) returns (TransactionResponse);  
 }
 
 message EmptyRequest {
@@ -66,7 +66,7 @@ message TransactionModel {
 	double Fee = 6;
 }
 
-message BlockHeader {
+message BlockHeaderModel {
 	int32 Version = 1;
 	string PreviousHash = 2;
 	string MerkleRoot = 3;
@@ -78,7 +78,7 @@ message BlockHeader {
 message BlockModel {
 	string Hash = 1;
 	int64 Height = 2;
-	BlockHeader BlockHeader = 3;
+	BlockHeaderModel BlockHeader = 3;
 	repeated TransactionModel Transactions = 4;
 }
 

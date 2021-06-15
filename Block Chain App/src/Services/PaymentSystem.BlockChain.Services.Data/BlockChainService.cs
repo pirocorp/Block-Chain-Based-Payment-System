@@ -4,6 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Cryptography;
+    using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
 
     using PaymentSystem.BlockChain.Data;
     using PaymentSystem.Common;
@@ -23,32 +26,34 @@
             this.transactionPool = transactionPool;
         }
 
-        public int Count()
-            => this.context.Blocks.Count();
+        public async Task<int> Count()
+            => await this.context.Blocks.CountAsync();
 
-        public Block GetLastBlock()
-            => this.context.Blocks.OrderByDescending(x => x.Height).First();
+        public async Task<Block> GetLastBlock()
+            => await this.context.Blocks.OrderByDescending(x => x.Height).FirstAsync();
 
-        public Block GetGenesisBlock()
-            => this.context.Blocks.First(x => x.Height == 0);
+        public async Task<Block> GetGenesisBlock()
+            => await this.context.Blocks
+                .Include(x => x.Transactions)
+                .FirstAsync(x => x.Height == 0);
 
-        public Block GetBlockByHash(string hash)
-            => this.context.Blocks.FirstOrDefault(x => x.Hash.Equals(hash));
+        public async Task<Block> GetBlockByHash(string hash)
+            => await this.context.Blocks.FirstOrDefaultAsync(x => x.Hash.Equals(hash));
 
-        public Block GetBlockByHeight(long height)
-            => this.context.Blocks.FirstOrDefault(b => b.Height.Equals(height));
+        public async Task<Block> GetBlockByHeight(long height)
+            => await this.context.Blocks.FirstOrDefaultAsync(b => b.Height.Equals(height));
 
-        public IEnumerable<Block> GetBlocks(int pageNumber, int resultPerPage)
-            => this.context.Blocks
+        public async Task<IEnumerable<Block>> GetBlocks(int pageNumber, int resultPerPage)
+            => await this.context.Blocks
                 .OrderByDescending(x => x.Height)
                 .Skip((pageNumber - 1) * resultPerPage)
                 .Take(resultPerPage)
-                .ToList();
+                .ToListAsync();
 
         public void AddTransaction(Transaction transaction)
             => this.transactionPool.AddTransaction(transaction);
 
-        public IEnumerable<IEnumerable<Block>> GetBlockChain(long height)
+        public async IAsyncEnumerable<Block[]> GetBlockChain(long height)
         {
             var query = this.context.Blocks
                 .Where(x => x.Height <= height)
@@ -57,25 +62,25 @@
             var batchPage = 1;
             var batchSize = GlobalConstants.BlockChainBatchSize;
 
-            var batch = query
+            var batch = await query
                 .Take(batchSize)
-                .ToArray();
+                .ToArrayAsync();
 
             while (batch.Length > 0)
             {
                 yield return batch;
 
                 batchPage++;
-                batch = query
+                batch = await query
                     .Skip((batchPage - 1) * batchSize)
                     .Take(batchSize)
-                    .ToArray();
+                    .ToArrayAsync();
             }
         }
 
-        public void MineBlock()
+        public async Task MineBlock()
         {
-            var lastBlock = this.GetLastBlock();
+            var lastBlock = await this.GetLastBlock();
             var previousHash = lastBlock.Hash;
             var transactions = this.transactionPool.GetTransactions().ToList();
 
@@ -99,7 +104,7 @@
 
             block.Hash = this.GenerateBlockHash(block);
 
-            this.context.Add(block);
+            await this.context.AddAsync(block);
         }
 
         private static string DoubleHash(string left, string right)
@@ -116,35 +121,35 @@
 
         private string GenerateMerkleRoot(IList<Transaction> transactions)
         {
-            var txsHash = transactions.Select(transaction => transaction.Hash).ToList();
+            var transactionsHashes = transactions.Select(transaction => transaction.Hash).ToList();
 
             while (true)
             {
-                if (txsHash.Count == 0)
+                if (transactionsHashes.Count == 0)
                 {
                     return string.Empty;
                 }
 
-                if (txsHash.Count == 1)
+                if (transactionsHashes.Count == 1)
                 {
-                    return txsHash[0];
+                    return transactionsHashes[0];
                 }
 
                 var newHashList = new List<string>();
 
-                var length = (txsHash.Count % 2 != 0) ? txsHash.Count - 1 : txsHash.Count;
+                var length = (transactionsHashes.Count % 2 != 0) ? transactionsHashes.Count - 1 : transactionsHashes.Count;
 
                 for (var i = 0; i < length; i += 2)
                 {
-                    newHashList.Add(DoubleHash(txsHash[i], txsHash[i + 1]));
+                    newHashList.Add(DoubleHash(transactionsHashes[i], transactionsHashes[i + 1]));
                 }
 
-                if (length < txsHash.Count)
+                if (length < transactionsHashes.Count)
                 {
-                    newHashList.Add(DoubleHash(txsHash[^1], txsHash[^1]));
+                    newHashList.Add(DoubleHash(transactionsHashes[^1], transactionsHashes[^1]));
                 }
 
-                txsHash = newHashList.ToList();
+                transactionsHashes = newHashList.ToList();
             }
         }
 

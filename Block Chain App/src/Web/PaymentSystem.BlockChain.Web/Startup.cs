@@ -10,6 +10,7 @@
 
     using PaymentSystem.BlockChain.Data;
     using PaymentSystem.BlockChain.Data.Seeding;
+    using PaymentSystem.BlockChain.Services;
     using PaymentSystem.BlockChain.Services.Data;
     using PaymentSystem.BlockChain.Services.Mapping;
 
@@ -29,6 +30,7 @@
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services.AddGrpc();
+            services.AddGrpcReflection(); // Used to test gRPC with grpcurl CLI.
             services.AddCors(o => o.AddPolicy("AllowAll", builder =>
             {
                 builder
@@ -41,6 +43,7 @@
             // Domain Services
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IBlockChainService, BlockChainService>();
+            services.AddTransient<BlockChainCommunicationService>();
             services.AddSingleton<ITransactionPool, TransactionPool>();
         }
 
@@ -54,6 +57,7 @@
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 dbContext.Database.Migrate();
+
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
@@ -67,14 +71,20 @@
             app.UseEndpoints(
                 endpoints =>
                 {
-                    // endpoints.MapGrpcService<GrpcCommunicationService>();
+                    endpoints.MapGrpcService<BlockChainCommunicationService>();
 
-                    endpoints.MapGet("/", async context =>
+                    if (env.IsDevelopment())
                     {
-                        await context.Response.WriteAsync(
-                            "Communication with gRPC endpoints" +
-                            " must be made through a gRPC client.");
-                    });
+                        // Used to test gRPC with grpcurl CLI.
+                        endpoints.MapGrpcReflectionService();
+
+                        endpoints.MapGet("/", async context =>
+                        {
+                            await context.Response.WriteAsync(
+                                "Communication with gRPC endpoints" +
+                                " must be made through a gRPC client.");
+                        });
+                    }
                 });
         }
     }

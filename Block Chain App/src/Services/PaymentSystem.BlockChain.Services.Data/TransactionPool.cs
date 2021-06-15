@@ -2,26 +2,30 @@
 {
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Linq;
 
     using PaymentSystem.Common.Data.Models;
 
     public class TransactionPool : ITransactionPool
     {
-        private readonly ConcurrentBag<Transaction> pool;
+        private readonly IDictionary<string, Transaction> pool;
 
         public TransactionPool()
         {
-            this.pool = new ConcurrentBag<Transaction>();
+            this.pool = new ConcurrentDictionary<string, Transaction>();
         }
+
+        public bool Exists(string hash)
+            => this.pool.ContainsKey(hash);
 
         public void AddTransaction(Transaction transaction)
         {
-            this.pool.Add(transaction);
+            this.pool.Add(transaction.Hash, transaction);
         }
 
         public IEnumerable<Transaction> GetTransactions()
         {
-            var transactions = this.pool.ToArray();
+            var transactions = this.pool.Values.ToList();
             this.pool.Clear();
 
             return transactions;

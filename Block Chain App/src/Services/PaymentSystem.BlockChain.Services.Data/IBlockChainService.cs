@@ -1,27 +1,28 @@
 ﻿namespace PaymentSystem.BlockChain.Services.Data
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using PaymentSystem.Common.Data.Models;
 
     public interface IBlockChainService
     {
-        int Count();
+        Task<int> Count();
 
-        Block GetLastBlock();
+        Task<Block> GetLastBlock();
 
-        Block GetGenesisBlock();
+        Task<Block> GetGenesisBlock();
 
-        Block GetBlockByHash(string hash);
+        Task<Block> GetBlockByHash(string hash);
 
-        Block GetBlockByHeight(long height);
+        Task<Block> GetBlockByHeight(long height);
 
-        IEnumerable<Block> GetBlocks(int pageNumber, int resultPerPage);
+        Task<IEnumerable<Block>> GetBlocks(int pageNumber, int resultPerPage);
 
         void AddTransaction(Transaction transaction);
 
-        IEnumerable<IEnumerable<Block>> GetBlockChain(long height);
+        IAsyncEnumerable<Block[]> GetBlockChain(long height);
 
-        void MineBlock();
+        Task MineBlock();
     }
 }

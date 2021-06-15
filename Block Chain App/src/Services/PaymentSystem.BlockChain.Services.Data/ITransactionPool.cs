@@ -20,5 +20,12 @@
         /// </summary>
         /// <returns>All pending transactions.</returns>
         IEnumerable<Transaction> GetTransactions();
+
+        /// <summary>
+        /// Checks if transaction exists in transaction pool.
+        /// </summary>
+        /// <param name="hash">Hash of transaction.</param>
+        /// <returns>true or false.</returns>
+        bool Exists(string hash);
     }
 }

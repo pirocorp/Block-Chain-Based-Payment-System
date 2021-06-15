@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.37.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.38.0" />
     <PackageReference Include="Grpc.AspNetCore.Web" Version="2.37.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.312" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -26,6 +27,7 @@
     <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data\PaymentSystem.BlockChain.Data.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services.Data\PaymentSystem.BlockChain.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services.Mapping\PaymentSystem.BlockChain.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\PaymentSystem.BlockChain.Services\PaymentSystem.BlockChain.Services.csproj" />
     <ProjectReference Include="..\PaymentSystem.BlockChain.Web.Infrastructure\PaymentSystem.BlockChain.Web.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
