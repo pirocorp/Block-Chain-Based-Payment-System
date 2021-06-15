@@ -3,7 +3,6 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.SignalR;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +12,8 @@
     using PaymentSystem.BlockChain.Data.Seeding;
     using PaymentSystem.BlockChain.Services;
     using PaymentSystem.BlockChain.Services.Data;
-    using PaymentSystem.BlockChain.Services.Mapping;
-    using Services.Hubs;
+    using PaymentSystem.BlockChain.Services.Hubs;
+    using PaymentSystem.Common;
 
     public class Startup
     {
@@ -55,7 +54,7 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            AutoMapperConfig.RegisterMappings();
+            // AutoMapperConfig.RegisterMappings();
 
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
@@ -77,7 +76,7 @@
                 endpoints =>
                 {
                     endpoints.MapGrpcService<BlockChainCommunicationService>();
-                    endpoints.MapHub<BroadcastHub>("/notification");
+                    endpoints.MapHub<BroadcastHub>(GlobalConstants.PushNotification);
 
                     if (env.IsDevelopment())
                     {
