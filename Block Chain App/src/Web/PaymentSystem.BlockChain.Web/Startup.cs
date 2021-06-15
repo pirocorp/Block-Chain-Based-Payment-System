@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.SignalR;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@
     using PaymentSystem.BlockChain.Services;
     using PaymentSystem.BlockChain.Services.Data;
     using PaymentSystem.BlockChain.Services.Mapping;
+    using Services.Hubs;
 
     public class Startup
     {
@@ -31,6 +33,9 @@
 
             services.AddGrpc();
             services.AddGrpcReflection(); // Used to test gRPC with grpcurl CLI.
+
+            services.AddSignalR();
+
             services.AddCors(o => o.AddPolicy("AllowAll", builder =>
             {
                 builder
@@ -72,6 +77,7 @@
                 endpoints =>
                 {
                     endpoints.MapGrpcService<BlockChainCommunicationService>();
+                    endpoints.MapHub<BroadcastHub>("/notification");
 
                     if (env.IsDevelopment())
                     {
