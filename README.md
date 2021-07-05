@@ -405,4 +405,4 @@ public abstract class NotificationHub : Hub
 - Update balance for every transaction. 
 - All transaction fees goes to system account.
 - Notification must be signed.
-- gRPC method for gething parth of block chain.
+- gRPC method for gething part of block chain.
