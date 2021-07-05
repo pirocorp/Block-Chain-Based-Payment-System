@@ -6,7 +6,7 @@
 
         public const double WelcomeBonus = 500;
 
-        public const string PushNotification = "/notification";
+        public const string PushNotificationUrl = "/notification";
 
         public static class Block
         {

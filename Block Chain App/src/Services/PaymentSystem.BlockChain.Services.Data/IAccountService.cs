@@ -6,9 +6,9 @@
     {
         Task<bool> Exists(string address);
 
-        Task Create(string address);
+        Task Create(string address, string publicKey);
 
-        Task Deposit(string address, double amount);
+        Task<bool> TryDeposit(string address, double amount);
 
         Task<bool> TryWithdraw(string address, double amount);
     }

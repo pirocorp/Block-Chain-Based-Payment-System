@@ -4,7 +4,7 @@
 
     using PaymentSystem.Common.Hubs.Models;
 
-    public interface IBroadcastClient
+    public interface IBlockNotificationClient
     {
         Task ReceiveBlock(NotificationBlock block);
     }

@@ -2,7 +2,12 @@
 {
     using System.Collections.Generic;
 
-    public class NotificationBlock
+    using AutoMapper;
+
+    using PaymentSystem.BlockChain.Services.Mapping;
+    using PaymentSystem.Common.Data.Models;
+
+    public class NotificationBlock : IMapFrom<Block>
     {
         public string Hash { get; set; }
 
@@ -14,9 +19,14 @@
 
         public string Validator { get; set; }
 
+        [IgnoreMap]
         public string BlockChainPublicKey { get; set; }
 
         // Signature will be made over block hash.
+        [IgnoreMap]
         public string BlockChainSignature { get; set; }
+
+        [IgnoreMap]
+        public IEnumerable<TransactionNotification> CanceledTransactions { get; set; }
     }
 }

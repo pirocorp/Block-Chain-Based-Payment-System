@@ -20,11 +20,12 @@
         public async Task<bool> Exists(string address)
             => await this.context.Accounts.AnyAsync(x => x.Address == address);
 
-        public async Task Create(string address)
+        public async Task Create(string address, string publicKey)
         {
             var account = new Account()
             {
                 Address = address,
+                PublicKey = publicKey,
                 Balance = GlobalConstants.WelcomeBonus,
             };
 
@@ -36,18 +37,18 @@
         /// Most block chain implementations sends money to address that are not in the system.
         /// There are number of such bitcoins in 'not valid' addresses.
         /// </summary>
-        public async Task Deposit(string address, double amount)
+        public async Task<bool> TryDeposit(string address, double amount)
         {
             var account = await this.GetAccount(address);
 
             if (account is null)
             {
-                await this.Create(address);
-                account = await this.GetAccount(address);
+                return false;
             }
 
             account.Balance += amount;
             await this.context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> TryWithdraw(string address, double amount)

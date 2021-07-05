@@ -13,13 +13,13 @@
         /// Add new transaction to the pool.
         /// </summary>
         /// <param name="transaction"></param>
-        void AddTransaction(Transaction transaction);
+        void Add(Transaction transaction);
 
         /// <summary>
         /// Get all pending transactions. Once transactions are returned the pool is cleared.
         /// </summary>
         /// <returns>All pending transactions.</returns>
-        IEnumerable<Transaction> GetTransactions();
+        IEnumerable<Transaction> GetAll();
 
         /// <summary>
         /// Checks if transaction exists in transaction pool.

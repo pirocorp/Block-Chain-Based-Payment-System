@@ -1,6 +1,9 @@
 ﻿namespace PaymentSystem.Common.Hubs.Models
 {
-    public class TransactionNotification
+    using PaymentSystem.BlockChain.Services.Mapping;
+    using PaymentSystem.Common.Data.Models;
+
+    public class TransactionNotification : IMapFrom<Transaction>
     {
         public string Hash { get; set; }
 

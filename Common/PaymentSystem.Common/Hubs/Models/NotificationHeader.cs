@@ -1,6 +1,9 @@
 ﻿namespace PaymentSystem.Common.Hubs.Models
 {
-    public class NotificationHeader
+    using PaymentSystem.BlockChain.Services.Mapping;
+    using PaymentSystem.Common.Data.Models;
+
+    public class NotificationHeader : IMapFrom<BlockHeader>
     {
         public int Version { get; set; }
 

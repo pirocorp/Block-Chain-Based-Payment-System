@@ -23,6 +23,6 @@
 
         IAsyncEnumerable<Block[]> GetBlockChain(long height);
 
-        Task MineBlock();
+        Task<Block> MineBlock();
     }
 }

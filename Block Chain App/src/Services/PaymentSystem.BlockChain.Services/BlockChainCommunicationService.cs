@@ -130,7 +130,7 @@
 
             //!!!!!! validate transaction parameters like balance etc. !!!!!
 
-            this.transactionPool.AddTransaction(transaction);
+            this.transactionPool.Add(transaction);
             var response = new TransactionResponse() { Result = TransactionStatus.Pending.ToString() };
 
             return await Task.FromResult(response);

@@ -17,15 +17,18 @@
     {
         private readonly ApplicationDbContext context;
         private readonly ITransactionPool transactionPool;
+        private readonly ICancelTransactionPool cancelTransactionPool;
         private readonly IAccountService accountService;
 
         public BlockChainService(
             ApplicationDbContext context,
             ITransactionPool transactionPool,
+            ICancelTransactionPool cancelTransactionPool,
             IAccountService accountService)
         {
             this.context = context;
             this.transactionPool = transactionPool;
+            this.cancelTransactionPool = cancelTransactionPool;
             this.accountService = accountService;
         }
 
@@ -54,7 +57,7 @@
                 .ToListAsync();
 
         public void AddTransaction(Transaction transaction)
-            => this.transactionPool.AddTransaction(transaction);
+            => this.transactionPool.Add(transaction);
 
         public async IAsyncEnumerable<Block[]> GetBlockChain(long height)
         {
@@ -81,13 +84,22 @@
             }
         }
 
-        public async Task MineBlock()
+        public async Task<Block> MineBlock()
         {
+            var transactions = this.transactionPool.GetAll().ToList();
+
+            // If there are no new transactions there are no reason to mine new block.
+            // The state of the system remains the same.
+            if (transactions.Count == 0)
+            {
+                return null;
+            }
+
             var lastBlock = await this.GetLastBlock();
             var previousHash = lastBlock.Hash;
-            var transactions = this.transactionPool.GetTransactions().ToList();
-
             var nextHeight = lastBlock.Height + 1;
+
+            var validTransactions = await this.ValidateAndProcessTransactions(transactions);
 
             var block = new Block
             {
@@ -96,23 +108,19 @@
                     Version = GlobalConstants.Block.Version,
                     PreviousHash = previousHash,
                     TimeStamp = DateTime.UtcNow.Ticks,
-                    MerkleRoot = this.GenerateMerkleRoot(transactions),
+                    MerkleRoot = GenerateMerkleRoot(transactions),
                     Difficulty = GlobalConstants.Block.DefaultDifficulty,
                 },
 
                 Height = nextHeight,
-                Transactions = transactions,
+                Transactions = validTransactions,
                 Validator = GlobalConstants.Block.DefaultValidator,
             };
 
-            block.Hash = this.GenerateBlockHash(block);
-
+            block.Hash = GenerateBlockHash(block);
             await this.context.AddAsync(block);
 
-            foreach (var transaction in transactions)
-            {
-                // adjust accounts balances according transactions
-            }
+            return block;
         }
 
         private static string DoubleHash(string left, string right)
@@ -127,7 +135,7 @@
             return sendHash.BytesToHex();
         }
 
-        private string GenerateMerkleRoot(IList<Transaction> transactions)
+        private static string GenerateMerkleRoot(IEnumerable<Transaction> transactions)
         {
             var transactionsHashes = transactions.Select(transaction => transaction.Hash).ToList();
 
@@ -161,7 +169,7 @@
             }
         }
 
-        private string GenerateBlockHash(Block block)
+        private static string GenerateBlockHash(Block block)
         {
             var blockData =
                 block.BlockHeader.Version
@@ -172,6 +180,38 @@
                 + block.Validator;
 
             return BlockChainHashing.GenerateHash(blockData);
+        }
+
+        private async Task<List<Transaction>> ValidateAndProcessTransactions(IEnumerable<Transaction> transactions)
+        {
+            var validTransactions = new List<Transaction>();
+
+            foreach (var transaction in transactions)
+            {
+                var totalAmount = transaction.Amount + transaction.Fee;
+                var success = await this.accountService.TryWithdraw(transaction.Sender, totalAmount);
+
+                if (!success)
+                {
+                    this.cancelTransactionPool.Add(transaction);
+                    continue;
+                }
+
+                var depositIsSuccessful = await this.accountService.TryDeposit(transaction.Recipient, transaction.Amount);
+
+                if (!depositIsSuccessful)
+                {
+                    await this.accountService.TryDeposit(transaction.Sender, transaction.Amount);
+                    this.cancelTransactionPool.Add(transaction);
+                    continue;
+                }
+
+                await this.accountService.TryDeposit(GlobalConstants.Block.DefaultValidator, transaction.Fee);
+
+                validTransactions.Add(transaction);
+            }
+
+            return validTransactions;
         }
     }
 }

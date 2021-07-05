@@ -1,6 +1,9 @@
 ﻿namespace PaymentSystem.BlockChain.Web
 {
+    using System.Reflection;
+    using Common.Hubs.Models;
     using Extensions;
+    using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -45,18 +48,19 @@
                     .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
             }));
 
+            services.AddAutoMapper();
+
             // Domain Services
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IBlockChainService, BlockChainService>();
             services.AddTransient<BlockChainCommunicationService>();
             services.AddSingleton<ITransactionPool, TransactionPool>();
+            services.AddSingleton<ICancelTransactionPool, CancelTransactionPool>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // AutoMapperConfig.RegisterMappings();
-
             app.ApplyMigrations();
             app.SeedData();
 
@@ -71,7 +75,7 @@
                 endpoints =>
                 {
                     endpoints.MapGrpcService<BlockChainCommunicationService>();
-                    endpoints.MapHub<BroadcastHub>(GlobalConstants.PushNotification);
+                    endpoints.MapHub<BroadcastHub>(GlobalConstants.PushNotificationUrl);
 
                     if (env.IsDevelopment())
                     {
