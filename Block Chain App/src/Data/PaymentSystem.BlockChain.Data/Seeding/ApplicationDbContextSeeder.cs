@@ -26,7 +26,7 @@
             var seeders = new List<ISeeder>
             {
                 new SystemSeeder(),
-
+                new InitialBlockSeeder(),
             };
 
             foreach (var seeder in seeders)

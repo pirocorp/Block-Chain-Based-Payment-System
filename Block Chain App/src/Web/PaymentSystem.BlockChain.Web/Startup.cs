@@ -1,5 +1,6 @@
 ﻿namespace PaymentSystem.BlockChain.Web
 {
+    using Coravel;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -15,6 +16,7 @@
     using PaymentSystem.BlockChain.Web.Extensions;
     using PaymentSystem.BlockChain.Web.Infrastructure;
     using PaymentSystem.Common;
+    using Scheduler;
 
     public class Startup
     {
@@ -44,6 +46,9 @@
                     .AllowAnyHeader()
                     .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
             }));
+
+            services.AddScheduler();
+            services.AddTransient<BlockJob>();
 
             services.AddAutoMapper();
 

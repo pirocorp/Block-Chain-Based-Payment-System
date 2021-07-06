@@ -11,6 +11,7 @@
                 columns: table => new
                 {
                     Address = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PublicKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Balance = table.Column<double>(type: "float", nullable: false),
                 },
                 constraints: table =>
@@ -34,6 +35,18 @@
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Blocks", x => x.Hash);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Settings",
+                columns: table => new
+                {
+                    Key = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Settings", x => x.Key);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,7 +75,8 @@
             migrationBuilder.CreateIndex(
                 name: "IX_Blocks_Height",
                 table: "Blocks",
-                column: "Height");
+                column: "Height",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_BlockHash",
@@ -74,6 +88,9 @@
         {
             migrationBuilder.DropTable(
                 name: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.BlockChain.Data.Seeding
+﻿namespace PaymentSystem.Common
 {
     using System.Collections.Generic;
 

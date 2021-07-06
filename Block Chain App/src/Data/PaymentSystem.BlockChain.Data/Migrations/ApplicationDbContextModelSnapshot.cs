@@ -55,9 +55,6 @@ namespace PaymentSystem.BlockChain.Data.Migrations
                     b.Property<long>("Height")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Validator")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Hash");
 
                     b.HasIndex("Height")

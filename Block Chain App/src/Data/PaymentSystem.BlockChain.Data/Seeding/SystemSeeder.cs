@@ -36,14 +36,15 @@
                     },
                 };
 
-                await dbContext.Settings.AddRangeAsync(settings);
-                await dbContext.SaveChangesAsync();
-
                 var account = new Account()
                 {
                     Address = systemAccountKeys.Address,
                     PublicKey = systemAccountKeys.PublicKey.PublicKeyToString(),
                 };
+
+                await dbContext.Settings.AddRangeAsync(settings);
+                await dbContext.Accounts.AddAsync(account);
+                await dbContext.SaveChangesAsync();
             }
         }
     }

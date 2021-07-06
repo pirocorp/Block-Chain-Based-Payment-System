@@ -24,6 +24,6 @@
 
         public PublicKey PublicKey => this.PrivateKey.publicKey();
 
-        public string Address => Convert.ToBase64String(SHA256.Create().ComputeHash(this.PublicKey.toString()));
+        public string Address => SHA256.Create().ComputeHash(this.PublicKey.toString()).BytesToHex();
     }
 }

@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Common\PaymentSystem.Common\PaymentSystem.Common.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\PaymentSystem.BlockChain.Infrastructure\PaymentSystem.BlockChain.Infrastructure.csproj" />
     <ProjectReference Include="..\PaymentSystem.BlockChain.Data.Models\PaymentSystem.BlockChain.Data.Models.csproj" />
   </ItemGroup>
 

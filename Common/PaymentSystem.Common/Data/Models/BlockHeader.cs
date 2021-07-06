@@ -22,8 +22,9 @@ namespace PaymentSystem.Common.Data.Models
         // Will use constant difficulty but for now is here
         public int Difficulty { get; set; }
 
-        // The creator of the block identified by the public key.
+        // The creator of the block identified by the address.
         // Validators get reward from accumulated transaction fees.
+        // For now it will be the Block chain app.
         public string Validator { get; set; }
     }
 }

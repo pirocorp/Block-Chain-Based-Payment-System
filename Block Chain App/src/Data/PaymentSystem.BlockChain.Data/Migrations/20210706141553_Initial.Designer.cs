@@ -9,15 +9,15 @@ using PaymentSystem.BlockChain.Data;
 namespace PaymentSystem.BlockChain.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210615140039_TableAccountPublikKeyProperty")]
-    partial class TableAccountPublicKeyProperty
+    [Migration("20210706141553_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("PaymentSystem.BlockChain.Data.Models.Account", b =>
@@ -36,6 +36,19 @@ namespace PaymentSystem.BlockChain.Data.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("PaymentSystem.BlockChain.Data.Models.Setting", b =>
+                {
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Key");
+
+                    b.ToTable("Settings");
+                });
+
             modelBuilder.Entity("PaymentSystem.Common.Data.Models.Block", b =>
                 {
                     b.Property<string>("Hash")
@@ -43,9 +56,6 @@ namespace PaymentSystem.BlockChain.Data.Migrations
 
                     b.Property<long>("Height")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("Validator")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Hash");
 

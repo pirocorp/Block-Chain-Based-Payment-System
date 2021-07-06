@@ -35,9 +35,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "Block Chain App\src\Tests\Sandbox\Sandbox.csproj", "{2FE13079-3A6F-483A-8E90-028B2F8F6866}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentSystem.BlockChain.Services", "Block Chain App\src\Services\PaymentSystem.BlockChain.Services\PaymentSystem.BlockChain.Services.csproj", "{0BD6A8B6-EA46-41A5-9C11-DB840B984AC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Services", "Block Chain App\src\Services\PaymentSystem.BlockChain.Services\PaymentSystem.BlockChain.Services.csproj", "{0BD6A8B6-EA46-41A5-9C11-DB840B984AC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentSystem.Common.Tests", "Common\PaymentSystem.Common.Tests\PaymentSystem.Common.Tests.csproj", "{D64E6AC3-62E9-4B86-8055-C621878CBB17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.Common.Tests", "Common\PaymentSystem.Common.Tests\PaymentSystem.Common.Tests.csproj", "{D64E6AC3-62E9-4B86-8055-C621878CBB17}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A42D0558-BDD5-431D-A6B8-F6A34D2AF101}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentSystem.BlockChain.Infrastructure", "Block Chain App\src\Infrastructure\PaymentSystem.BlockChain.Infrastructure\PaymentSystem.BlockChain.Infrastructure.csproj", "{F967E342-D5FE-498E-94AA-6307D80141AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +89,10 @@ Global
 		{D64E6AC3-62E9-4B86-8055-C621878CBB17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D64E6AC3-62E9-4B86-8055-C621878CBB17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D64E6AC3-62E9-4B86-8055-C621878CBB17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F967E342-D5FE-498E-94AA-6307D80141AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F967E342-D5FE-498E-94AA-6307D80141AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F967E342-D5FE-498E-94AA-6307D80141AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F967E342-D5FE-498E-94AA-6307D80141AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +113,8 @@ Global
 		{2FE13079-3A6F-483A-8E90-028B2F8F6866} = {8AB5293F-E220-49F5-B2D4-522D3E07D645}
 		{0BD6A8B6-EA46-41A5-9C11-DB840B984AC2} = {01B8CF7D-D7C4-4B80-977B-9FDA4C9F3C0E}
 		{D64E6AC3-62E9-4B86-8055-C621878CBB17} = {E8CD9E59-2914-4FF6-870C-D5C720F40FEB}
+		{A42D0558-BDD5-431D-A6B8-F6A34D2AF101} = {283CEA6E-BFC4-4249-A375-7E2A55127F4A}
+		{F967E342-D5FE-498E-94AA-6307D80141AD} = {A42D0558-BDD5-431D-A6B8-F6A34D2AF101}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF77BB34-F2E6-4095-83E0-FF4B7DC16EC5}

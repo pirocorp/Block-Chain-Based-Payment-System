@@ -26,10 +26,5 @@
         // Transactions are collections of transactions that occur.
         // Settled transactions
         public IEnumerable<Transaction> Transactions { get; set; }
-
-        // The creator of the block identified by the public key.
-        // Validators get reward from accumulated transaction fees.
-        // For now it will be the Block chain app.
-        public string Validator { get; set; }
     }
 }
