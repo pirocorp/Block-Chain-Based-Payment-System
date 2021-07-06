@@ -1,9 +1,5 @@
 ﻿namespace PaymentSystem.BlockChain.Web
 {
-    using System.Reflection;
-    using Common.Hubs.Models;
-    using Extensions;
-    using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -13,10 +9,11 @@
     using Microsoft.Extensions.Hosting;
 
     using PaymentSystem.BlockChain.Data;
-    using PaymentSystem.BlockChain.Data.Seeding;
     using PaymentSystem.BlockChain.Services;
     using PaymentSystem.BlockChain.Services.Data;
     using PaymentSystem.BlockChain.Services.Hubs;
+    using PaymentSystem.BlockChain.Web.Extensions;
+    using PaymentSystem.BlockChain.Web.Infrastructure;
     using PaymentSystem.Common;
 
     public class Startup
@@ -52,6 +49,7 @@
 
             // Domain Services
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IBlockChainService, BlockChainService>();
             services.AddTransient<BlockChainCommunicationService>();
             services.AddSingleton<ITransactionPool, TransactionPool>();

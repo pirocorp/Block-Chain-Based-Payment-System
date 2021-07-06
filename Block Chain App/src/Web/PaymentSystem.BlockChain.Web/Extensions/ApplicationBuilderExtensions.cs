@@ -1,11 +1,11 @@
 ﻿namespace PaymentSystem.BlockChain.Web.Extensions
 {
-    using Data.Seeding;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
 
     using PaymentSystem.BlockChain.Data;
+    using PaymentSystem.BlockChain.Data.Seeding;
 
     public static class ApplicationBuilderExtensions
     {

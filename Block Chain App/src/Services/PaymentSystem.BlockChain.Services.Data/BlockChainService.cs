@@ -19,17 +19,20 @@
         private readonly ITransactionPool transactionPool;
         private readonly ICancelTransactionPool cancelTransactionPool;
         private readonly IAccountService accountService;
+        private readonly ITransactionService transactionService;
 
         public BlockChainService(
             ApplicationDbContext context,
             ITransactionPool transactionPool,
             ICancelTransactionPool cancelTransactionPool,
-            IAccountService accountService)
+            IAccountService accountService,
+            ITransactionService transactionService)
         {
             this.context = context;
             this.transactionPool = transactionPool;
             this.cancelTransactionPool = cancelTransactionPool;
             this.accountService = accountService;
+            this.transactionService = transactionService;
         }
 
         public async Task<int> Count()
@@ -119,6 +122,8 @@
 
             block.Hash = GenerateBlockHash(block);
             await this.context.AddAsync(block);
+
+            await this.transactionService.AddRange(validTransactions);
 
             return block;
         }
@@ -210,6 +215,8 @@
 
                 validTransactions.Add(transaction);
             }
+
+
 
             return validTransactions;
         }

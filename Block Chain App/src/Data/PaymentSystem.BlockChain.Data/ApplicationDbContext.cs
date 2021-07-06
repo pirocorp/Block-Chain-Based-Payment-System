@@ -22,6 +22,8 @@
 
         public DbSet<Transaction> Transactions { get; set; }
 
+        public DbSet<Setting> Settings { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
