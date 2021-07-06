@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Numerics;
+    using EllipticCurve;
 
     public static class ConvertExtensions
     {
@@ -21,5 +22,8 @@
 
         public static BigInteger HexToBigInteger(this string input)
             => BigInteger.Parse(input, NumberStyles.AllowHexSpecifier);
+
+        public static string PublicKeyToString(this PublicKey key)
+            => Convert.ToHexString(key.toString());
     }
 }
