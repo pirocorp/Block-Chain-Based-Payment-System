@@ -14,9 +14,8 @@
     using PaymentSystem.BlockChain.Services.Data;
     using PaymentSystem.BlockChain.Services.Hubs;
     using PaymentSystem.BlockChain.Web.Extensions;
-    using PaymentSystem.BlockChain.Web.Infrastructure;
+    using PaymentSystem.BlockChain.Web.Scheduler;
     using PaymentSystem.Common;
-    using Scheduler;
 
     public class Startup
     {
@@ -51,6 +50,7 @@
             services.AddTransient<BlockJob>();
 
             services.AddAutoMapper();
+            services.AddSystemKeys();
 
             // Domain Services
             services.AddTransient<IAccountService, AccountService>();
@@ -66,6 +66,7 @@
         {
             app.ApplyMigrations();
             app.SeedData();
+            app.UseSystemKeys();
 
             if (env.IsDevelopment())
             {

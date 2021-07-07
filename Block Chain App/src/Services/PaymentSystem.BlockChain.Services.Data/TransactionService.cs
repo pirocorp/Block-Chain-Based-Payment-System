@@ -22,17 +22,5 @@
 
         public async Task<Transaction> Get(string hash)
             => await this.dbContext.Transactions.FirstOrDefaultAsync(t => t.Hash == hash);
-
-        public async Task AddRange(IEnumerable<Transaction> transactions)
-        {
-            await this.dbContext.Transactions.AddRangeAsync(transactions);
-            await this.dbContext.SaveChangesAsync();
-        }
-
-        public async Task Add(Transaction transaction)
-        {
-            await this.dbContext.Transactions.AddAsync(transaction);
-            await this.dbContext.SaveChangesAsync();
-        }
     }
 }

@@ -15,8 +15,6 @@
             public const int Version = 1;
 
             public const int DefaultDifficulty = 1;
-
-            public const string DefaultValidator = "The System";
         }
     }
 }

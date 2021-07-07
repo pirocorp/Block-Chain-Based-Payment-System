@@ -15,24 +15,24 @@
 
     public class BlockChainService : IBlockChainService
     {
+        private readonly SystemKeys keys;
         private readonly ApplicationDbContext context;
         private readonly ITransactionPool transactionPool;
         private readonly ICancelTransactionPool cancelTransactionPool;
         private readonly IAccountService accountService;
-        private readonly ITransactionService transactionService;
 
         public BlockChainService(
+            SystemKeys keys,
             ApplicationDbContext context,
             ITransactionPool transactionPool,
             ICancelTransactionPool cancelTransactionPool,
-            IAccountService accountService,
-            ITransactionService transactionService)
+            IAccountService accountService)
         {
+            this.keys = keys;
             this.context = context;
             this.transactionPool = transactionPool;
             this.cancelTransactionPool = cancelTransactionPool;
             this.accountService = accountService;
-            this.transactionService = transactionService;
         }
 
         public async Task<int> Count()
@@ -112,7 +112,7 @@
                     PreviousHash = previousHash,
                     TimeStamp = DateTime.UtcNow.Ticks,
                     Difficulty = GlobalConstants.Block.DefaultDifficulty,
-                    Validator = GlobalConstants.Block.DefaultValidator,
+                    Validator = this.keys.Address,
                 },
 
                 Height = nextHeight,
@@ -154,12 +154,10 @@
                     continue;
                 }
 
-                await this.accountService.TryDeposit(GlobalConstants.Block.DefaultValidator, transaction.Fee);
+                await this.accountService.TryDeposit(this.keys.Address, transaction.Fee);
 
                 validTransactions.Add(transaction);
             }
-
-
 
             return validTransactions;
         }

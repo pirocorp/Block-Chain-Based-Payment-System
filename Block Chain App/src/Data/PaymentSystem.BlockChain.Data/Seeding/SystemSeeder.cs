@@ -19,17 +19,17 @@
 
                 var settings = new List<Setting>()
                 {
-                    new Setting()
+                    new ()
                     {
                         Key = nameof(AccountKeys.Secret),
                         Value = systemAccountKeys.Secret.BigIntegerToHex(),
                     },
-                    new Setting()
+                    new ()
                     {
                         Key = nameof(AccountKeys.Address),
                         Value = systemAccountKeys.Address,
                     },
-                    new Setting()
+                    new ()
                     {
                         Key = nameof(AccountKeys.PublicKey),
                         Value = systemAccountKeys.PublicKey.PublicKeyToString(),

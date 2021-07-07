@@ -1,9 +1,10 @@
-﻿namespace PaymentSystem.BlockChain.Web.Infrastructure
+﻿namespace PaymentSystem.BlockChain.Web.Extensions
 {
     using System.Reflection;
 
     using Microsoft.Extensions.DependencyInjection;
 
+    using PaymentSystem.BlockChain.Services.Data;
     using PaymentSystem.BlockChain.Services.Mapping;
     using PaymentSystem.Common.Hubs.Models;
 
@@ -20,6 +21,14 @@
                 typeof(NotificationBlock).GetTypeInfo().Assembly); // Configuration
 
             services.AddSingleton(AutoMapperConfig.MapperInstance); // Register Service
+
+            return services;
+        }
+
+        public static IServiceCollection AddSystemKeys(this IServiceCollection services)
+        {
+            var keys = new SystemKeys();
+            services.AddSingleton(keys);
 
             return services;
         }

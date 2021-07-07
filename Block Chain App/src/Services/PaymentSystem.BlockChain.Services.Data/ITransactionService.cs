@@ -10,9 +10,5 @@
         Task<bool> Exists(string hash);
 
         Task<Transaction> Get(string hash);
-
-        Task AddRange(IEnumerable<Transaction> transactions);
-
-        Task Add(Transaction transaction);
     }
 }

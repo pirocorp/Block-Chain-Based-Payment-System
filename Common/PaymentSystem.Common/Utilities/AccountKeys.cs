@@ -20,7 +20,7 @@
 
         public BigInteger Secret => this.PrivateKey.secret;
 
-        public PrivateKey PrivateKey { get; }
+        public PrivateKey PrivateKey { get; protected set; }
 
         public PublicKey PublicKey => this.PrivateKey.publicKey();
 
