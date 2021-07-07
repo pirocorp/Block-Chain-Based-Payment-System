@@ -59,6 +59,9 @@
 
             transactions.ForEach(t => t.BlockHash = genesisBlock.Hash);
 
+            var account = dbContext.Accounts.First(a => a.Address == systemAddress);
+            account.Balance = firstTransaction.Amount;
+
             await dbContext.AddAsync(genesisBlock);
             await dbContext.SaveChangesAsync();
         }
