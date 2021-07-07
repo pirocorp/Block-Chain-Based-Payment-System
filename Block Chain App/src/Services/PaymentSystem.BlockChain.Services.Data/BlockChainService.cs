@@ -40,7 +40,10 @@
             => await this.context.Blocks.CountAsync();
 
         public async Task<Block> GetLastBlock()
-            => await this.context.Blocks.OrderByDescending(x => x.Height).FirstAsync();
+            => await this.context.Blocks
+                .OrderByDescending(x => x.Height)
+                .Include(x => x.Transactions)
+                .FirstAsync();
 
         public async Task<Block> GetGenesisBlock()
             => await this.context.Blocks

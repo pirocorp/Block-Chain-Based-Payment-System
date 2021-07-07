@@ -149,7 +149,7 @@
             var blockHeader = new BlockHeaderModel()
             {
                 Version = block.BlockHeader.Version,
-                PreviousHash = block.BlockHeader.PreviousHash,
+                PreviousHash = block.BlockHeader.PreviousHash ?? string.Empty,
                 MerkleRoot = block.BlockHeader.MerkleRoot,
                 TimeStamp = block.BlockHeader.TimeStamp,
                 Difficulty = block.BlockHeader.Difficulty,
