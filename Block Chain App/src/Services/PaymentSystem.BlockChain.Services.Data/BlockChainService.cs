@@ -14,20 +14,20 @@
 
     public class BlockChainService : IBlockChainService
     {
-        private readonly SystemKeys keys;
+        private readonly SystemKeys system;
         private readonly ApplicationDbContext context;
         private readonly ITransactionPool transactionPool;
         private readonly ICancelTransactionPool cancelTransactionPool;
         private readonly IAccountService accountService;
 
         public BlockChainService(
-            SystemKeys keys,
+            SystemKeys system,
             ApplicationDbContext context,
             ITransactionPool transactionPool,
             ICancelTransactionPool cancelTransactionPool,
             IAccountService accountService)
         {
-            this.keys = keys;
+            this.system = system;
             this.context = context;
             this.transactionPool = transactionPool;
             this.cancelTransactionPool = cancelTransactionPool;
@@ -120,7 +120,7 @@
                     PreviousHash = previousHash,
                     TimeStamp = DateTime.UtcNow.Ticks,
                     Difficulty = GlobalConstants.Block.DefaultDifficulty,
-                    Validator = this.keys.Address,
+                    Validator = this.system.Address,
                 },
 
                 Height = nextHeight,
@@ -162,7 +162,7 @@
                     continue;
                 }
 
-                await this.accountService.TryDeposit(this.keys.Address, transaction.Fee);
+                await this.accountService.TryDeposit(this.system.Address, transaction.Fee);
 
                 validTransactions.Add(transaction);
             }

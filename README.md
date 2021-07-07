@@ -17,23 +17,28 @@ Transactions are the main reason for making blockchain so peers can send money t
 ```csharp
   public class Transaction 
   {
-        // This is the id of the transaction. It is calculated hashing the data in transaction.
-        public string Hash { get; set; }
+	// This is the id of the transaction. It is calculated hashing the data in transaction.
+	[Key]
+	public string Hash { get; set; }
 
-        // Unix timestamps or Epoch timestamps
-        public long TimeStamp { get; set;  }
-        
-        // Address of the sender it is the public key associated with the sender
-        public string Sender { get; set; }
+	// Unix timestamps or Epoch timestamps
+	public long TimeStamp { get; set; }
 
-        // Address of the recipient it is the public key associated with the recipient
-        public string Recipient { get; set; }
+	// Address of the sender it is the public key associated with the sender
+	public string Sender { get; set; }
 
-        // Amount is send
-        public decimal Amount { get; set; }
-        
-        // Fee (cost) associated with this transaction
-        public decimal Fee { get; set; }
+	// Address of the recipient it is the public key associated with the recipient
+	public string Recipient { get; set; }
+
+	// Amount is send
+	public double Amount { get; set; }
+
+	// Fee (cost) associated with this transaction
+	public double Fee { get; set; }
+
+	public string BlockHash { get; set; }
+
+	public Block Block { get; set; }
   }
 ```
 
@@ -49,13 +54,24 @@ In the world of blockchain, each transaction is not processed one by one, but th
 ```csharp
 public interface ITransactionPool
 {
-    // All pending transactions
-    IEnumerable<Transaction> Transactions { get; }
-    
-    // Add additional pending transaction
-    void Add(Transaction transaction);
+	/// <summary>
+	/// Add new transaction to the pool.
+	/// </summary>
+	/// <param name="transaction"></param>
+	void Add(Transaction transaction);
 
-    void ClearPool();
+	/// <summary>
+	/// Get all pending transactions. Once transactions are returned the transactions are cleared.
+	/// </summary>
+	/// <returns>All pending transactions.</returns>
+	IEnumerable<Transaction> GetAll();
+
+	/// <summary>
+	/// Checks if transaction exists in transaction pool.
+	/// </summary>
+	/// <param name="hash">Hash of transaction.</param>
+	/// <returns>true or false.</returns>
+	bool Exists(string hash);
 }
 ```
 
@@ -73,25 +89,26 @@ Block header is some data belonging to a block that is used as a unique identity
 ```csharp
 public class BlockHeader
 {
-    public int Version { get; set; }
-    
-    // PreviousHash is the hash of the previous block.
-    // For root block it will be null
-    public string PreviousHash { get; set; }
-    
-    // The root hash of Merkle Tree (Hash Tree). 
-    // The Hash Tree made from hashes of transactions in the block.
-    public string MerkleRoot { get; set; }
-    
-    // Unix timestamps or Epoch timestamps of time of block creation
-    public long TimeStamp { get; set; }
-    
-    // Will use constant dificulty but for now is here
-    public int Difficulty { get; set; }
-    
-    // The creator of the block identified by the public key.
-    // Validators get reward from accumulated transaction fees.
-    public string Validator { get; set; }
+	public int Version { get; set; }
+
+	// PreviousHash is the hash of the previous block.
+	// For root block it will be null
+	public string PreviousHash { get; set; }
+
+	// The root hash of Merkle Tree (Hash Tree).
+	// The Hash Tree made from hashes of transactions in the block.
+	public string MerkleRoot { get; set; }
+
+	// Timestamps or Epoch timestamps of time of block creation
+	public long TimeStamp { get; set; }
+
+	// Will use constant difficulty but for now is here
+	public int Difficulty { get; set; }
+
+	// The creator of the block identified by the address.
+	// Validators get reward from accumulated transaction fees.
+	// For now it will be the Block chain app.
+	public string Validator { get; set; }
 }
 ```
 
@@ -105,22 +122,30 @@ Merkle root or Merkle hash is the hash of all the hashes of all transactions wit
 
 ![Merkle Tree](./Block%20Chain%20App/Merkle_Tree.png)
 
+
 #### Block class
 
 ```csharp
 public class Block
 {
-    // The hash of the block. The hash act as the unique identity of the given      block in the blockchain.
-    public string Hash { get; private set; }
+	public Block()
+	{
+		this.BlockHeader = new BlockHeader();
+		this.Transactions = new HashSet<Transaction>();
+	}
 
-    // The sequence amount of blocks.
-    public long Height { get; set; }
+	// The hash of the block. The hash act as the unique identity of the given block in the block chain.
+	[Key]
+	public string Hash { get; set; }
 
-    public BlockHeader BlockHeader { get; set; }
-    
-    // Transactions are collections of transactions that occur.
-    // Settled transactions
-    public IEnumerable<Transaction> Transactions { get; set; }
+	// The sequence amount of blocks.
+	public long Height { get; set; }
+
+	public BlockHeader BlockHeader { get; set; }
+
+	// Transactions are collections of transactions that occur.
+	// Settled transactions
+	public IEnumerable<Transaction> Transactions { get; set; }
 }
 
 ```
@@ -134,28 +159,28 @@ The number of transactions that can be entered into a block may not exceed the s
 Having a block in the blockchain occurs every certain period of time.
 
 
-#### IBlockChain interface
+#### IBlockChainService interface
 
 ```csharp
-public interface IBlockChain 
+public interface IBlockChainService 
 {
-    int Count { get; }
-    
-    Block LastBlock { get; }
-    
-    Block GenesisBlock { get; }
-    
-    void AddTransaction(Transaction transaction);
-    
-    // Adds new block to the chain and clears transaction pool
-    // This is the operation referred to as mining.
-    void AddBlock();
-    
-    decimal GetBalance(string address);    
-    
-    IEnumerable<Block> GetBlocks(int pageNumber, int resultPerPage);
-    
-    IEnumerable<Transaction> GetTransactions(string address);
+	Task<int> Count();
+
+	Task<Block> GetLastBlock();
+
+	Task<Block> GetGenesisBlock();
+
+	Task<Block> GetBlockByHash(string hash);
+
+	Task<Block> GetBlockByHeight(long height);
+
+	Task<IEnumerable<Block>> GetBlocks(int pageNumber, int resultPerPage);
+
+	void AddTransaction(Transaction transaction);
+
+	IAsyncEnumerable<Block[]> GetBlockChain(long height);
+
+	Task<Block> MineBlock();
 }
 ```
 
@@ -271,17 +296,6 @@ public interface IBlockExplorer
 
 ```
 
-#### INotification interface
-
-```csharp
-public interface INotification
-{
-    bool Register();
-    
-    string GetNewBlock();
-}
-```
-
 [ASP.NET Core SignalR .NET Client](https://docs.microsoft.com/en-us/aspnet/core/signalr/dotnet-client?view=aspnetcore-5.0&tabs=visual-studio)
 
 ## Comunication
@@ -291,15 +305,16 @@ public interface INotification
 ```proto
 syntax = "proto3";
 
-option csharp_namespace = "GrpcService";
+option csharp_namespace = "PaymentSystem.Common.GrpcService";
 
-service BChainService {
+service ComunicationService {
 	rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
 	rpc LastBlock(EmptyRequest) returns (BlockResponse);
 	rpc GetBlockByHash(HashRequest) returns (BlockModel);
 	rpc GetBlockByHeight(HeightRequest) returns (BlockModel);
-	rpc GetBlocks(BlockRequest) returns (stream BlockModel);
-	rpc SendTransaction(SendRequest) returns (TransactionResponse);  
+	rpc GetBlocks(BlockRequest) returns (BlocksResponse);
+	rpc GetBlockChain(BlockChainRequest) returns (stream BlockModel);
+	rpc AddTransactionToPool(SendRequest) returns (TransactionResponse);  
 }
 
 message EmptyRequest {
@@ -313,24 +328,28 @@ message HeightRequest {
 	int64 height = 1;
 }
 
-message BlockRequest{
+message BlockRequest {
 	int32 page_number = 1;
 	int32 result_per_page = 2; 
 }
 
-message TransactionInput{
+message TransactionInput {
 	int64 time_stamp = 1;
 	string sender_address = 2;
 	string signature = 3;
 }
 
-message TransactionOutput{
+message TransactionOutput {
 	string recipient_address = 1;
 	double amount = 2;
 	double fee = 3;
 }
 
-message SendRequest{
+message BlockChainRequest {
+	int64 height = 1;
+}
+
+message SendRequest {
 	string transaction_id = 1;
 	string public_key = 2;
 	TransactionInput transaction_input = 3;
@@ -352,7 +371,7 @@ message TransactionModel {
 	double Fee = 6;
 }
 
-message BlockHeader {
+message BlockHeaderModel {
 	int32 Version = 1;
 	string PreviousHash = 2;
 	string MerkleRoot = 3;
@@ -364,12 +383,16 @@ message BlockHeader {
 message BlockModel {
 	string Hash = 1;
 	int64 Height = 2;
-	BlockHeader BlockHeader = 3;
+	BlockHeaderModel BlockHeader = 3;
 	repeated TransactionModel Transactions = 4;
 }
 
 message BlockResponse {
 	BlockModel block = 1;
+}
+
+message BlocksResponse {
+	repeated BlockModel blocks = 1;
 }
 
 message TransactionResponse {
@@ -380,12 +403,14 @@ message TransactionResponse {
 ### SignalR
 
 ```csharp
-public abstract class NotificationHub : Hub
+public interface IBlockNotificationClient
 {
-	public abstract string Register();
-	
-	// Will broadcast new block hash
-	public abstract void SendMessage(string message);
+	Task ReceiveBlock(NotificationBlock block);
+}
+
+public interface IBlockNotificationServer
+{
+	Task SendBlock(NotificationBlock block);
 }
 ```
 [Build Real-time Applications with ASP.NET Core SignalR](https://www.codemag.com/article/1807061/Build-Real-time-Applications-with-ASP.NET-Core-SignalR)
@@ -399,10 +424,5 @@ public abstract class NotificationHub : Hub
 
 
 #### TODOs
-- Add System account and way to restore private and public keys for system account.
-- Initial block seeder with ico transactions.
-- Validate that account has required balance when added to transaction pool and when cleared.
-- Update balance for every transaction. 
-- All transaction fees goes to system account.
 - Notification must be signed.
 - gRPC method for gething part of block chain.

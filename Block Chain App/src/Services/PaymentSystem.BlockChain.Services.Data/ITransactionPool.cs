@@ -16,7 +16,7 @@
         void Add(Transaction transaction);
 
         /// <summary>
-        /// Get all pending transactions. Once transactions are returned the pool is cleared.
+        /// Get all pending transactions. Once transactions are returned the transactions are cleared.
         /// </summary>
         /// <returns>All pending transactions.</returns>
         IEnumerable<Transaction> GetAll();
