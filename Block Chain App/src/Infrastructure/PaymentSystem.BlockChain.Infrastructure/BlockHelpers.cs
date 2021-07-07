@@ -6,7 +6,7 @@
     using Common.Data.Models;
     using Common.Utilities;
 
-    public class BlockHelpers
+    public static class BlockHelpers
     {
         public static string GenerateBlockHash(Block block)
         {

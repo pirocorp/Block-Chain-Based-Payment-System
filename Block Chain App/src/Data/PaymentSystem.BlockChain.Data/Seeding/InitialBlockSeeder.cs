@@ -28,7 +28,7 @@
                 TimeStamp = DateTime.UtcNow.Ticks,
                 Sender = "Inception",
                 Recipient = systemAddress,
-                Amount = Ico.Accounts.Sum(a => a.Balance) + 100_000_000,
+                Amount = WalletProviders.Accounts.Sum(a => a.Balance) + 100_000_000,
                 Fee = 0,
             };
 
@@ -56,8 +56,6 @@
 
             genesisBlock.BlockHeader.MerkleRoot = BlockHelpers.GenerateMerkleRoot(transactions);
             genesisBlock.Hash = BlockHelpers.GenerateBlockHash(genesisBlock);
-
-            transactions.ForEach(t => t.BlockHash = genesisBlock.Hash);
 
             var account = dbContext.Accounts.First(a => a.Address == systemAddress);
             account.Balance = firstTransaction.Amount;

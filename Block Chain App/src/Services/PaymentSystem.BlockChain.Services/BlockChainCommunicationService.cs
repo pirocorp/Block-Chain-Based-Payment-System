@@ -128,8 +128,6 @@
                 return await Task.FromResult(InvalidTransactionResponse());
             }
 
-            //!!!!!! validate transaction parameters like balance etc. !!!!!
-
             this.transactionPool.Add(transaction);
             var response = new TransactionResponse() { Result = TransactionStatus.Pending.ToString() };
 

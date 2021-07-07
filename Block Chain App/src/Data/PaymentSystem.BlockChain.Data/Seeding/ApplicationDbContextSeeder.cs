@@ -27,6 +27,7 @@
             {
                 new SystemSeeder(),
                 new InitialBlockSeeder(),
+                new WalletProvidersAccountsSeeder(),
             };
 
             foreach (var seeder in seeders)

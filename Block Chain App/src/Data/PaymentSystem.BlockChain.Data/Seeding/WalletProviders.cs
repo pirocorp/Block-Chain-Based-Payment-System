@@ -1,8 +1,8 @@
-﻿namespace PaymentSystem.Common
+﻿namespace PaymentSystem.BlockChain.Data.Seeding
 {
     using System.Collections.Generic;
 
-    public static class Ico
+    public static class WalletProviders
     {
         public static IEnumerable<IcoAccount> Accounts => new List<IcoAccount>()
         {
