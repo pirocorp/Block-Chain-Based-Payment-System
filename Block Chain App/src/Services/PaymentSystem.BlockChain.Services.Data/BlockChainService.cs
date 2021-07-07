@@ -5,10 +5,11 @@
     using System.Linq;
     using System.Security.Cryptography;
     using System.Threading.Tasks;
-    using Infrastructure;
+
     using Microsoft.EntityFrameworkCore;
 
     using PaymentSystem.BlockChain.Data;
+    using PaymentSystem.BlockChain.Infrastructure;
     using PaymentSystem.Common;
     using PaymentSystem.Common.Data.Models;
     using PaymentSystem.Common.Utilities;
