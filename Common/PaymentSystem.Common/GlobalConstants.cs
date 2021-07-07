@@ -10,6 +10,8 @@
 
         public const string PushNotificationUrl = "/notification";
 
+        public const int MaxBlockPageSize = 5;
+
         public static class Block
         {
             public const int Version = 1;

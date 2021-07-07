@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Cryptography;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
@@ -12,7 +11,6 @@
     using PaymentSystem.BlockChain.Infrastructure;
     using PaymentSystem.Common;
     using PaymentSystem.Common.Data.Models;
-    using PaymentSystem.Common.Utilities;
 
     public class BlockChainService : IBlockChainService
     {
@@ -51,16 +49,21 @@
                 .FirstAsync(x => x.Height == 0);
 
         public async Task<Block> GetBlockByHash(string hash)
-            => await this.context.Blocks.FirstOrDefaultAsync(x => x.Hash.Equals(hash));
+            => await this.context.Blocks
+                .Include(x => x.Transactions)
+                .FirstOrDefaultAsync(x => x.Hash.Equals(hash));
 
         public async Task<Block> GetBlockByHeight(long height)
-            => await this.context.Blocks.FirstOrDefaultAsync(b => b.Height.Equals(height));
+            => await this.context.Blocks
+                .Include(b => b.Transactions)
+                .FirstOrDefaultAsync(b => b.Height.Equals(height));
 
         public async Task<IEnumerable<Block>> GetBlocks(int pageNumber, int resultPerPage)
             => await this.context.Blocks
-                .OrderByDescending(x => x.Height)
+                .OrderBy(x => x.Height)
                 .Skip((pageNumber - 1) * resultPerPage)
                 .Take(resultPerPage)
+                .Include(x => x.Transactions)
                 .ToListAsync();
 
         public void AddTransaction(Transaction transaction)
@@ -70,7 +73,8 @@
         {
             var query = this.context.Blocks
                 .Where(x => x.Height <= height)
-                .OrderByDescending(x => x.Height);
+                .OrderBy(x => x.Height)
+                .Include(x => x.Transactions);
 
             var batchPage = 1;
             var batchSize = GlobalConstants.BlockChainBatchSize;

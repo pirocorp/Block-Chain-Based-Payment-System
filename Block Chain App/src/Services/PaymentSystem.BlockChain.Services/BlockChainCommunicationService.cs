@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Common;
     using Grpc.Core;
 
     using PaymentSystem.BlockChain.Services.Data;
@@ -69,8 +69,8 @@
 
         public override async Task<BlocksResponse> GetBlocks(BlockRequest request, ServerCallContext context)
         {
-            var pageNumber = request.PageNumber;
-            var resultsPerPage = request.ResultPerPage;
+            var pageNumber = Math.Max(0, request.PageNumber);
+            var resultsPerPage = Math.Min(GlobalConstants.MaxBlockPageSize, request.ResultPerPage);
 
             var blocks = await this.blockChainService
                 .GetBlocks(pageNumber, resultsPerPage);
