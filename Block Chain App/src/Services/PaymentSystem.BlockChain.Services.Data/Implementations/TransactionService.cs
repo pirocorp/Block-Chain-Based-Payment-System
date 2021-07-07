@@ -1,6 +1,5 @@
-﻿namespace PaymentSystem.BlockChain.Services.Data
+﻿namespace PaymentSystem.BlockChain.Services.Data.Implementations
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;

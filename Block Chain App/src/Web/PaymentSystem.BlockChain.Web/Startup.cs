@@ -12,6 +12,8 @@
     using PaymentSystem.BlockChain.Data;
     using PaymentSystem.BlockChain.Services;
     using PaymentSystem.BlockChain.Services.Data;
+    using PaymentSystem.BlockChain.Services.Data.Implementations;
+
     using PaymentSystem.BlockChain.Services.Hubs;
     using PaymentSystem.BlockChain.Web.Extensions;
     using PaymentSystem.BlockChain.Web.Scheduler;

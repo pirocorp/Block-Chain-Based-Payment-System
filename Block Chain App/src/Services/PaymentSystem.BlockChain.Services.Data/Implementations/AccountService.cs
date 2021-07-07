@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.BlockChain.Services.Data
+﻿namespace PaymentSystem.BlockChain.Services.Data.Implementations
 {
     using System.Threading.Tasks;
 
