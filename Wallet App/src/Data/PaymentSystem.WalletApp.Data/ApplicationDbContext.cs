@@ -24,6 +24,12 @@
         {
         }
 
+        public DbSet<Account> Accounts { get; set; }
+
+        public DbSet<AccountKey> AccountsKeys { get; set; }
+
+        public DbSet<Beneficiary> Beneficiaries { get; set; }
+
         public DbSet<Block> Blocks { get; set; }
 
         public DbSet<Transaction> Transactions { get; set; }
@@ -86,7 +92,7 @@
 
         // Applies configurations
         private void ConfigureUserIdentityRelations(ModelBuilder builder)
-             => builder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+             => builder.ApplyConfigurationsFromAssembly(typeof(ApplicationUser).Assembly);
 
         private void ApplyAuditInfoRules()
         {
