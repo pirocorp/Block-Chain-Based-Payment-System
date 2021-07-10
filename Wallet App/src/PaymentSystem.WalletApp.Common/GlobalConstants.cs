@@ -2,7 +2,7 @@
 {
     public static class GlobalConstants
     {
-        public const string SystemName = "PaymentSystem.WalletApp";
+        public const string SystemName = "PIROCOIN";
 
         public const string AdministratorRoleName = "Administrator";
     }

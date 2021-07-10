@@ -13,11 +13,11 @@
     using PaymentSystem.BlockChain.Services;
     using PaymentSystem.BlockChain.Services.Data;
     using PaymentSystem.BlockChain.Services.Data.Implementations;
-
     using PaymentSystem.BlockChain.Services.Hubs;
     using PaymentSystem.BlockChain.Web.Extensions;
     using PaymentSystem.BlockChain.Web.Scheduler;
     using PaymentSystem.Common;
+    using PaymentSystem.Common.Extensions;
 
     public class Startup
     {
@@ -66,7 +66,7 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.ApplyMigrations();
+            app.ApplyMigrations<ApplicationDbContext>();
             app.SeedData();
             app.UseSystemKeys();
 

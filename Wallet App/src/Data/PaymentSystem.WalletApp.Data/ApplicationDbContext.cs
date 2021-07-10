@@ -8,7 +8,7 @@
 
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-
+    using PaymentSystem.Common.Data.Models;
     using PaymentSystem.WalletApp.Data.Common.Models;
     using PaymentSystem.WalletApp.Data.Models;
 
@@ -23,6 +23,10 @@
             : base(options)
         {
         }
+
+        public DbSet<Block> Blocks { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
@@ -67,6 +71,7 @@
             // Disable cascade delete
             var foreignKeys = entityTypes
                 .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
+
             foreach (var foreignKey in foreignKeys)
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;

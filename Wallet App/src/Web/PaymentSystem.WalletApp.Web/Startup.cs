@@ -11,12 +11,14 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
+    using PaymentSystem.Common.Extensions;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Common;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Data.Seeding;
     using PaymentSystem.WalletApp.Services.Mapping;
     using PaymentSystem.WalletApp.Services.Messaging;
+    using PaymentSystem.WalletApp.Web.Extensions;
     using PaymentSystem.WalletApp.Web.ViewModels;
 
     public class Startup
@@ -66,13 +68,8 @@
         {
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
-            // Seed data on application startup
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                dbContext.Database.Migrate();
-                new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
-            }
+            app.ApplyMigrations<ApplicationDbContext>();
+            app.SeedData();
 
             if (env.IsDevelopment())
             {
