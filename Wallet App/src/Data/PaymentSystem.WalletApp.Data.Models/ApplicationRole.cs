@@ -3,9 +3,9 @@ namespace PaymentSystem.WalletApp.Data.Models
 {
     using System;
 
-    using PaymentSystem.WalletApp.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+
+    using PaymentSystem.WalletApp.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

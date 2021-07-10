@@ -4,15 +4,16 @@ namespace PaymentSystem.WalletApp.Data.Models
     using System;
     using System.Collections.Generic;
 
-    using PaymentSystem.WalletApp.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+
+    using PaymentSystem.WalletApp.Data.Common.Models;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid().ToString();
+
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();

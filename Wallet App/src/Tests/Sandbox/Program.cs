@@ -5,21 +5,18 @@
     using System.IO;
     using System.Threading.Tasks;
 
-    using PaymentSystem.WalletApp.Data;
-    using PaymentSystem.WalletApp.Data.Common;
-    using PaymentSystem.WalletApp.Data.Common.Repositories;
-    using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Data.Repositories;
-    using PaymentSystem.WalletApp.Data.Seeding;
-    using PaymentSystem.WalletApp.Services.Data;
-    using PaymentSystem.WalletApp.Services.Messaging;
-
     using CommandLine;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+
+    using PaymentSystem.WalletApp.Data;
+    using PaymentSystem.WalletApp.Data.Common;
+    using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Data.Seeding;
+    using PaymentSystem.WalletApp.Services.Messaging;
 
     public static class Program
     {
@@ -52,10 +49,6 @@
         {
             var sw = Stopwatch.StartNew();
 
-            var settingsService = serviceProvider.GetService<ISettingsService>();
-            Console.WriteLine($"Count of settings: {settingsService.GetCount()}");
-
-            Console.WriteLine(sw.Elapsed);
             return await Task.FromResult(0);
         }
 
@@ -75,13 +68,10 @@
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
     }
 }

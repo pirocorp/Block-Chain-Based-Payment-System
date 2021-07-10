@@ -4,11 +4,11 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using PaymentSystem.WalletApp.Common;
-    using PaymentSystem.WalletApp.Data.Models;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
+
+    using PaymentSystem.WalletApp.Common;
+    using PaymentSystem.WalletApp.Data.Models;
 
     internal class RolesSeeder : ISeeder
     {

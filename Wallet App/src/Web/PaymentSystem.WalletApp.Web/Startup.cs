@@ -2,17 +2,6 @@
 {
     using System.Reflection;
 
-    using PaymentSystem.WalletApp.Data;
-    using PaymentSystem.WalletApp.Data.Common;
-    using PaymentSystem.WalletApp.Data.Common.Repositories;
-    using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Data.Repositories;
-    using PaymentSystem.WalletApp.Data.Seeding;
-    using PaymentSystem.WalletApp.Services.Data;
-    using PaymentSystem.WalletApp.Services.Mapping;
-    using PaymentSystem.WalletApp.Services.Messaging;
-    using PaymentSystem.WalletApp.Web.ViewModels;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -21,6 +10,14 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+
+    using PaymentSystem.WalletApp.Data;
+    using PaymentSystem.WalletApp.Data.Common;
+    using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Data.Seeding;
+    using PaymentSystem.WalletApp.Services.Mapping;
+    using PaymentSystem.WalletApp.Services.Messaging;
+    using PaymentSystem.WalletApp.Web.ViewModels;
 
     public class Startup
     {
@@ -58,13 +55,10 @@
             services.AddSingleton(this.configuration);
 
             // Data repositories
-            services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,23 +1,18 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Areas.Administration.Controllers
 {
-    using PaymentSystem.WalletApp.Services.Data;
-    using PaymentSystem.WalletApp.Web.ViewModels.Administration.Dashboard;
-
     using Microsoft.AspNetCore.Mvc;
+
+    using PaymentSystem.WalletApp.Web.ViewModels.Administration.Dashboard;
 
     public class DashboardController : AdministrationController
     {
-        private readonly ISettingsService settingsService;
-
-        public DashboardController(ISettingsService settingsService)
+        public DashboardController()
         {
-            this.settingsService = settingsService;
         }
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
-            return this.View(viewModel);
+            return this.View();
         }
     }
 }
