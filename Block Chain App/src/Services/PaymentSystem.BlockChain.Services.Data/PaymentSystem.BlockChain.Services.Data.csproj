@@ -13,12 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Common\PaymentSystem.Common\PaymentSystem.Common.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data.Models\PaymentSystem.BlockChain.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data\PaymentSystem.BlockChain.Data.csproj" />
