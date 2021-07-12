@@ -11,7 +11,7 @@
     <meta name="description" content="Blockchain based monetary system. Make money transfers and online payments.">
     <meta name="author" content="github.com/pirocorp">
 
-    <title>Pirocoin - Money Transfer and Online Payments</title>
+    <title>@this.ViewData["Title"]</title>
 
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <link href="/apple-touch-icon.png" rel="apple-touch-icon">
@@ -67,86 +67,96 @@
 </head>
 
 <body>
-    <!-- Header ============================================= -->
-    <header id="header" class="bg-dark-2 header-text-light">
-        <div class="container">
-            <div class="header-row">
-                <div class="header-column justify-content-start">
-                    <!-- Logo ============================= -->
-                    <div class="logo">
-                        <a class="d-flex" asp-area="" asp-controller="Home" asp-action="Index" title="PIROCOIN">
-                            <img class="pirocoin-logo-white" src="/logos/pirocoin-white.png" alt="Pirocoin" />
-                        </a>
-                    </div>
-                    <!-- Logo end -->
-                    <!-- Collapse Button ============================== -->
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-nav"> <span></span> <span></span> <span></span> </button>
-                    <!-- Collapse Button end -->
-                    <!-- Primary Navigation ============================== -->
-                    <nav class="primary-menu navbar navbar-expand-lg">
-                        <div id="header-nav" class="collapse navbar-collapse">
-                            <ul class="navbar-nav mr-auto">
-                                <li><a href="landing-page-send.html">Send</a></li>
-                                <li><a href="landing-page-receive.html">Receive</a></li>
-                                <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="fees.html">Fees</a></li>
-                                <li><a href="help.html">Help</a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <!-- Primary Navigation end -->
-
-                </div>
-                <div class="header-column justify-content-end">
-                    <!-- Login & SignUp Link  ============================== -->
-                    <nav class="login-signup navbar navbar-expand">
-                        <partial name="_LoginPartial" />
-                    </nav>
-                    <!-- Login & SignUp Link end -->
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- Header End -->
-    <!-- Cookie Consent Partial -->
-    <div class="container mt-2">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @this.RenderBody()
-        </main>
+    <!-- PreLoader -->
+    <div id="preloader">
+        <div data-loader="dual-ring"></div>
     </div>
-    <!-- End Cookie Consent Partial -->
+    <!-- PreLoader End --> 
+    
+    <div id="main-wrapper">
+        <!-- Header ============================================= -->
+        <header id="header" class="bg-dark-2 header-text-light">
+            <div class="container">
+                <div class="header-row">
+                    <div class="header-column justify-content-start">
+                        <!-- Logo ============================= -->
+                        <div class="logo">
+                            <a class="d-flex" asp-area="" asp-controller="Home" asp-action="Index" title="PIROCOIN">
+                                <img class="pirocoin-logo-white" src="/logos/pirocoin-white.png" alt="Pirocoin" />
+                            </a>
+                        </div>
+                        <!-- Logo end -->
+                        <!-- Collapse Button ============================== -->
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-nav"> <span></span> <span></span> <span></span> </button>
+                        <!-- Collapse Button end -->
+                        <!-- Primary Navigation ============================== -->
+                        <nav class="primary-menu navbar navbar-expand-lg">
+                            <div id="header-nav" class="collapse navbar-collapse">
+                                <ul class="navbar-nav mr-auto">
+                                    <li><a href="landing-page-send.html">Send</a></li>
+                                    <li><a href="landing-page-receive.html">Receive</a></li>
+                                    <li><a href="about-us.html">About Us</a></li>
+                                    <li><a href="fees.html">Fees</a></li>
+                                    <li><a href="help.html">Help</a></li>
+                                </ul>
+                            </div>
+                        </nav>
+                        <!-- Primary Navigation end -->
 
-    <!-- Footer ============================================= -->
-    <footer id="footer" class="bg-dark-2 pirocoin-footer-dark footer-text-light border-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg d-lg-flex justify-content-lg-end mt-3 mt-lg-0">
-                    <ul class="social-icons social-icons-light justify-content-center">
-                        <li class="social-icons-facebook"><a data-toggle="tooltip" href="http://www.facebook.com/" target="_blank" title="" data-original-title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
-                        <li class="social-icons-twitter"><a data-toggle="tooltip" href="http://www.twitter.com/" target="_blank" title="" data-original-title="Twitter"><i class="fab fa-twitter"></i></a></li>
-                        <li class="social-icons-google"><a data-toggle="tooltip" href="http://www.google.com/" target="_blank" title="" data-original-title="Google"><i class="fab fa-google"></i></a></li>
-                        <li class="social-icons-youtube"><a data-toggle="tooltip" href="http://www.youtube.com/" target="_blank" title="" data-original-title="Youtube"><i class="fab fa-youtube"></i></a></li>
-                    </ul>
+                    </div>
+                    <div class="header-column justify-content-end">
+                        <!-- Login & SignUp Link  ============================== -->
+                        <nav class="login-signup navbar navbar-expand">
+                            <partial name="_LoginPartial" />
+                        </nav>
+                        <!-- Login & SignUp Link end -->
+                    </div>
                 </div>
             </div>
-            <div class="footer-copyright pt-3 pt-lg-2 mt-2">
+        </header>
+        <!-- Header End -->
+
+        <partial name="_CookieConsentPartial" />
+
+        <!-- Main Content -->
+        <div id="content">
+            <main>
+                @this.RenderBody()
+            </main>
+        </div>
+        <!-- Main Content -->
+
+        <!-- Footer ============================================= -->
+        <footer id="footer" class="bg-dark-2 pirocoin-footer-dark footer-text-light border-0">
+            <div class="container">
                 <div class="row">
-                    <div class="col-lg">
-                        <p class="text-center text-lg-left mb-2 mb-lg-0">Copyright © 2019 <a href="#">Payyed</a>. All Rights Reserved.</p>
-                    </div>
-                    <div class="col-lg d-lg-flex align-items-center justify-content-lg-end">
-                        <ul class="nav justify-content-center">
-                            <li class="nav-item"> <a class="nav-link active" href="#">Security</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Terms</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Privacy</a></li>
+                    <div class="col-lg d-lg-flex justify-content-lg-end mt-3 mt-lg-0">
+                        <ul class="social-icons social-icons-light justify-content-center">
+                            <li class="social-icons-facebook"><a data-toggle="tooltip" href="http://www.facebook.com/" target="_blank" title="" data-original-title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                            <li class="social-icons-twitter"><a data-toggle="tooltip" href="http://www.twitter.com/" target="_blank" title="" data-original-title="Twitter"><i class="fab fa-twitter"></i></a></li>
+                            <li class="social-icons-google"><a data-toggle="tooltip" href="http://www.google.com/" target="_blank" title="" data-original-title="Google"><i class="fab fa-google"></i></a></li>
+                            <li class="social-icons-youtube"><a data-toggle="tooltip" href="http://www.youtube.com/" target="_blank" title="" data-original-title="Youtube"><i class="fab fa-youtube"></i></a></li>
                         </ul>
                     </div>
                 </div>
+                <div class="footer-copyright pt-3 pt-lg-2 mt-2">
+                    <div class="row">
+                        <div class="col-lg">
+                            <p class="text-center text-lg-left mb-2 mb-lg-0">Copyright &copy; 2021 @(DateTime.Now.Year > 2021 ? $"- {DateTime.Now.Year}" : string.Empty) <a asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>. All Rights Reserved.</p>
+                        </div>
+                        <div class="col-lg d-lg-flex align-items-center justify-content-lg-end">
+                            <ul class="nav justify-content-center">
+                                <li class="nav-item"> <a class="nav-link active" href="#">Security</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="#">Terms</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="#">Privacy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </footer>
-    <!-- Footer end -->
+        </footer>
+        <!-- Footer end -->
+    </div>
 
     <!-- Scripts -->
     <environment include="Development">
