@@ -37,6 +37,41 @@
         "dist/jquery.validate.unobtrusive.js",
         "dist/jquery.validate.unobtrusive.min.js"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-select@1.13.18",
+      "destination": "wwwroot/lib/bootstrap-select/"
+    },
+    {
+      "library": "daterangepicker@3.1.0",
+      "destination": "wwwroot/lib/daterangepicker/",
+      "files": [
+        "daterangepicker.css",
+        "daterangepicker.js",
+        "daterangepicker.min.css",
+        "daterangepicker.min.js",
+        "moment.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@5.15.3",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "owl.carousel@2.3.4",
+      "destination": "wwwroot/lib/owl.carousel/",
+      "files": [
+        "dist/LICENSE",
+        "dist/owl.carousel.js",
+        "dist/owl.carousel.min.js",
+        "dist/README.md",
+        "dist/assets/ajax-loader.gif",
+        "dist/assets/owl.carousel.css",
+        "dist/assets/owl.carousel.min.css",
+        "dist/assets/owl.video.play.png"
+      ]
     }
   ]
 }
