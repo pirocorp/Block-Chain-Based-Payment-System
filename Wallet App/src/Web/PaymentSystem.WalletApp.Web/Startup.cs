@@ -46,11 +46,14 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
-            services.AddControllersWithViews(
-                options =>
-                    {
-                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                    }).AddRazorRuntimeCompilation();
+            services
+                .AddControllersWithViews(
+                    options =>
+                        {
+                            options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                        })
+                .AddRazorRuntimeCompilation();
+
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
