@@ -1,4 +1,5 @@
 ﻿@using PaymentSystem.WalletApp.Common
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,20 +15,19 @@
 
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <link href="/apple-touch-icon.png" rel="apple-touch-icon">
-    
+
     <!-- Web Fonts ============================================= -->
-    <link 
-        rel="stylesheet" 
-        href="https://fonts.googleapis.com/css?family=Rubik:300,300i,400,400i,500,500i,700,700i,900,900i" 
-        type="text/css"
-    >
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Rubik:300,300i,400,400i,500,500i,700,700i,900,900i"
+          type="text/css">
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/owl.carousel/dist/assets/owl.carousel.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/lib/owl.carousel/dist/assets/owl.carousel.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet"
@@ -54,62 +54,104 @@
               asp-fallback-test-value="1.33333em"
               integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
               crossorigin="anonymous" />
-        <link rel="stylesheet" 
-              href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" 
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
               asp-fallback-href="~/lib/owl.carousel/dist/assets/owl.carousel.min.css"
               asp-fallback-test-class="owl-carousel"
               asp-fallback-test-property="display"
               asp-fallback-test-value="none"
-              integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" 
+              integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
               crossorigin="anonymous" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <!-- Header ============================================= -->
+    <header id="header" class="bg-dark-2 header-text-light">
+        <div class="container">
+            <div class="header-row">
+                <div class="header-column justify-content-start">
+                    <!-- Logo ============================= -->
+                    <div class="logo">
+                        <a class="d-flex" asp-area="" asp-controller="Home" asp-action="Index" title="PIROCOIN">
+                            <img class="pirocoin-logo-white" src="/logos/pirocoin-white.png" alt="Pirocoin" />
+                        </a>
+                    </div>
+                    <!-- Logo end -->
+                    <!-- Collapse Button ============================== -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-nav"> <span></span> <span></span> <span></span> </button>
+                    <!-- Collapse Button end -->
+                    <!-- Primary Navigation ============================== -->
+                    <nav class="primary-menu navbar navbar-expand-lg">
+                        <div id="header-nav" class="collapse navbar-collapse">
+                            <ul class="navbar-nav mr-auto">
+                                <li><a href="landing-page-send.html">Send</a></li>
+                                <li><a href="landing-page-receive.html">Receive</a></li>
+                                <li><a href="about-us.html">About Us</a></li>
+                                <li><a href="fees.html">Fees</a></li>
+                                <li><a href="help.html">Help</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <!-- Primary Navigation end -->
+
+                </div>
+                <div class="header-column justify-content-end">
+                    <!-- Login & SignUp Link  ============================== -->
+                    <nav class="login-signup navbar navbar-expand">
+                        <partial name="_LoginPartial" />
+                    </nav>
+                    <!-- Login & SignUp Link end -->
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
-
-    <div class="container">
+    <!-- Header End -->
+    <!-- Cookie Consent Partial -->
+    <div class="container mt-2">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @this.RenderBody()
         </main>
     </div>
+    <!-- End Cookie Consent Partial -->
 
-    <footer class="border-top footer text-muted">
+    <!-- Footer ============================================= -->
+    <footer id="footer" class="bg-dark-2 pirocoin-footer-dark footer-text-light border-0">
         <div class="container">
-            &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-lg d-lg-flex justify-content-lg-end mt-3 mt-lg-0">
+                    <ul class="social-icons social-icons-light justify-content-center">
+                        <li class="social-icons-facebook"><a data-toggle="tooltip" href="http://www.facebook.com/" target="_blank" title="" data-original-title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="social-icons-twitter"><a data-toggle="tooltip" href="http://www.twitter.com/" target="_blank" title="" data-original-title="Twitter"><i class="fab fa-twitter"></i></a></li>
+                        <li class="social-icons-google"><a data-toggle="tooltip" href="http://www.google.com/" target="_blank" title="" data-original-title="Google"><i class="fab fa-google"></i></a></li>
+                        <li class="social-icons-youtube"><a data-toggle="tooltip" href="http://www.youtube.com/" target="_blank" title="" data-original-title="Youtube"><i class="fab fa-youtube"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-copyright pt-3 pt-lg-2 mt-2">
+                <div class="row">
+                    <div class="col-lg">
+                        <p class="text-center text-lg-left mb-2 mb-lg-0">Copyright © 2019 <a href="#">Payyed</a>. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-lg d-lg-flex align-items-center justify-content-lg-end">
+                        <ul class="nav justify-content-center">
+                            <li class="nav-item"> <a class="nav-link active" href="#">Security</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Terms</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Privacy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
+    <!-- Footer end -->
 
     <!-- Scripts -->
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js" asp-append-version="true"></script>
-        <script src="~/lib/bootstrap-select/js/bootstrap-select.js" asp-append-version="true"></script>
-        <script src="~/lib/owl.carousel/dist/owl.carousel.js" asp-append-version="true"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -124,20 +166,13 @@
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
         </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"
-                integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg=="
-                crossorigin="anonymous"
-                asp-fallback-src="~/lib/bootstrap-select/js/bootstrap-select.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery().selectpicker">
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
-                integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
-                crossorigin="anonymous"
-                asp-fallback-src="~/lib/owl.carousel/dist/owl.carousel.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery().owlCarousel">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
     @await this.RenderSectionAsync("Scripts", required: false)
+    <environment include="Development">
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
 </body>
 </html>

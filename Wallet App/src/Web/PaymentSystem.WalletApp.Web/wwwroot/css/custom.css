@@ -5,6 +5,10 @@
 	Overwriting Default Theme Styles for Better Hanlding Updates
 -----------------------------------------------------------------*/
 
+.pirocoin-logo-white {
+    max-width: 80px;
+}
 
-
-
+#footer.pirocoin-footer-dark {
+    padding: 20px;
+}
