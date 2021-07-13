@@ -230,11 +230,11 @@ Real blockchain implementations such as bitcoin and others, use private keys, pu
 
 [Public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography)
 
-![Asymetric Encryption](./Web%20App/Asymetric_Encryption.png)
+![Asymetric Encryption](./Wallet%20App/Asymetric_Encryption.png)
 
 How do you prove that blockchain transactions are yours? The answer is the signature. In the blockchain world, asymmetric cryptography is used to make signatures of messages (transactions) that are sent from the wallet to the server (blockchain node) and verify that the messages were sent by the original sender.
 
-![Signing Data](./Web%20App/Signing_Data.png)
+![Signing Data](./Wallet%20App/Signing_Data.png)
 
 ### Wallet
 
