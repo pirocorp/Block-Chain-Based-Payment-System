@@ -423,6 +423,11 @@ public interface IBlockNotificationServer
 ![State change communication](./Transaction_Flow.png)
 
 
+#### Guides
+
+[Identity Scafolding Problem](/Guides/Identity_Scafolding_Problem.md)
+
+
 #### TODOs
 - Notification must be signed.
 - gRPC method for gething part of block chain.
