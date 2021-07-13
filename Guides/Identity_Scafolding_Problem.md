@@ -1,4 +1,4 @@
-# Identity Scafolding Problem Throbuleshooting
+# Identity Scafolding Problem Troubleshooting
 
 1.Close Visual Studio.
 
