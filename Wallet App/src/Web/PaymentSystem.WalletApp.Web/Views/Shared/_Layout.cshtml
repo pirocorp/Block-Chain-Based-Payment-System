@@ -99,11 +99,12 @@
                                 <ul class="navbar-nav mr-auto">
                                     @if (this.SignInManager.IsSignedIn(this.User))
                                     {
-                                        <li><a href="landing-page-send.html">Send</a></li>
-                                        <li><a href="landing-page-receive.html">Receive</a></li>
+                                        <li class="active"><a href="dashboard.html">Dashboard</a></li>
+                                        <li><a href="transactions.html">Transactions</a></li>
+                                        <li><a href="send-money.html">Send/Request</a></li>
                                     }
                                     
-                                    <li><a href="about-us.html">About Us</a></li>
+                                    <li class="active"><a href="about-us.html">About Us</a></li>
                                     <li><a href="fees.html">Fees</a></li>
                                     <li><a href="help.html">Help</a></li>
                                 </ul>

@@ -9,9 +9,13 @@
     {
         if (this.User.IsInRole(WalletConstants.AdministratorRoleName))
         {
-            <li>
-                <a asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
+            <li is-active-route="active" asp-area="Administration" asp-controller="Dashboard" asp-action="Index">
+                <a asp-area="Administration" asp-controller="Dashboard" asp-action="Index">Admin</a>
             </li>
+        }
+        else
+        {
+            <li><a href="dashboard.html">Dashboard</a></li>
         }
 
         <li class="align-items-center h-auto ml-sm-3">
@@ -22,7 +26,7 @@
     }
     else
     {
-        <li>
+        <li is-active-route="active" asp-area="Identity" asp-page="/Account/Login">
             <a asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
         <li class="align-items-center h-auto ml-sm-3">
