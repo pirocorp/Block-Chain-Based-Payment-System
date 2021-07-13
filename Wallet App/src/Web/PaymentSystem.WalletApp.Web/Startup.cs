@@ -15,11 +15,10 @@
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Common;
     using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Data.Seeding;
-    using PaymentSystem.WalletApp.Services.Mapping;
     using PaymentSystem.WalletApp.Services.Messaging;
     using PaymentSystem.WalletApp.Web.Extensions;
     using PaymentSystem.WalletApp.Web.ViewModels;
+    using Services.Data;
 
     public class Startup
     {
@@ -58,19 +57,19 @@
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddSingleton(this.configuration);
+            services.AddAutoMapper(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
             // Data repositories
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<ITestimonialService, TestimonialService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-
             app.ApplyMigrations<ApplicationDbContext>();
             app.SeedData();
 

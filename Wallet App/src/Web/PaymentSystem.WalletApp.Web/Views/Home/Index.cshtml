@@ -1,9 +1,207 @@
-﻿@using PaymentSystem.WalletApp.Common
-@{
-    this.ViewData["Title"] = "Pirocoin - Money Transfer and Online Payments";
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Home.IndexModel
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="~/lib/bootstrap-select/js/bootstrap-select.js" asp-append-version="true"></script>
+        <script src="~/lib/owl.carousel/dist/owl.carousel.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"
+                integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg=="
+                crossorigin="anonymous"
+                asp-fallback-src="~/lib/bootstrap-select/js/bootstrap-select.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery().selectpicker">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+                integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+                crossorigin="anonymous"
+                asp-fallback-src="~/lib/owl.carousel/dist/owl.carousel.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery().owlCarousel">
+        </script>
+    </environment>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Slide Show ============================================= -->
+<div class="owl-carousel owl-theme single-slideshow"
+     data-autoplay="true"
+     data-loop="true"
+     data-autoheight="true"
+     data-items="1"
+     data-dots="true"
+     data-video="true">
+    <div class="item">
+        <section class="hero-wrap section shadow-md">
+            <div class="hero-mask opacity-7 bg-dark"></div>
+            <div class="hero-bg" style="background-image:url('images/bg/image-1.jpg');"></div>
+
+            <div class="hero-content py-2 py-lg-5">
+                <div class="container text-center">
+                    <h2 class="text-16 text-white">Send & Receive Money</h2>
+                    <p class="text-5 text-white mb-4">
+                        Quickly, easily and securely send, receive and request money online with pirocoin.
+                        <br class="d-none d-lg-block">
+                        World wide supported.
+                    </p>
+                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary m-2">Open a Free Account</a>
+                    <a class="btn btn-outline-light video-btn m-2" href="#" data-src="https://www.youtube.com/embed/I6pQBMtuCZ0" data-toggle="modal" data-target="#videoModal"><span class="text-2 mr-3"><i class="fas fa-play"></i></span>See How it Works</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="item">
+        <section class="hero-wrap section shadow-md">
+            <div class="hero-bg" style="background-image:url('images/bg/image-3.jpg');"></div>
+            <div class="hero-content py-2 py-lg-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-lg-8 col-xl-7 text-center text-lg-left">
+                            <h2 class="text-13 text-white">Trusted by more than 50,000 businesses worldwide.</h2>
+                            <p class="text-5 text-white mb-4">World wide supported.</p>
+                            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary mr-3">Get started for free</a>
+                            <a class="btn btn-link text-light video-btn" href="#" data-src="https://www.youtube.com/embed/I6pQBMtuCZ0" data-toggle="modal" data-target="#videoModal"><span class="mr-2"><i class="fas fa-play-circle"></i></span>Watch Demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
+<!-- Slideshow end -->
+<!-- Why choose us ============================================= -->
+<section class="section bg-white">
+    <div class="container">
+        <h2 class="text-9 text-center text-uppercase font-weight-400">Why choose us?</h2>
+        <p class="text-4 text-center font-weight-300 mb-5">Here’s Top 4 reasons why using a Payyed account for manage your money.</p>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="row">
+                    <div class="col-sm-6 mb-4">
+                        <div class="featured-box style-3">
+                            <div class="featured-box-icon border border-primary text-primary rounded-circle"> <i class="fas fa-hand-pointer"></i> </div>
+                            <h3 class="font-weight-400">Easy to use</h3>
+                            <p>Easy to use <em>centralized</em> digital currency.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-4">
+                        <div class="featured-box style-3">
+                            <div class="featured-box-icon border border-primary text-primary rounded-circle"> <i class="fas fa-share"></i> </div>
+                            <h3 class="font-weight-400">Faster Payments</h3>
+                            <p>Fastest payments processing.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-4 mb-sm-0">
+                        <div class="featured-box style-3">
+                            <div class="featured-box-icon border border-primary text-primary rounded-circle"> <i class="fas fa-dollar-sign"></i> </div>
+                            <h3 class="font-weight-400">Lower Fees</h3>
+                            <p>Fees as low as 0.1 USD per transaction.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="featured-box style-3">
+                            <div class="featured-box-icon border border-primary text-primary rounded-circle"> <i class="fas fa-lock"></i> </div>
+                            <h3 class="font-weight-400">100% secure</h3>
+                            <p>Using blockchain for clearing transactions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Why choose us End -->
+<!-- How it works ============================================= -->
+<section class="section">
+    <div class="container">
+        <h2 class="text-9 text-center text-uppercase font-weight-400">As simple as 1-2-3</h2>
+        <p class="text-4 text-center font-weight-300 mb-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+        <div class="row">
+            <div class="col-sm-4 mb-4">
+                <div class="featured-box style-4">
+                    <div class="featured-box-icon text-dark shadow-none border-bottom"><span class="w-100 text-20 font-weight-500">1</span></div>
+                    <h3 class="mb-3">Sign Up Your Account</h3>
+                    <p class="text-3 font-weight-300">Sign up for your free personal/business Account in fea a minute.</p>
+                </div>
+            </div>
+            <div class="col-sm-4 mb-4">
+                <div class="featured-box style-4">
+                    <div class="featured-box-icon text-dark shadow-none border-bottom"><span class="w-100 text-20 font-weight-500">2</span></div>
+                    <h3 class="mb-3">Send & Receive Money</h3>
+                    <p class="text-3 font-weight-300">Receive & Send Payments from worldwide in 40 currencies.</p>
+                </div>
+            </div>
+            <div class="col-sm-4 mb-4 mb-sm-0">
+                <div class="featured-box style-4">
+                    <div class="featured-box-icon text-dark shadow-none border-bottom"><span class="w-100 text-20 font-weight-500">3</span></div>
+                    <h3 class="mb-3">Withdraw Funds</h3>
+                    <p class="text-3 font-weight-300">Your funds will be transferred to your local bank account.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-2"><a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary">Open a Free Account</a></div>
+    </div>
+</section>
+<!-- How it works End -->
+<!-- What can you do ============================================= -->
+<section class="section bg-light">
+    <div class="container">
+        <h2 class="text-9 text-center">What can you do with Pirocoin?</h2>
+        <p class="text-4 text-center mb-5">Send and receive money from the world.</p>
+        <div class="row">
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <a href="#">
+                    <div class="featured-box style-5 rounded">
+                        <div class="featured-box-icon text-primary"> <i class="fas fa-share-square"></i> </div>
+                        <h3>Send Money</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <a href="#">
+                    <div class="featured-box style-5 rounded">
+                        <div class="featured-box-icon text-primary"> <i class="fas fa-check-square"></i> </div>
+                        <h3>Receive Money</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <a href="#">
+                    <div class="featured-box style-5 rounded">
+                        <div class="featured-box-icon text-primary"> <i class="fas fa-user-friends"></i> </div>
+                        <h3>Pay a Friend</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <a href="#">
+                    <div class="featured-box style-5 rounded">
+                        <div class="featured-box-icon text-primary"> <i class="fas fa-shopping-bag"></i> </div>
+                        <h3>Online Shopping</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- What can you do end -->
+
+<!-- Testimonial ============================================= -->
+<section class="section">
+    <div class="container">
+        <h2 class="text-9 text-center">What people are saying about Pirocoin</h2>
+        <p class="text-4 text-center mb-4">A payments experience people love to talk about</p>
+        <div class="owl-carousel owl-theme" data-autoplay="true" data-loop="true" data-margin="30" data-slideby="2" data-stagepadding="5" data-items-xs="1" data-items-sm="1" data-items-md="2" data-items-lg="2">
+            @foreach (var testimonial in this.Model.Testimonials)
+            {
+                <div class="item">
+                    <div class="testimonial rounded text-center p-4">
+                        <p class="text-4">“@testimonial.Comment”</p>
+                        <strong class="d-block font-weight-500">@testimonial.Name</strong> <span class="text-muted">@testimonial.UseCase</span>
+                    </div>
+                </div>
+            }
+        </div>
+        @*<div class="text-center mt-4"><a href="#" class="btn-link text-4">See more people review<i class="fas fa-chevron-right text-2 ml-2"></i></a></div>*@
+    </div>
+</section>
+<!-- Testimonial end -->

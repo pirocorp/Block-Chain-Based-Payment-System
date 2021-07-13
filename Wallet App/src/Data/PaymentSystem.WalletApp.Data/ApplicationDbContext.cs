@@ -34,6 +34,8 @@
 
         public DbSet<Transaction> Transactions { get; set; }
 
+        public DbSet<Testimonial> Testimonials { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

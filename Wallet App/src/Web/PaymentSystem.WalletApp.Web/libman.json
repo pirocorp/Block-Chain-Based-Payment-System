@@ -70,6 +70,10 @@
         "dist/assets/ajax-loader.gif",
         "dist/assets/owl.carousel.css",
         "dist/assets/owl.carousel.min.css",
+        "dist/assets/owl.theme.default.css",
+        "dist/assets/owl.theme.default.min.css",
+        "dist/assets/owl.theme.green.css",
+        "dist/assets/owl.theme.green.min.css",
         "dist/assets/owl.video.play.png"
       ]
     }

@@ -7,7 +7,7 @@
 <ul class="navbar-nav">
     @if (this.SignInManager.IsSignedIn(this.User))
     {
-        if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+        if (this.User.IsInRole(WalletConstants.AdministratorRoleName))
         {
             <li>
                 <a asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>

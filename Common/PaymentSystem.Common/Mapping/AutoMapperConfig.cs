@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.BlockChain.Services.Mapping
+﻿namespace PaymentSystem.Common.Mapping
 {
     using System;
     using System.Collections.Generic;

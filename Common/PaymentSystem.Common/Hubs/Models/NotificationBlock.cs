@@ -4,8 +4,8 @@
 
     using AutoMapper;
 
-    using PaymentSystem.BlockChain.Services.Mapping;
     using PaymentSystem.Common.Data.Models;
+    using PaymentSystem.Common.Mapping;
 
     public class NotificationBlock : IMapFrom<Block>
     {

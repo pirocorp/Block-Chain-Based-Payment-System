@@ -1,16 +1,32 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Controllers
 {
     using System.Diagnostics;
-
+    using System.Threading.Tasks;
+    using Common;
     using PaymentSystem.WalletApp.Web.ViewModels;
 
     using Microsoft.AspNetCore.Mvc;
+    using Services.Data;
+    using ViewModels.Home;
 
     public class HomeController : BaseController
     {
-        public IActionResult Index()
+        private readonly ITestimonialService testimonialService;
+
+        public HomeController(ITestimonialService testimonialService)
         {
-            return this.View();
+            this.testimonialService = testimonialService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var model = new IndexModel
+            {
+                Testimonials = await this.testimonialService
+                    .GetTestimonials<IndexTestimonialModel>(WalletConstants.TestimonialsCountOnHomePage)
+            };
+
+            return this.View(model);
         }
 
         public IActionResult Privacy()

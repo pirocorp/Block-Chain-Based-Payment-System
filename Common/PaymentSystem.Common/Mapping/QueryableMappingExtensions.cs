@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Services.Mapping
+﻿namespace PaymentSystem.Common.Mapping
 {
     using System;
     using System.Linq;

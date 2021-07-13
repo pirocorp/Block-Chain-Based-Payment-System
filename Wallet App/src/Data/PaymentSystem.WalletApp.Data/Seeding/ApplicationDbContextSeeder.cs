@@ -26,6 +26,7 @@
             var seeders = new List<ISeeder>
                           {
                               new RolesSeeder(),
+                              new TestimonialsSeeder(),
                           };
 
             foreach (var seeder in seeders)

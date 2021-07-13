@@ -1,5 +1,7 @@
 ﻿namespace PaymentSystem.BlockChain.Web
 {
+    using System.Reflection;
+    using Common.Hubs.Models;
     using Coravel;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -51,7 +53,7 @@
             services.AddScheduler();
             services.AddTransient<BlockJob>();
 
-            services.AddAutoMapper();
+            services.AddAutoMapper(typeof(NotificationBlock).GetTypeInfo().Assembly);
             services.AddSystemKeys();
 
             // Domain Services

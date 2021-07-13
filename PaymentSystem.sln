@@ -21,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{0B77F40F-6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Services.Data", "Block Chain App\src\Services\PaymentSystem.BlockChain.Services.Data\PaymentSystem.BlockChain.Services.Data.csproj", "{D4463042-096A-4F57-9C00-A75C78B2F4BE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Services.Mapping", "Block Chain App\src\Services\PaymentSystem.BlockChain.Services.Mapping\PaymentSystem.BlockChain.Services.Mapping.csproj", "{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Data", "Block Chain App\src\Data\PaymentSystem.BlockChain.Data\PaymentSystem.BlockChain.Data.csproj", "{FBD86C3E-10D2-4A31-9030-8F00C8794413}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Data.Models", "Block Chain App\src\Data\PaymentSystem.BlockChain.Data.Models\PaymentSystem.BlockChain.Data.Models.csproj", "{94FF62AA-ED6C-4191-83D4-DB0142620B10}"
@@ -39,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.Common.Tests"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A42D0558-BDD5-431D-A6B8-F6A34D2AF101}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentSystem.BlockChain.Infrastructure", "Block Chain App\src\Infrastructure\PaymentSystem.BlockChain.Infrastructure\PaymentSystem.BlockChain.Infrastructure.csproj", "{F967E342-D5FE-498E-94AA-6307D80141AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.BlockChain.Infrastructure", "Block Chain App\src\Infrastructure\PaymentSystem.BlockChain.Infrastructure\PaymentSystem.BlockChain.Infrastructure.csproj", "{F967E342-D5FE-498E-94AA-6307D80141AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{CD08B486-9660-4DF2-AE6D-DECF8CD55670}"
 EndProject
@@ -60,8 +58,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.WalletApp.Services", "Wallet App\src\Services\PaymentSystem.WalletApp.Services\PaymentSystem.WalletApp.Services.csproj", "{35C50853-FE25-4821-9BBA-EE2C379F3CDA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.WalletApp.Services.Data", "Wallet App\src\Services\PaymentSystem.WalletApp.Services.Data\PaymentSystem.WalletApp.Services.Data.csproj", "{11E086B6-63ED-4DF5-A13F-76FA06B1D381}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.WalletApp.Services.Mapping", "Wallet App\src\Services\PaymentSystem.WalletApp.Services.Mapping\PaymentSystem.WalletApp.Services.Mapping.csproj", "{EBAADE36-487B-4BB3-A661-7EF44C96CD5B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.WalletApp.Services.Messaging", "Wallet App\src\Services\PaymentSystem.WalletApp.Services.Messaging\PaymentSystem.WalletApp.Services.Messaging.csproj", "{C42ED0E2-C317-4C05-9795-53743F5D9D92}"
 EndProject
@@ -91,10 +87,6 @@ Global
 		{D4463042-096A-4F57-9C00-A75C78B2F4BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4463042-096A-4F57-9C00-A75C78B2F4BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4463042-096A-4F57-9C00-A75C78B2F4BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FBD86C3E-10D2-4A31-9030-8F00C8794413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FBD86C3E-10D2-4A31-9030-8F00C8794413}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBD86C3E-10D2-4A31-9030-8F00C8794413}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -147,10 +139,6 @@ Global
 		{11E086B6-63ED-4DF5-A13F-76FA06B1D381}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11E086B6-63ED-4DF5-A13F-76FA06B1D381}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11E086B6-63ED-4DF5-A13F-76FA06B1D381}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EBAADE36-487B-4BB3-A661-7EF44C96CD5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBAADE36-487B-4BB3-A661-7EF44C96CD5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBAADE36-487B-4BB3-A661-7EF44C96CD5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBAADE36-487B-4BB3-A661-7EF44C96CD5B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C42ED0E2-C317-4C05-9795-53743F5D9D92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C42ED0E2-C317-4C05-9795-53743F5D9D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C42ED0E2-C317-4C05-9795-53743F5D9D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -190,7 +178,6 @@ Global
 		{01B8CF7D-D7C4-4B80-977B-9FDA4C9F3C0E} = {283CEA6E-BFC4-4249-A375-7E2A55127F4A}
 		{0B77F40F-6022-4C6F-919D-43A6E45EAA8F} = {283CEA6E-BFC4-4249-A375-7E2A55127F4A}
 		{D4463042-096A-4F57-9C00-A75C78B2F4BE} = {01B8CF7D-D7C4-4B80-977B-9FDA4C9F3C0E}
-		{C25B8EC9-8EB0-4F6A-A86C-FB32E0D68B3E} = {01B8CF7D-D7C4-4B80-977B-9FDA4C9F3C0E}
 		{FBD86C3E-10D2-4A31-9030-8F00C8794413} = {0B77F40F-6022-4C6F-919D-43A6E45EAA8F}
 		{94FF62AA-ED6C-4191-83D4-DB0142620B10} = {0B77F40F-6022-4C6F-919D-43A6E45EAA8F}
 		{3EEE8B0A-7020-47E0-9310-2470FDF9E079} = {0144B288-421B-4AF7-93CC-BD7490085E0C}
@@ -210,7 +197,6 @@ Global
 		{D32C66B3-A089-48C9-80E8-4394F276BD73} = {1C6E038E-772C-4C26-AC86-9B562F6F99EA}
 		{35C50853-FE25-4821-9BBA-EE2C379F3CDA} = {7A2A15FF-E0E6-4B79-A14F-78549BD3AD6B}
 		{11E086B6-63ED-4DF5-A13F-76FA06B1D381} = {7A2A15FF-E0E6-4B79-A14F-78549BD3AD6B}
-		{EBAADE36-487B-4BB3-A661-7EF44C96CD5B} = {7A2A15FF-E0E6-4B79-A14F-78549BD3AD6B}
 		{C42ED0E2-C317-4C05-9795-53743F5D9D92} = {7A2A15FF-E0E6-4B79-A14F-78549BD3AD6B}
 		{A9C7DF7C-E449-4D59-A420-8A4CC7E08AB0} = {5991CB02-5740-4061-B095-B67AE37C1D65}
 		{C2FAAD2F-3999-4460-B7D7-1F2C5E1E6163} = {5991CB02-5740-4061-B095-B67AE37C1D65}

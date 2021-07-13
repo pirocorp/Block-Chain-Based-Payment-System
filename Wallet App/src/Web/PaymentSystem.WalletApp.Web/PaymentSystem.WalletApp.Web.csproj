@@ -27,7 +27,6 @@
     <ProjectReference Include="..\..\Data\PaymentSystem.WalletApp.Data.Models\PaymentSystem.WalletApp.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.WalletApp.Data\PaymentSystem.WalletApp.Data.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.WalletApp.Services.Data\PaymentSystem.WalletApp.Services.Data.csproj" />
-    <ProjectReference Include="..\..\Services\PaymentSystem.WalletApp.Services.Mapping\PaymentSystem.WalletApp.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.WalletApp.Services.Messaging\PaymentSystem.WalletApp.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.WalletApp.Services\PaymentSystem.WalletApp.Services.csproj" />
     <ProjectReference Include="..\PaymentSystem.WalletApp.Web.Infrastructure\PaymentSystem.WalletApp.Web.Infrastructure.csproj" />

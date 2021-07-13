@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Google.Protobuf" Version="3.17.3" />
     <PackageReference Include="Grpc.Core" Version="2.38.1" />
     <PackageReference Include="Grpc.Tools" Version="2.38.1">
@@ -32,10 +33,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Block Chain App\src\Services\PaymentSystem.BlockChain.Services.Mapping\PaymentSystem.BlockChain.Services.Mapping.csproj" />
   </ItemGroup>
 
   <ItemGroup>
