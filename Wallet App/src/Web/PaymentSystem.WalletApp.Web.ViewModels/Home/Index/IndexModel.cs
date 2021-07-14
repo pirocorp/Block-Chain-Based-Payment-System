@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Home
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Home.Index
 {
     using System.Collections.Generic;
 

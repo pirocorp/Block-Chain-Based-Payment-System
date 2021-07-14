@@ -15,6 +15,8 @@ namespace PaymentSystem.WalletApp.Data.Models
         {
             this.Id = Guid.NewGuid().ToString();
 
+            this.Address = new Address();
+
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
@@ -23,6 +25,16 @@ namespace PaymentSystem.WalletApp.Data.Models
             this.AccountKeys = new HashSet<AccountKey>();
             this.Beneficiaries = new HashSet<Beneficiary>();
         }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string ProfilePicture { get; set; }
+
+        public DateTime DateOfBirth { get; set; }
+
+        public Address Address { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }

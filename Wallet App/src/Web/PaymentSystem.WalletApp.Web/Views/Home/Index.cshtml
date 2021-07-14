@@ -1,4 +1,30 @@
-﻿@model PaymentSystem.WalletApp.Web.ViewModels.Home.IndexModel
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Home.Index.IndexModel
+
+@section Styles
+{
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/owl.carousel/dist/assets/owl.carousel.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/owl.carousel/dist/assets/owl.theme.default.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+              asp-fallback-href="~/lib/owl.carousel/dist/assets/owl.carousel.min.css"
+              asp-fallback-test-class="owl-carousel"
+              asp-fallback-test-property="display"
+              asp-fallback-test-value="none"
+              integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+              crossorigin="anonymous" />
+        <link rel="stylesheet" 
+              href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" 
+              asp-fallback-href="~/lib/owl.carousel/dist/assets/owl.theme.default.min.css"
+              asp-fallback-test-class="owl-theme"
+              asp-fallback-test-property="text-align"
+              asp-fallback-test-value="center"
+              integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" 
+              crossorigin="anonymous" />
+    </environment>
+}
 
 @section Scripts
 {
@@ -184,7 +210,6 @@
     </div>
 </section>
 <!-- What can you do end -->
-
 <!-- Testimonial ============================================= -->
 <section class="section">
     <div class="container">
@@ -205,4 +230,3 @@
     </div>
 </section>
 <!-- Testimonial end -->
-

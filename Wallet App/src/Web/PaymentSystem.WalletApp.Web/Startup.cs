@@ -1,7 +1,7 @@
 ﻿namespace PaymentSystem.WalletApp.Web
 {
     using System.Reflection;
-
+    using CloudinaryDotNet;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -18,7 +18,9 @@
     using PaymentSystem.WalletApp.Services.Messaging;
     using PaymentSystem.WalletApp.Web.Extensions;
     using PaymentSystem.WalletApp.Web.ViewModels;
+    using Services;
     using Services.Data;
+    using CloudinaryAccount = CloudinaryDotNet.Account;
 
     public class Startup
     {
@@ -35,8 +37,14 @@
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services
+                .AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //services
+            //    .AddIdentity<ApplicationUser, ApplicationRole>(IdentityOptionsProvider.GetIdentityOptions)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<CookiePolicyOptions>(
                 options =>
@@ -58,6 +66,10 @@
 
             services.AddSingleton(this.configuration);
             services.AddAutoMapper(typeof(ErrorViewModel).GetTypeInfo().Assembly);
+            services.AddCloudinary(this.configuration);
+
+            // External Services
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
 
             // Data repositories
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();

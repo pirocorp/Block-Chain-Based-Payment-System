@@ -3,11 +3,13 @@
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Common;
+    using Infrastructure.Helpers;
     using PaymentSystem.WalletApp.Web.ViewModels;
 
     using Microsoft.AspNetCore.Mvc;
     using Services.Data;
     using ViewModels.Home;
+    using ViewModels.Home.Index;
 
     public class HomeController : BaseController
     {
@@ -20,6 +22,13 @@
 
         public async Task<IActionResult> Index()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var controller = ControllerHelpers.GetControllerName<UsersController>();
+
+                return this.Redirect($"/{controller}/{nameof(UsersController.Dashboard)}");
+            }
+
             var model = new IndexModel
             {
                 Testimonials = await this.testimonialService

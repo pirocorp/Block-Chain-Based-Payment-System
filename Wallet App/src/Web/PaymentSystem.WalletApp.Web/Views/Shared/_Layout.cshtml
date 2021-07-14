@@ -26,10 +26,7 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/owl.carousel/dist/assets/owl.carousel.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/owl.carousel/dist/assets/owl.theme.default.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     </environment>
@@ -42,14 +39,7 @@
               asp-fallback-test-value="absolute"
               integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
               crossorigin="anonymous" />
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css"
-              asp-fallback-href="~/lib/bootstrap-select/css/bootstrap-select.min.css"
-              asp-fallback-test-class="bs-donebutton"
-              asp-fallback-test-property="float"
-              asp-fallback-test-value="left"
-              integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg=="
-              crossorigin="anonymous" />
+
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
               asp-fallback-href="~/lib/font-awesome/css/all.min.css"
@@ -58,16 +48,9 @@
               asp-fallback-test-value="1.33333em"
               integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
               crossorigin="anonymous" />
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-              asp-fallback-href="~/lib/owl.carousel/dist/assets/owl.carousel.min.css"
-              asp-fallback-test-class="owl-carousel"
-              asp-fallback-test-property="display"
-              asp-fallback-test-value="none"
-              integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
-              crossorigin="anonymous" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    @await this.RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
@@ -99,12 +82,14 @@
                                 <ul class="navbar-nav mr-auto">
                                     @if (this.SignInManager.IsSignedIn(this.User))
                                     {
-                                        <li class="active"><a href="dashboard.html">Dashboard</a></li>
+                                        <li is-active-route="active" asp-area="" asp-controller="Users" asp-action="Dashboard">
+                                            <a asp-area="" asp-controller="Users" asp-action="Dashboard">Dashboard</a>
+                                        </li>
                                         <li><a href="transactions.html">Transactions</a></li>
                                         <li><a href="send-money.html">Send/Request</a></li>
                                     }
-                                    
-                                    <li class="active"><a href="about-us.html">About Us</a></li>
+
+                                    <li><a href="about-us.html">About Us</a></li>
                                     <li><a href="fees.html">Fees</a></li>
                                     <li><a href="help.html">Help</a></li>
                                 </ul>
@@ -124,6 +109,8 @@
             </div>
         </header>
         <!-- Header End -->
+
+        @await this.RenderSectionAsync("Secondary Menu", required: false)
 
         <partial name="_CookieConsentPartial" />
 
