@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using Data.Models;
+    using Infrastructure.Helpers;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using ViewModels.Users.Profile;
@@ -59,10 +60,9 @@
 
             await this.userManager.UpdateAsync(user);
 
-            user = await this.userManager.GetUserAsync(this.User);
-            var profileUser = this.mapper.Map<ProfileUserViewModel>(user);
+            var controller = ControllerHelpers.GetControllerName<UsersController>();
 
-            return this.View(profileUser);
+            return this.Redirect($"/{controller}/{nameof(Profile)}");
         }
     }
 }
