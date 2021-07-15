@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.Threading.Tasks;
     using AutoMapper;
+    using Common;
     using Data.Models;
     using Infrastructure.Helpers;
     using Microsoft.AspNetCore.Identity;
@@ -41,11 +42,18 @@
         [HttpPost]
         public async Task<IActionResult> Profile(PersonalDetailsUpdateModel model)
         {
+            var controller = ControllerHelpers.GetControllerName<UsersController>();
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.Redirect($"/{controller}/{nameof(Profile)}");
+            }
+
             var user = await this.userManager.GetUserAsync(this.User);
 
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
-            user.DateOfBirth = DateTime.ParseExact(model.BirthDate, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            user.DateOfBirth = DateTime.ParseExact(model.BirthDate, WalletConstants.BirthDateFormat, CultureInfo.InvariantCulture);
 
             var address = new Address()
             {
@@ -59,8 +67,6 @@
             user.Address = address;
 
             await this.userManager.UpdateAsync(user);
-
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
 
             return this.Redirect($"/{controller}/{nameof(Profile)}");
         }
