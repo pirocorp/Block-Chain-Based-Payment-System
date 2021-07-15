@@ -62,21 +62,21 @@
                         })
                 .AddRazorRuntimeCompilation();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(
-                    name: MyCorsPolicy,
-                    builder =>
-                    {
-                        builder
-                            .WithOrigins(
-                                "https://192.168.1.5",
-                                "https://loclahost")
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials();
-                    });
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(
+            //        name: MyCorsPolicy,
+            //        builder =>
+            //        {
+            //            builder
+            //                .WithOrigins(
+            //                    "https://192.168.1.5",
+            //                    "https://loclahost")
+            //                .AllowAnyHeader()
+            //                .AllowAnyMethod()
+            //                .AllowCredentials();
+            //        });
+            //});
 
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -118,7 +118,7 @@
             app.UseCookiePolicy();
 
             app.UseRouting();
-            app.UseCors();
+            //app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -130,7 +130,7 @@
                         
                         endpoints
                             .MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}")
-                            .RequireCors(MyCorsPolicy);
+                            /*.RequireCors(MyCorsPolicy)*/;
                         
                         endpoints.MapRazorPages();
                     });

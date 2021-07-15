@@ -22,15 +22,18 @@
     public class UsersController : BaseController
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IMapper mapper;
         private readonly ICloudinaryService cloudinaryService;
 
         public UsersController(
             UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IMapper mapper,
             ICloudinaryService cloudinaryService)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
             this.mapper = mapper;
             this.cloudinaryService = cloudinaryService;
         }
@@ -85,7 +88,40 @@
         }
 
         [HttpPost]
-        [EnableCors]
+        public async Task<IActionResult> EmailUpdate(EmailUpdateModel model)
+        {
+            var controller = ControllerHelpers.GetControllerName<UsersController>();
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.Redirect($"/{controller}/{nameof(Profile)}");
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            user.Email = model.Email;
+            await this.userManager.UpdateAsync(user);
+
+            return this.Redirect($"/{controller}/{nameof(Profile)}");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PhoneUpdate(PhoneUpdateModel model)
+        {
+            var controller = ControllerHelpers.GetControllerName<UsersController>();
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.Redirect($"/{controller}/{nameof(Profile)}");
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            user.PhoneNumber = model.Phone;
+            await this.userManager.UpdateAsync(user);
+
+            return this.Redirect($"/{controller}/{nameof(Profile)}");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> UploadPicture([FromForm] IFormFile profilePicture)
         {
             var controller = ControllerHelpers.GetControllerName<UsersController>();
@@ -100,6 +136,25 @@
             var user = await this.userManager.GetUserAsync(this.User);
             user.ProfilePicture = profilePictureAddress;
             await this.userManager.UpdateAsync(user);
+
+            return this.Redirect($"/{controller}/{nameof(Profile)}");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            var controller = ControllerHelpers.GetControllerName<UsersController>();
+            var newPasswordAndConfirmPasswordMatch = model.NewPassword == model.ConfirmPassword;
+
+            if (!this.ModelState.IsValid || !newPasswordAndConfirmPasswordMatch)
+            {
+                return this.Redirect($"/{controller}/{nameof(Profile)}");
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var result = await this.signInManager.UserManager
+                .ChangePasswordAsync(user, model.Password, model.NewPassword);
 
             return this.Redirect($"/{controller}/{nameof(Profile)}");
         }

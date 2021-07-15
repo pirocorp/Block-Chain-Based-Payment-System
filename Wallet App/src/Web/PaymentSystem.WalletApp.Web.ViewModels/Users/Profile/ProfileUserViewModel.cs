@@ -21,6 +21,8 @@
 
         public string PhoneNumber { get; set; }
 
+        public double TotalBalance { get; set; }
+
         public string ProfilePictureAddress { get; set; }
 
         public bool HaveAddress =>
