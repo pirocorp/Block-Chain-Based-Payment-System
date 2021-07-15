@@ -55,6 +55,30 @@
             $('#birthDate').val(chosen_date.format('MM-DD-YYYY'));
         });
     });
+
+    $('#customFile').change(function() {
+        const uri = "/Users/UploadPicture";
+        const data = this.files[0];
+        const antiForgeryToken = document.getElementsByName("__RequestVerificationToken")[0].value;
+
+        console.log(antiForgeryToken);
+        console.log(data);
+
+        const formData = new FormData();
+        formData.append("profilePicture", data);
+
+        const options = {
+            method: "POST",
+            headers: {
+                'RequestVerificationToken': antiForgeryToken
+            },
+            body: formData     
+        };
+
+        return fetch(uri, options)
+            .then(res => res.json())
+            .catch(err => console.log(err));
+    });
 </script>
 }
 
@@ -68,13 +92,15 @@
                 <!-- Profile Details  =============================== -->
                 <div class="bg-light shadow-sm rounded text-center p-3 mb-4">
                     <div class="profile-thumb mt-3 mb-4">
-                        <img class="rounded-circle" src="@this.Model.ProfilePicture" alt="">
-                        <div class="profile-thumb-edit custom-file bg-primary text-white" data-toggle="tooltip" title="Change Profile Picture">
-                            <i class="fas fa-camera position-absolute"></i>
-                            <input type="file" class="custom-file-input" id="customFile">
-                        </div>
+                        <img class="rounded-circle" src="@this.Model.ProfilePictureAddress" alt="">
+                        <form method="post">
+                            <div class="profile-thumb-edit custom-file bg-primary text-white" data-toggle="tooltip" title="Change Profile Picture">
+                                <i class="fas fa-camera position-absolute"></i>
+                                <input type="file" class="custom-file-input" id="customFile">
+                            </div>
+                        </form>
                     </div>
-                    <p class="text-3 font-weight-500 mb-2">Hello, @this.Model.FirstName @this.Model.LastName</p>
+                    <p class="text-3 font-weight-500 mb-2">@this.Model.FirstName @this.Model.LastName</p>
                 </div>
                 <!-- Profile Details End -->
                 

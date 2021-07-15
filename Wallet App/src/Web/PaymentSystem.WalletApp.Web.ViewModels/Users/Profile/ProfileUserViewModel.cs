@@ -21,6 +21,8 @@
 
         public string PhoneNumber { get; set; }
 
+        public string ProfilePictureAddress { get; set; }
+
         public bool HaveAddress =>
                this.Address.Street != null
             || this.Address.City != null

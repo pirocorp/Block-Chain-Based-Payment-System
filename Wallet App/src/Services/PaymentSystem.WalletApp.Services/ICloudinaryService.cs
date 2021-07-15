@@ -7,6 +7,10 @@
 
     public interface ICloudinaryService
     {
+        Task<string> Upload(IFormFile file);
+
         Task<IEnumerable<string>> Upload(ICollection<IFormFile> files);
+
+        string GetProfileImageAddress(string source);
     }
 }

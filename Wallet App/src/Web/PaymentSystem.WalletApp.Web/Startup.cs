@@ -1,7 +1,9 @@
 ﻿namespace PaymentSystem.WalletApp.Web
 {
     using System.Reflection;
+
     using CloudinaryDotNet;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -15,15 +17,15 @@
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Common;
     using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Services;
+    using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Services.Messaging;
     using PaymentSystem.WalletApp.Web.Extensions;
     using PaymentSystem.WalletApp.Web.ViewModels;
-    using Services;
-    using Services.Data;
-    using CloudinaryAccount = CloudinaryDotNet.Account;
 
     public class Startup
     {
+        private const string MyCorsPolicy = "MyCors";
         private readonly IConfiguration configuration;
 
         public Startup(IConfiguration configuration)
@@ -31,7 +33,6 @@
             this.configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(
@@ -60,6 +61,22 @@
                             options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                         })
                 .AddRazorRuntimeCompilation();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: MyCorsPolicy,
+                    builder =>
+                    {
+                        builder
+                            .WithOrigins(
+                                "https://192.168.1.5",
+                                "https://loclahost")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
 
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -101,6 +118,7 @@
             app.UseCookiePolicy();
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -109,7 +127,11 @@
                 endpoints =>
                     {
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                        
+                        endpoints
+                            .MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}")
+                            .RequireCors(MyCorsPolicy);
+                        
                         endpoints.MapRazorPages();
                     });
         }

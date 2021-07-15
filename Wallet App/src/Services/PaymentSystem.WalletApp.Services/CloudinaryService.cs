@@ -18,33 +18,49 @@
             this.cloudinary = cloudinary;
         }
 
+        public async Task<string> Upload(IFormFile file)
+        {
+            byte[] destinationImage;
+
+            await using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                destinationImage = memoryStream.ToArray();
+            }
+
+            await using (var destinationStream = new MemoryStream(destinationImage))
+            {
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(file.FileName, destinationStream),
+                };
+
+                var result = await this.cloudinary.UploadAsync(uploadParams);
+                return result.PublicId;
+            }
+        }
+
         public async Task<IEnumerable<string>> Upload(ICollection<IFormFile> files)
         {
             var list = new List<string>();
 
             foreach (var file in files)
             {
-                byte[] destinationImage;
-
-                await using (var memoryStream = new MemoryStream())
-                {
-                    await file.CopyToAsync(memoryStream);
-                    destinationImage = memoryStream.ToArray();
-                }
-
-                await using (var destinationStream = new MemoryStream(destinationImage))
-                {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(file.FileName, destinationStream),
-                    };
-
-                    var result = await this.cloudinary.UploadAsync(uploadParams);
-                    list.Add(result.SecureUrl.AbsolutePath);
-                }
+                var address = await this.Upload(file);
+                list.Add(address);
             }
 
             return list;
+        }
+
+        public string GetProfileImageAddress(string source)
+        {
+            return this.cloudinary.Api.UrlImgUp
+                .Transform(new Transformation()
+                    .Height(100)
+                    .Width(100)
+                    .Crop("fit"))
+                .BuildUrl(source);
         }
     }
 }
