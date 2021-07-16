@@ -12,7 +12,6 @@
     using PaymentSystem.WalletApp.Web.ViewModels.Users.Profile;
 
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;

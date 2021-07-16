@@ -28,9 +28,13 @@
 
         public DbSet<AccountKey> AccountsKeys { get; set; }
 
+        public DbSet<BankAccount> BankAccounts { get; set; }
+
         public DbSet<Beneficiary> Beneficiaries { get; set; }
 
         public DbSet<Block> Blocks { get; set; }
+
+        public DbSet<CreditCard> CreditCards { get; set; }
 
         public DbSet<Transaction> Transactions { get; set; }
 

@@ -23,7 +23,9 @@ namespace PaymentSystem.WalletApp.Data.Models
 
             this.Accounts = new HashSet<Account>();
             this.AccountKeys = new HashSet<AccountKey>();
+            this.BankAccounts = new HashSet<BankAccount>();
             this.Beneficiaries = new HashSet<Beneficiary>();
+            this.CreditCards = new HashSet<CreditCard>();
         }
 
         public string FirstName { get; set; }
@@ -56,7 +58,11 @@ namespace PaymentSystem.WalletApp.Data.Models
 
         public ICollection<AccountKey> AccountKeys { get; set; }
 
+        public ICollection<BankAccount> BankAccounts { get; set; }
+
         public ICollection<Beneficiary> Beneficiaries { get; set; }
+
+        public ICollection<CreditCard> CreditCards { get; set; }
 
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {

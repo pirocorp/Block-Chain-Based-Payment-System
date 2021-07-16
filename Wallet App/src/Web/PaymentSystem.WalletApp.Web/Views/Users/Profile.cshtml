@@ -2,6 +2,7 @@
 @model PaymentSystem.WalletApp.Web.ViewModels.Users.Profile.ProfileUserViewModel
 
 @{
+    Layout = "/Views/Shared/_SecondaryMenuLayout.cshtml";
     var countriesSelectListItems = WalletConstants.CountriesSelectListItems(this.Model.Address.Country);
 }
 

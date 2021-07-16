@@ -18,6 +18,11 @@
             this.InboundTransactions = new HashSet<Transaction>();
         }
 
+        /// <summary>
+        /// Payments, Savings, etc.
+        /// </summary>
+        public string Name { get; set; }
+
         public string Address { get; set; }
 
         public string PublicKey { get; set; }
