@@ -8,42 +8,35 @@
     <h3 class="font-weight-400 text-center">Sign Up</h3>
     <p class="lead text-center">Your Sign Up information is safe with us.</p>
     <div class="bg-light shadow-md rounded p-4 mx-2">
-        <form id="signupForm" method="post">
+        <form id="signupForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label for="username">Username</label>
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    id="username" required 
-                    name="username"
-                    placeholder="Enter Your Name">
+                <label asp-for="@this.Model.Input.Username"></label>
+                <input asp-for="@this.Model.Input.Username"
+                       class="form-control"
+                       placeholder="Enter Your Name">
+                <span asp-validation-for="@this.Model.Input.Username"></span>
             </div>
             <div class="form-group">
-                <label for="emailAddress">Email Address</label>
-                <input 
-                    type="email" 
-                    class="form-control" 
-                    id="emailAddress" required 
-                    name="email"
-                    placeholder="Enter Your Email">
+                <label asp-for="@this.Model.Input.Email"></label>
+                <input asp-for="@this.Model.Input.Email"
+                       class="form-control"
+                       placeholder="Enter Your Email">
+                <span asp-validation-for="@this.Model.Input.Email"></span>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input 
-                    type="password" 
-                    class="form-control" 
-                    id="password" required 
-                    name="password"
-                    placeholder="Enter Password">
+                <label asp-for="@this.Model.Input.Password"></label>
+                <input asp-for="@this.Model.Input.Password"
+                       class="form-control"
+                       placeholder="Enter Password">
+                <span asp-validation-for="@this.Model.Input.Password"></span>
             </div>
             <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input 
-                    type="password" 
-                    class="form-control" 
-                    id="confirmPassword" required 
-                    name="confirmPassword"
-                    placeholder="Enter Password">
+                <label asp-for="@this.Model.Input.ConfirmPassword">Confirm Password</label>
+                <input asp-for="@this.Model.Input.ConfirmPassword"
+                       class="form-control"
+                       placeholder="Enter Password">
+                <span asp-validation-for="@this.Model.Input.ConfirmPassword"></span>
             </div>
             <button class="btn btn-primary btn-block my-4" type="submit">Sign Up</button>
         </form>

@@ -12,3 +12,8 @@
 #footer.pirocoin-footer-dark {
     padding: 20px;
 }
+
+.validation-summary-errors ul {
+    list-style: none;
+    padding: 0;
+}

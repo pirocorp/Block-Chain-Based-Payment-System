@@ -156,5 +156,12 @@
 		}, 600);
 	});
 
-
+    /*---------------------------------------------------
+       Add alerts classes to validation summary errors
+    ----------------------------------------------------- */
+	$('.validation-summary-errors li')
+        .addClass('alert alert-danger')
+        .click(function () {
+            $(this).remove();
+        });
 })(jQuery);

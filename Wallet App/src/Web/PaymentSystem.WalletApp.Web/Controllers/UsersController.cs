@@ -44,12 +44,7 @@
 
         public async Task<IActionResult> Profile()
         {
-            var user = await this.userManager.GetUserAsync(this.User);
-            var profileUser = this.mapper.Map<ProfileUserViewModel>(user);
-
-            profileUser.Address ??= new Address();
-            profileUser.ProfilePictureAddress =
-                this.cloudinaryService.GetProfileImageAddress(profileUser.ProfilePicture);
+            var profileUser = await this.GetProfileUser();
 
             return this.View(profileUser);
         }
@@ -61,7 +56,8 @@
 
             if (!this.ModelState.IsValid)
             {
-                return this.Redirect($"/{controller}/{nameof(Profile)}");
+                var profileUser = await this.GetProfileUser();
+                return this.View(profileUser);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -93,7 +89,8 @@
 
             if (!this.ModelState.IsValid)
             {
-                return this.Redirect($"/{controller}/{nameof(Profile)}");
+                var profileUser = await this.GetProfileUser();
+                return this.View(nameof(Profile), profileUser);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -110,7 +107,8 @@
 
             if (!this.ModelState.IsValid)
             {
-                return this.Redirect($"/{controller}/{nameof(Profile)}");
+                var profileUser = await this.GetProfileUser();
+                return this.View(nameof(Profile), profileUser);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -127,7 +125,8 @@
 
             if (!this.ModelState.IsValid)
             {
-                return this.Redirect($"/{controller}/{nameof(Profile)}");
+                var profileUser = await this.GetProfileUser();
+                return this.View(nameof(Profile), profileUser);
             }
 
             var profilePictureAddress = await this.cloudinaryService.Upload(profilePicture);
@@ -143,11 +142,11 @@
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
             var controller = ControllerHelpers.GetControllerName<UsersController>();
-            var newPasswordAndConfirmPasswordMatch = model.NewPassword == model.ConfirmPassword;
 
-            if (!this.ModelState.IsValid || !newPasswordAndConfirmPasswordMatch)
+            if (!this.ModelState.IsValid)
             {
-                return this.Redirect($"/{controller}/{nameof(Profile)}");
+                var profileUser = await this.GetProfileUser();
+                return this.View(nameof(Profile), profileUser);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -155,7 +154,29 @@
             var result = await this.signInManager.UserManager
                 .ChangePasswordAsync(user, model.Password, model.NewPassword);
 
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    this.ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                var profileUser = await this.GetProfileUser();
+                return this.View(nameof(Profile), profileUser);
+            }
+
             return this.Redirect($"/{controller}/{nameof(Profile)}");
+        }
+
+        private async Task<ProfileUserViewModel> GetProfileUser()
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+            var profileUser = this.mapper.Map<ProfileUserViewModel>(user);
+
+            profileUser.Address ??= new Address();
+            profileUser.ProfilePictureAddress =
+                this.cloudinaryService.GetProfileImageAddress(profileUser.ProfilePicture);
+            return profileUser;
         }
     }
 }
