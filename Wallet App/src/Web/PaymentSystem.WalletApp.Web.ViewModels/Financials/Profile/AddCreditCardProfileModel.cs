@@ -2,10 +2,12 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Services.Data.Models;
     using PaymentSystem.WalletApp.Web.Infrastructure.ValidationAttributes;
 
-    public class AddCreditCardProfileModel
+    public class AddCreditCardProfileModel : IMapTo<AddCreditCardServiceModel>
     {
         [Required]
         public bool IsCredit { get; set; }

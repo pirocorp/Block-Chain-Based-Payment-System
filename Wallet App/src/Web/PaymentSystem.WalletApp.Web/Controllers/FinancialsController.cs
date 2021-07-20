@@ -1,13 +1,19 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Controllers
 {
+    using System.Text;
     using System.Threading.Tasks;
     using AutoMapper;
     using Data.Models;
+    using Infrastructure;
     using Infrastructure.Helpers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
+    using PaymentSystem.Common.Utilities;
     using Services;
+    using Services.Data;
+    using Services.Data.Models;
     using ViewModels.Financials.Profile;
     using ViewModels.Users.Profile;
 
@@ -17,15 +23,21 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IMapper mapper;
         private readonly ICloudinaryService cloudinaryService;
+        private readonly ICreditCardService creditCardService;
+        private readonly IOptions<EncryptionOptions> encryptionOptions;
 
         public FinancialsController(
             UserManager<ApplicationUser> userManager,
             IMapper mapper,
-            ICloudinaryService cloudinaryService)
+            ICloudinaryService cloudinaryService,
+            ICreditCardService creditCardService,
+            IOptions<EncryptionOptions> encryptionOptions)
         {
             this.userManager = userManager;
             this.mapper = mapper;
             this.cloudinaryService = cloudinaryService;
+            this.creditCardService = creditCardService;
+            this.encryptionOptions = encryptionOptions;
         }
 
         public async Task<IActionResult> Profile()
@@ -46,6 +58,12 @@
                 return this.View(nameof(this.Profile), profileUser);
             }
 
+            var serviceModel = this.mapper.Map<AddCreditCardServiceModel>(model);
+            var userId = this.userManager.GetUserId(this.User);
+            var key = Encoding.UTF8.GetBytes(this.encryptionOptions.Value.Key);
+
+            await this.creditCardService.AddCreditCard(serviceModel, userId, key);
+
             return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
@@ -56,6 +74,9 @@
 
             profileUser.ProfilePictureAddress =
                 this.cloudinaryService.GetProfileImageAddress(profileUser.ProfilePicture);
+
+            profileUser.CreditCards = await this.creditCardService.GetCreditCards<ProfileCreditCardModel>(user.Id);
+            
             return profileUser;
         }
     }

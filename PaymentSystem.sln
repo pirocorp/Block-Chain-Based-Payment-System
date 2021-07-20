@@ -73,7 +73,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.WalletApp.Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.WalletApp.Web.ViewModels", "Wallet App\src\Web\PaymentSystem.WalletApp.Web.ViewModels\PaymentSystem.WalletApp.Web.ViewModels.csproj", "{9B0FA8CD-23E7-4B4C-BAC9-717121459735}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentSystem.WalletApp.Web.Infrastructure.Tests", "Wallet App\src\Tests\PaymentSystem.WalletApp.Web.Infrastructure.Tests\PaymentSystem.WalletApp.Web.Infrastructure.Tests.csproj", "{5D661DB2-409F-4BA7-9635-0287D8BC1AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentSystem.WalletApp.Web.Infrastructure.Tests", "Wallet App\src\Tests\PaymentSystem.WalletApp.Web.Infrastructure.Tests\PaymentSystem.WalletApp.Web.Infrastructure.Tests.csproj", "{5D661DB2-409F-4BA7-9635-0287D8BC1AA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentSystem.WalletApp.Services.Tests", "Wallet App\src\Tests\PaymentSystem.WalletApp.Services.Tests\PaymentSystem.WalletApp.Services.Tests.csproj", "{31E6B16F-F2C9-4129-874E-E788850BF5ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +175,10 @@ Global
 		{5D661DB2-409F-4BA7-9635-0287D8BC1AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D661DB2-409F-4BA7-9635-0287D8BC1AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D661DB2-409F-4BA7-9635-0287D8BC1AA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31E6B16F-F2C9-4129-874E-E788850BF5ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31E6B16F-F2C9-4129-874E-E788850BF5ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31E6B16F-F2C9-4129-874E-E788850BF5ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31E6B16F-F2C9-4129-874E-E788850BF5ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -211,6 +217,7 @@ Global
 		{85EBA399-9052-4B7D-B7CE-6E2F6488C84A} = {0B3FBC68-2B9B-418C-8925-BD245836EC01}
 		{9B0FA8CD-23E7-4B4C-BAC9-717121459735} = {0B3FBC68-2B9B-418C-8925-BD245836EC01}
 		{5D661DB2-409F-4BA7-9635-0287D8BC1AA5} = {5991CB02-5740-4061-B095-B67AE37C1D65}
+		{31E6B16F-F2C9-4129-874E-E788850BF5ED} = {5991CB02-5740-4061-B095-B67AE37C1D65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF77BB34-F2E6-4095-83E0-FF4B7DC16EC5}

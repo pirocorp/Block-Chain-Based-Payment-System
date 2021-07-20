@@ -1,7 +1,8 @@
 ﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Home.Index
 {
-    using Common.Mapping;
-    using Data.Models;
+    using PaymentSystem.Common.Mapping;
+
+    using PaymentSystem.WalletApp.Data.Models;
 
     public class IndexTestimonialModel : IMapFrom<Testimonial>
     {

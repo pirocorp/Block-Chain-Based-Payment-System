@@ -1,5 +1,7 @@
 ﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Financials.Profile
 {
+    using System.Collections.Generic;
+
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
 
@@ -14,5 +16,7 @@
         public string ProfilePictureAddress { get; set; }
 
         public double TotalBalance { get; set; }
+
+        public IEnumerable<ProfileCreditCardModel> CreditCards { get; set; }
     }
 }

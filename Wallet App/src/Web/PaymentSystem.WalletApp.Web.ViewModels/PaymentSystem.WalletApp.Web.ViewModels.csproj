@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\PaymentSystem.WalletApp.Data.Models\PaymentSystem.WalletApp.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Services\PaymentSystem.WalletApp.Services.Data\PaymentSystem.WalletApp.Services.Data.csproj" />
     <ProjectReference Include="..\PaymentSystem.WalletApp.Web.Infrastructure\PaymentSystem.WalletApp.Web.Infrastructure.csproj" />
   </ItemGroup>
 

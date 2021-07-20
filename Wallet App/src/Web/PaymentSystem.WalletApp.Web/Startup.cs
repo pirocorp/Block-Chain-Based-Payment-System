@@ -3,7 +3,7 @@
     using System.Reflection;
 
     using CloudinaryDotNet;
-
+    using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -35,6 +35,8 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<EncryptionOptions>(this.configuration.GetSection("Encryption"));
+
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
@@ -96,6 +98,7 @@
             services.AddTransient<ISecurelyEncryptDataService, SecurelyEncryptDataService>();
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ITestimonialService, TestimonialService>();
+            services.AddTransient<ICreditCardService, CreditCardService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
