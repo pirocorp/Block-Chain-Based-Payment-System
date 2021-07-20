@@ -2,355 +2,317 @@
 @model PaymentSystem.WalletApp.Web.ViewModels.Users.Profile.ProfileUserViewModel
 
 @{
-    Layout = "/Views/Shared/_SecondaryMenuLayout.cshtml";
+    Layout = "/Views/Shared/_ProfileLayout.cshtml";
     var countriesSelectListItems = WalletConstants.CountriesSelectListItems(this.Model.Address.Country);
 }
 
 @section Styles
 {
-<environment include="Development">
-    <link rel="stylesheet" href="~/lib/daterangepicker/daterangepicker.css" asp-append-version="true" />
-</environment>
-<environment exclude="Development">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/daterangepicker.min.css"
-          asp-fallback-href="~/lib/daterangepicker/daterangepicker.min.css"
-          asp-fallback-test-class="daterangepicker"
-          asp-fallback-test-property="position"
-          asp-fallback-test-value="absolute"
-          integrity="sha512-CliXBuHwQxr4nHkBGnjI8GeVo/P3u+GN0OlXB22b7/0YZkMCKdt2a2G8CEHFk+fwGhRWyyAFib64f90kZoWBvQ=="
-          crossorigin="anonymous" />
-</environment>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/daterangepicker/daterangepicker.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/daterangepicker.min.css"
+              asp-fallback-href="~/lib/daterangepicker/daterangepicker.min.css"
+              asp-fallback-test-class="daterangepicker"
+              asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute"
+              integrity="sha512-CliXBuHwQxr4nHkBGnjI8GeVo/P3u+GN0OlXB22b7/0YZkMCKdt2a2G8CEHFk+fwGhRWyyAFib64f90kZoWBvQ=="
+              crossorigin="anonymous" />
+    </environment>
 }
 
 @section Scripts
 {
-<environment include="Development">
-    <script src="~/lib/daterangepicker/moment.min.js" asp-append-version="true"></script>
-    <script src="~/lib/daterangepicker/daterangepicker.js" asp-append-version="true"></script>
-</environment>
-<environment exclude="Development">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/moment.min.js"
-            integrity="sha512-i2CVnAiguN6SnJ3d2ChOOddMWQyvgQTzm0qSgiKhOqBMGCx4fGU5BtzXEybnKatWPDkXPFyCI0lbG42BnVjr/Q=="
-            crossorigin="anonymous"
-            asp-fallback-src="~/lib/daterangepicker/moment.min.js"
-            asp-fallback-test="window.moment">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/daterangepicker.min.js"
-            integrity="sha512-FEzFjtAJCunp3uJTwYfcHtJHlRbgkzRYNpvsShtjVu5jSoejpExyzHHSDOUJ46IgV7VoNAkuVxjbid5pkoLASg=="
-            crossorigin="anonymous"
-            asp-fallback-src="~/lib/daterangepicker/daterangepicker.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery().daterangepicker">
-    </script>
-</environment>
-<script>
-    $(function () {
-        'use strict';
-        // Birth Date
-        $('#birthDate').daterangepicker({
-            singleDatePicker: true,
-            "showDropdowns": true,
-            autoUpdateInput: false,
-            maxDate: moment().add(0, 'days'),
-        }, function (chosen_date) {
-            $('#birthDate').val(chosen_date.format('MM-DD-YYYY'));
+    <environment include="Development">
+        <script src="~/lib/daterangepicker/moment.min.js" asp-append-version="true"></script>
+        <script src="~/lib/daterangepicker/daterangepicker.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/moment.min.js"
+                integrity="sha512-i2CVnAiguN6SnJ3d2ChOOddMWQyvgQTzm0qSgiKhOqBMGCx4fGU5BtzXEybnKatWPDkXPFyCI0lbG42BnVjr/Q=="
+                crossorigin="anonymous"
+                asp-fallback-src="~/lib/daterangepicker/moment.min.js"
+                asp-fallback-test="window.moment">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/daterangepicker.min.js"
+                integrity="sha512-FEzFjtAJCunp3uJTwYfcHtJHlRbgkzRYNpvsShtjVu5jSoejpExyzHHSDOUJ46IgV7VoNAkuVxjbid5pkoLASg=="
+                crossorigin="anonymous"
+                asp-fallback-src="~/lib/daterangepicker/daterangepicker.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery().daterangepicker">
+        </script>
+    </environment>
+    <script>
+        $(function () {
+            'use strict';
+            // Birth Date
+            $('#birthDate').daterangepicker({
+                singleDatePicker: true,
+                "showDropdowns": true,
+                autoUpdateInput: false,
+                maxDate: moment().add(0, 'days'),
+            }, function (chosen_date) {
+                $('#birthDate').val(chosen_date.format('MM-DD-YYYY'));
+            });
         });
-    });
 
-    $('#customFile').change(function() {
-        const uri = "/users/uploadpicture";
-        const data = this.files[0];
-        const antiForgeryToken = document.getElementsByName("__RequestVerificationToken")[0].value;
+        $('#customFile').change(function () {
+            const uri = "/users/uploadpicture";
+            const data = this.files[0];
+            const antiForgeryToken = document.getElementsByName("__RequestVerificationToken")[0].value;
 
-        console.log(antiForgeryToken);
-        console.log(data);
+            console.log(antiForgeryToken);
+            console.log(data);
 
-        const formData = new FormData();
-        formData.append("profilePicture", data);
+            const formData = new FormData();
+            formData.append("profilePicture", data);
 
-        const options = {
-            method: "POST",
-            headers: {
-                'RequestVerificationToken': antiForgeryToken
-            },
-            body: formData     
-        };
+            const options = {
+                method: "POST",
+                headers: {
+                    'RequestVerificationToken': antiForgeryToken
+                },
+                body: formData
+            };
 
-        return fetch(uri, options)
-            .then(res => window.location.href = '/users/profile')
-            .catch(err => console.log(err));
-    });
-</script>
+            return fetch(uri, options)
+                .then(res => window.location.href = '/users/profile')
+                .catch(err => console.log(err));
+        });
+    </script>
 }
 
-<div class="py-4">
-    <div class="container">
+<!-- Middle Panel ============================================= -->
+<div class="col-lg-9">
+    <!-- Personal Details ============================================= -->
+    <div class="bg-light shadow-sm rounded p-4 mb-4">
+        <h3 class="text-5 font-weight-400 mb-3">Personal Details <a href="#edit-personal-details" data-toggle="modal" class="float-right text-1 text-uppercase text-muted btn-link"><i class="fas fa-edit mr-1"></i>Edit</a></h3>
         <div class="row">
-            <div class="col-12 text-danger" asp-validation-summary="All"></div>
-            <!-- Left Panel ============================================= -->
-            <aside class="col-lg-3">
-
-                <!-- Profile Details  =============================== -->
-                <div class="bg-light shadow-sm rounded text-center p-3 mb-4">
-                    <div class="profile-thumb mt-3 mb-4">
-                        <img class="rounded-circle" src="@this.Model.ProfilePictureAddress" alt="">
-                        <form method="post">
-                            <div class="profile-thumb-edit custom-file bg-primary text-white" data-toggle="tooltip" title="Change Profile Picture">
-                                <i class="fas fa-camera position-absolute"></i>
-                                <input type="file" class="custom-file-input" id="customFile">
-                            </div>
-                        </form>
-                    </div>
-                    <p class="text-3 font-weight-500 mb-2">@this.Model.FirstName @this.Model.LastName</p>
-                </div>
-                <!-- Profile Details End -->
-                
-                <!-- Available Balance =============================== -->
-                <div class="bg-light shadow-sm rounded text-center p-3 mb-4">
-                    <div class="text-17 text-light my-3"><i class="fas fa-wallet"></i></div>
-                    <h3 class="text-9 font-weight-400">P0.00</h3>
-                    <p class="mb-2 text-muted opacity-8">Available Balance</p>
-                    <hr class="mx-n3">
-                    <div class="d-flex"><a href="withdraw-money.html" class="btn-link mr-auto">Withdraw</a> <a href="deposit-money.html" class="btn-link ml-auto">Deposit</a></div>
-                </div>
-                <!-- Available Balance End -->
-            </aside>
-            <!-- Left Panel End -->
-        
-            <!-- Middle Panel ============================================= -->
-            <div class="col-lg-9">
-            <!-- Personal Details ============================================= -->
-                <div class="bg-light shadow-sm rounded p-4 mb-4">
-                    <h3 class="text-5 font-weight-400 mb-3">Personal Details <a href="#edit-personal-details" data-toggle="modal" class="float-right text-1 text-uppercase text-muted btn-link"><i class="fas fa-edit mr-1"></i>Edit</a></h3>
-                    <div class="row">
-                        <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Name</p>
-                        <p class="col-sm-9">@this.Model.FirstName @this.Model.LastName</p>
-                    </div>
-                    <div class="row">
-                        <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Date of Birth</p>
-                        <p class="col-sm-9">
-                            @if (this.Model.DateOfBirth.Year < 1900)
-                            {
-                                @string.Empty
-                            }
-                            else
-                            {
-                                @this.Model.DateOfBirth.ToString("dd MMM yyyy")
-                            }
-                        </p>
-                    </div>
-                    <div class="row">
-                        <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Address</p>
-                        <p class="col-sm-9">
-                            @if (this.Model.HaveAddress)
-                            {
-                                var address = $"{this.Model.Address.Street},<br>{this.Model.Address.City},<br>{this.Model.Address.StateProvince} - {this.Model.Address.Zip},<br>{this.Model.Address.Country}.";
-                                @this.Html.Raw(address)
-                            }
-                            else
-                            {
-                                @string.Empty
-                            }
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Edit Details Modal ================================== -->
-                <div id="edit-personal-details" class="modal fade " role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title font-weight-400">Personal Details</h5>
-                                <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-                            </div>
-                            <div class="modal-body p-4">
-                                <form id="personaldetails" method="post">
-                                    <div class="row">
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="firstName">First Name</label>
-                                                <input name="firstName" type="text" value="@this.Model.FirstName" class="form-control" data-bv-field="firstName" id="firstName" required placeholder="First Name">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="fullName">Last Name</label>
-                                                <input name="lastName" type="text" value="@this.Model.LastName" class="form-control" data-bv-field="fullName" id="fullName" required placeholder="Full Name">
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="birthDate">Date of Birth</label>
-                                                <div class="position-relative">
-                                                    <input name="birthDate" id="birthDate" value="@this.Model.DateOfBirth.ToString(WalletConstants.BirthDateFormat)" type="text" class="form-control" required placeholder="Date of Birth">
-                                                    <span class="icon-inside"><i class="fas fa-calendar-alt"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <h3 class="text-5 font-weight-400 mt-3">Address</h3>
-                                            <hr>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="address">Address</label>
-                                                <input name="street" type="text" value="@this.Model.Address.Street" class="form-control" data-bv-field="address" id="address" required placeholder="Address 1">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="city">City</label>
-                                                <input name="city" id="city" value="@this.Model.Address.City" type="text" class="form-control" required placeholder="City">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="state">State / Province</label>
-                                                <input name="stateProvince" id="state" value="@this.Model.Address.StateProvince" type="text" class="form-control" required placeholder="State / Province">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="zipCode">Zip Code</label>
-                                                <input name="zipCode" id="zipCode" value="@this.Model.Address.Zip" type="text" class="form-control" required placeholder="City">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="inputCountry">Country</label>
-                                                <select class="custom-select" asp-items="countriesSelectListItems" id="inputCountry" name="country">
-                                                    @if (countriesSelectListItems.All(c => !c.Selected))
-                                                    {
-                                                        <option selected="selected" disabled="disabled"> --- Please Select --- </option>
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary btn-block mt-2" type="submit">Save Changes</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Personal Details End -->
-
-                <!-- Email Addresses ============================================= -->
-                <div class="bg-light shadow-sm rounded p-4 mb-4">
-                    <h3 class="text-5 font-weight-400 mb-3">Email Addresses <a href="#edit-email" data-toggle="modal" class="float-right text-1 text-uppercase text-muted btn-link"><i class="fas fa-edit mr-1"></i>Edit</a></h3>
-                    <div class="row">
-                        <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Email ID <span class="text-muted font-weight-500">(Primary)</span></p>
-                        <p class="col-sm-9">@this.Model.Email</p>
-                    </div>
-                </div>
-
-                <!-- Edit Details Modal ================================== -->
-                <div id="edit-email" class="modal fade " role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title font-weight-400">Email Addresses</h5>
-                                <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-                            </div>
-                            <div class="modal-body p-4">
-                                <form id="emailAddresses" method="post" asp-controller="Users" asp-action="EmailUpdate">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="emailID">Email ID <span class="text-muted font-weight-500">(Primary)</span></label>
-                                                <input name="email" type="email" value="@this.Model.Email" class="form-control" data-bv-field="emailid" id="emailID" required placeholder="Email ID">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary btn-block" type="submit">Save Changes</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Email Addresses End -->
-            
-                <!-- Phone ============================================= -->
-                <div class="bg-light shadow-sm rounded p-4 mb-4">
-                    <h3 class="text-5 font-weight-400 mb-3">Phone <a href="#edit-phone" data-toggle="modal" class="float-right text-1 text-uppercase text-muted btn-link"><i class="fas fa-edit mr-1"></i>Edit</a></h3>
-                    <div class="row">
-                        <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Mobile <span class="text-muted font-weight-500">(Primary)</span></p>
-                        <p class="col-sm-9">@this.Model.PhoneNumber</p>
-                    </div>
-                </div>
-
-                <!-- Edit Details Modal ================================== -->
-                <div id="edit-phone" class="modal fade " role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title font-weight-400">Phone</h5>
-                                <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-                            </div>
-                            <div class="modal-body p-4">
-                                <form id="phone" method="post" asp-controller="Users" asp-action="PhoneUpdate">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="mobileNumber">Mobile <span class="text-muted font-weight-500">(Primary)</span></label>
-                                                <input name="phone" type="tel" value="@this.Model.PhoneNumber" class="form-control" data-bv-field="mobilenumber" id="mobileNumber" required placeholder="Mobile Number">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary btn-block" type="submit">Save Changes</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Phone End -->
-            
-                <!-- Security ============================================= -->
-                <div class="bg-light shadow-sm rounded p-4">
-                    <h3 class="text-5 font-weight-400 mb-3">Security <a href="#change-password" data-toggle="modal" class="float-right text-1 text-uppercase text-muted btn-link"><i class="fas fa-edit mr-1"></i>Edit</a></h3>
-                    <div class="row">
-                        <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">
-                            <label class="col-form-label">Password</label>
-                        </p>
-                        <p class="col-sm-9">
-                            <input disabled="disabled" type="password" class="form-control-plaintext" data-bv-field="password" id="password" value="EnterPassword">
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Edit Details Modal ================================== -->
-                <div id="change-password" class="modal fade " role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title font-weight-400">Change Password</h5>
-                                <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-                            </div>
-                            <div class="modal-body p-4">
-                                <form id="changePassword" method="post" asp-controller="Users" asp-action="ChangePassword">
-                                    <div class="form-group">
-                                        <label for="existingPassword">Confirm Current Password</label>
-                                        <input name="password" type="password" class="form-control" data-bv-field="existingpassword" id="existingPassword" required placeholder="Enter Current Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="newPassword">New Password</label>
-                                        <input name="newPassword" type="password" class="form-control" data-bv-field="newpassword" id="newPassword" required placeholder="Enter New Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="confirmPassword">Confirm New Password</label>
-                                        <input name="confirmPassword" type="password" class="form-control" data-bv-field="confirmgpassword" id="confirmPassword" required placeholder="Enter Confirm New Password">
-                                    </div>
-                                    <button class="btn btn-primary btn-block mt-4" type="submit">Update Password</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Security End -->
-
-            </div>
-            <!-- Middle Panel End -->
-
+            <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Name</p>
+            <p class="col-sm-9">@this.Model.FirstName @this.Model.LastName</p>
+        </div>
+        <div class="row">
+            <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Date of Birth</p>
+            <p class="col-sm-9">
+                @if (this.Model.DateOfBirth.Year < 1900)
+                {
+                    @string.Empty
+                }
+                else
+                {
+                    @this.Model.DateOfBirth.ToString("dd MMM yyyy")
+                }
+            </p>
+        </div>
+        <div class="row">
+            <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Address</p>
+            <p class="col-sm-9">
+                @if (this.Model.HaveAddress)
+                {
+                    var address = $"{this.Model.Address.Street},<br>{this.Model.Address.City},<br>{this.Model.Address.StateProvince} - {this.Model.Address.Zip},<br>{this.Model.Address.Country}.";
+                    @this.Html.Raw(address)
+                }
+                else
+                {
+                    @string.Empty
+                }
+            </p>
         </div>
     </div>
+
+    <!-- Edit Details Modal ================================== -->
+    <div id="edit-personal-details" class="modal fade " role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-400">Personal Details</h5>
+                    <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="personaldetails" method="post">
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input name="firstName" type="text" value="@this.Model.FirstName" class="form-control" data-bv-field="firstName" id="firstName" required placeholder="First Name">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="fullName">Last Name</label>
+                                    <input name="lastName" type="text" value="@this.Model.LastName" class="form-control" data-bv-field="fullName" id="fullName" required placeholder="Full Name">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="birthDate">Date of Birth</label>
+                                    <div class="position-relative">
+                                        <input name="birthDate" id="birthDate" value="@this.Model.DateOfBirth.ToString(WalletConstants.BirthDateFormat)" type="text" class="form-control" required placeholder="Date of Birth">
+                                        <span class="icon-inside"><i class="fas fa-calendar-alt"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <h3 class="text-5 font-weight-400 mt-3">Address</h3>
+                                <hr>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input name="street" type="text" value="@this.Model.Address.Street" class="form-control" data-bv-field="address" id="address" required placeholder="Address 1">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input name="city" id="city" value="@this.Model.Address.City" type="text" class="form-control" required placeholder="City">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="state">State / Province</label>
+                                    <input name="stateProvince" id="state" value="@this.Model.Address.StateProvince" type="text" class="form-control" required placeholder="State / Province">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="zipCode">Zip Code</label>
+                                    <input name="zipCode" id="zipCode" value="@this.Model.Address.Zip" type="text" class="form-control" required placeholder="City">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="inputCountry">Country</label>
+                                    <select class="custom-select" asp-items="countriesSelectListItems" id="inputCountry" name="country">
+                                        @if (countriesSelectListItems.All(c => !c.Selected))
+                                        {
+                                            <option selected="selected" disabled="disabled"> --- Please Select --- </option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block mt-2" type="submit">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Personal Details End -->
+
+    <!-- Email Addresses ============================================= -->
+    <div class="bg-light shadow-sm rounded p-4 mb-4">
+        <h3 class="text-5 font-weight-400 mb-3">Email Addresses <a href="#edit-email" data-toggle="modal" class="float-right text-1 text-uppercase text-muted btn-link"><i class="fas fa-edit mr-1"></i>Edit</a></h3>
+        <div class="row">
+            <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Email ID <span class="text-muted font-weight-500">(Primary)</span></p>
+            <p class="col-sm-9">@this.Model.Email</p>
+        </div>
+    </div>
+
+    <!-- Edit Details Modal ================================== -->
+    <div id="edit-email" class="modal fade " role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-400">Email Addresses</h5>
+                    <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="emailAddresses" method="post" asp-controller="Users" asp-action="EmailUpdate">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="emailID">Email ID <span class="text-muted font-weight-500">(Primary)</span></label>
+                                    <input name="email" type="email" value="@this.Model.Email" class="form-control" data-bv-field="emailid" id="emailID" required placeholder="Email ID">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Email Addresses End -->
+
+    <!-- Phone ============================================= -->
+    <div class="bg-light shadow-sm rounded p-4 mb-4">
+        <h3 class="text-5 font-weight-400 mb-3">Phone <a href="#edit-phone" data-toggle="modal" class="float-right text-1 text-uppercase text-muted btn-link"><i class="fas fa-edit mr-1"></i>Edit</a></h3>
+        <div class="row">
+            <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Mobile <span class="text-muted font-weight-500">(Primary)</span></p>
+            <p class="col-sm-9">@this.Model.PhoneNumber</p>
+        </div>
+    </div>
+
+    <!-- Edit Details Modal ================================== -->
+    <div id="edit-phone" class="modal fade " role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-400">Phone</h5>
+                    <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="phone" method="post" asp-controller="Users" asp-action="PhoneUpdate">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="mobileNumber">Mobile <span class="text-muted font-weight-500">(Primary)</span></label>
+                                    <input name="phone" type="tel" value="@this.Model.PhoneNumber" class="form-control" data-bv-field="mobilenumber" id="mobileNumber" required placeholder="Mobile Number">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 </div>
+    <!-- Phone End -->
+
+    <!-- Security ============================================= -->
+    <div class="bg-light shadow-sm rounded p-4">
+        <h3 class="text-5 font-weight-400 mb-3">Security <a href="#change-password" data-toggle="modal" class="float-right text-1 text-uppercase text-muted btn-link"><i class="fas fa-edit mr-1"></i>Edit</a></h3>
+        <div class="row">
+            <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">
+                <label class="col-form-label">Password</label>
+            </p>
+            <p class="col-sm-9">
+                <input disabled="disabled" type="password" class="form-control-plaintext" data-bv-field="password" id="password" value="EnterPassword">
+            </p>
+        </div>
+    </div>
+
+    <!-- Edit Details Modal ================================== -->
+    <div id="change-password" class="modal fade " role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-400">Change Password</h5>
+                    <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="changePassword" method="post" asp-controller="Users" asp-action="ChangePassword">
+                        <div class="form-group">
+                            <label for="existingPassword">Confirm Current Password</label>
+                            <input name="password" type="password" class="form-control" data-bv-field="existingpassword" id="existingPassword" required placeholder="Enter Current Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input name="newPassword" type="password" class="form-control" data-bv-field="newpassword" id="newPassword" required placeholder="Enter New Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input name="confirmPassword" type="password" class="form-control" data-bv-field="confirmgpassword" id="confirmPassword" required placeholder="Enter Confirm New Password">
+                        </div>
+                        <button class="btn btn-primary btn-block mt-4" type="submit">Update Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Security End -->
+
+</div>
+<!-- Middle Panel End -->

@@ -6,10 +6,10 @@
 
     using AutoMapper;
 
-    using PaymentSystem.WalletApp.Common;
-    using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
-    using PaymentSystem.WalletApp.Web.ViewModels.Users.Profile;
+    using Common;
+    using Data.Models;
+    using Infrastructure.Helpers;
+    using ViewModels.Users.Profile;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -79,7 +79,7 @@
 
             await this.userManager.UpdateAsync(user);
 
-            return this.Redirect($"/{controller}/{nameof(Profile)}");
+            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
         [HttpPost]
@@ -90,14 +90,14 @@
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(Profile), profileUser);
+                return this.View(nameof(this.Profile), profileUser);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
             user.Email = model.Email;
             await this.userManager.UpdateAsync(user);
 
-            return this.Redirect($"/{controller}/{nameof(Profile)}");
+            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
         [HttpPost]
@@ -108,14 +108,14 @@
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(Profile), profileUser);
+                return this.View(nameof(this.Profile), profileUser);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
             user.PhoneNumber = model.Phone;
             await this.userManager.UpdateAsync(user);
 
-            return this.Redirect($"/{controller}/{nameof(Profile)}");
+            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
         [HttpPost]
@@ -126,7 +126,7 @@
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(Profile), profileUser);
+                return this.View(nameof(this.Profile), profileUser);
             }
 
             var profilePictureAddress = await this.cloudinaryService.Upload(profilePicture);
@@ -135,7 +135,7 @@
             user.ProfilePicture = profilePictureAddress;
             await this.userManager.UpdateAsync(user);
 
-            return this.Redirect($"/{controller}/{nameof(Profile)}");
+            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
         [HttpPost]
@@ -146,7 +146,7 @@
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(Profile), profileUser);
+                return this.View(nameof(this.Profile), profileUser);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -162,10 +162,10 @@
                 }
 
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(Profile), profileUser);
+                return this.View(nameof(this.Profile), profileUser);
             }
 
-            return this.Redirect($"/{controller}/{nameof(Profile)}");
+            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
         private async Task<ProfileUserViewModel> GetProfileUser()
@@ -176,6 +176,7 @@
             profileUser.Address ??= new Address();
             profileUser.ProfilePictureAddress =
                 this.cloudinaryService.GetProfileImageAddress(profileUser.ProfilePicture);
+            
             return profileUser;
         }
     }

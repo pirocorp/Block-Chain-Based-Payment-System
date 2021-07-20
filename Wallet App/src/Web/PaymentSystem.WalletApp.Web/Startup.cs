@@ -92,6 +92,8 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
+            services.AddTransient<ISaltService, SaltService>();
+            services.AddTransient<ISecurelyEncryptDataService, SecurelyEncryptDataService>();
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ITestimonialService, TestimonialService>();
         }

@@ -1,9 +1,8 @@
-﻿namespace PaymentSystem.WalletApp.Web.TagHelpers
+﻿namespace PaymentSystem.WalletApp.Web.Infrastructure.TagHelpers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.AspNetCore.Http;
+
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -11,13 +10,8 @@
     [HtmlTargetElement(Attributes = "is-active-route")]
     public class ActiveRouteTagHelper : TagHelper
     {
-        private readonly IHttpContextAccessor contextAccessor;
-        private IDictionary<string, string> routeValues;
-
-        public ActiveRouteTagHelper(IHttpContextAccessor contextAccessor)
+        public ActiveRouteTagHelper()
         {
-            this.contextAccessor = contextAccessor;
-            
             this.Area = string.Empty;
             this.Controller = string.Empty;
             this.Action = string.Empty;
@@ -56,7 +50,6 @@
         /// </remarks>
         [HtmlAttributeName("asp-action")]
         public string Action { get; set; }
-
 
         [HtmlAttributeName("asp-page")]
         public string Page { get; set; }
@@ -105,7 +98,7 @@
         private void MakeActive(TagHelperOutput output)
         {
             var classAttr = output.Attributes.FirstOrDefault(a => a.Name == "class");
-            
+
             if (classAttr == null)
             {
                 classAttr = new TagHelperAttribute("class", this.Class);
@@ -113,9 +106,11 @@
             }
             else if (classAttr.Value == null || classAttr.Value.ToString().IndexOf(this.Class) < 0)
             {
-                output.Attributes.SetAttribute("class", classAttr.Value == null
+                var @class = classAttr.Value == null
                     ? this.Class
-                    : classAttr.Value.ToString() + $" {this.Class}");
+                    : $"{classAttr.Value} {this.Class}";
+
+                output.Attributes.SetAttribute("class", @class);
             }
         }
     }

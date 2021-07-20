@@ -1,20 +1,21 @@
 ﻿namespace PaymentSystem.WalletApp.Data.Models
 {
+    using System;
+
     using PaymentSystem.WalletApp.Data.Common.Models;
 
+    /// <summary>
+    /// Don't do it in real project. Use payment processor instead.
+    /// </summary>
     public class CreditCard : BaseDeletableModel<string>
     {
         public bool IsCredit { get; set; }
 
         public CardType CardType { get; set; }
 
-        public string CardNumber { get; set; }
+        public string CardData { get; set; }
 
-        public string ExpiryDate { get; set; }
-
-        public string CVV { get; set; }
-
-        public string CardHolderName { get; set; }
+        public string SecurityStamp { get; set; }
 
         public string UserId { get; set; }
 
