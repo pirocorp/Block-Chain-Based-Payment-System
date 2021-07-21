@@ -5,6 +5,8 @@
 
     using PaymentSystem.WalletApp.Data.Common.Models;
 
+    using static Data.Common.DataConstants.Testimonial;
+
     public class Testimonial : BaseDeletableModel<string>
     {
         public Testimonial()
@@ -13,15 +15,15 @@
         }
 
         [Required]
-        [StringLength(5000)]
+        [StringLength(CommentLength)]
         public string Comment { get; set; }
 
         [Required]
-        [StringLength(150)]
+        [StringLength(NameLength)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(UseCaseLength)]
         public string UseCase { get; set; }
     }
 }

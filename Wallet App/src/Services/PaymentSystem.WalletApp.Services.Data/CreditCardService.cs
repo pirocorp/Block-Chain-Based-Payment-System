@@ -3,28 +3,39 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using AutoMapper;
+
     using Microsoft.EntityFrameworkCore;
+
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.Common.Utilities;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Services.Data.Models;
+    using PaymentSystem.WalletApp.Services.Data.Models.CreditCards;
 
     public class CreditCardService : ICreditCardService
     {
         private readonly ApplicationDbContext dbContext;
         private readonly ISaltService saltService;
         private readonly ISecurelyEncryptDataService securelyEncryptDataService;
+        private readonly IMapper mapper;
 
         public CreditCardService(
             ApplicationDbContext dbContext,
             ISaltService saltService,
-            ISecurelyEncryptDataService securelyEncryptDataService)
+            ISecurelyEncryptDataService securelyEncryptDataService,
+            IMapper mapper)
         {
             this.dbContext = dbContext;
             this.saltService = saltService;
             this.securelyEncryptDataService = securelyEncryptDataService;
+            this.mapper = mapper;
         }
+
+        public Task<bool> UserOwnsCard(string cardId, string userId)
+            => this.dbContext.CreditCards
+                .AnyAsync(c => c.Id == cardId && c.UserId == userId);
 
         public async Task AddCreditCard(AddCreditCardServiceModel model, string userId, byte[] key)
         {
@@ -59,5 +70,57 @@
                 .Where(c => c.UserId == userId)
                 .To<T>()
                 .ToListAsync();
+
+        public async Task<CreditCardDetailsServiceModel> GetCardInformation(string cardId, byte[] key)
+        {
+            var card = await this.dbContext.CreditCards
+                .Where(c => c.Id == cardId)
+                .FirstOrDefaultAsync();
+
+            var cardData = this.GetCardData(key, card);
+
+            var result = this.mapper.Map<CreditCardDetailsServiceModel>(card);
+
+            result.CVV = cardData.CVV;
+            result.CardHolderName = cardData.CardHolderName;
+
+            return result;
+        }
+
+        public async Task UpdateCardInformation(byte[] key, EditCreditCardServiceModel model)
+        {
+            var card = await this.dbContext.CreditCards
+                .FirstOrDefaultAsync(c => c.Id == model.Id);
+
+            if (card is null)
+            {
+                return;
+            }
+
+            card.ExpiryDate = model.ExpiryDate;
+
+            var cardData = this.GetCardData(key, card);
+
+            cardData.CVV = model.CVV;
+            cardData.CardHolderName = model.CardHolderName;
+            card.SecurityStamp = this.saltService.GetSaltHex();
+
+            var salt = card.SecurityStamp.HexToBytes();
+            var encryptedCardData = this.securelyEncryptDataService.EncryptDataHex(cardData, key, salt);
+
+            card.CardData = encryptedCardData;
+
+            this.dbContext.Update(card);
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        private CardData GetCardData(byte[] key, CreditCard card)
+        {
+            var salt = card.SecurityStamp.HexToBytes();
+            var cardBytes = card.CardData.HexToBytes();
+            var cardData = this.securelyEncryptDataService.Decrypt<CardData>(cardBytes, key, salt);
+
+            return cardData;
+        }
     }
 }

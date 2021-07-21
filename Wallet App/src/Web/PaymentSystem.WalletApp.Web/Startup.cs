@@ -22,6 +22,7 @@
     using PaymentSystem.WalletApp.Services.Messaging;
     using PaymentSystem.WalletApp.Web.Extensions;
     using PaymentSystem.WalletApp.Web.ViewModels;
+    using Services.Data.Models;
 
     public class Startup
     {
@@ -84,7 +85,9 @@
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddSingleton(this.configuration);
-            services.AddAutoMapper(typeof(ErrorViewModel).GetTypeInfo().Assembly);
+            services.AddAutoMapper(
+                typeof(ErrorViewModel).GetTypeInfo().Assembly,
+                typeof(IServiceModel).GetTypeInfo().Assembly);
             services.AddCloudinary(this.configuration);
 
             // External Services

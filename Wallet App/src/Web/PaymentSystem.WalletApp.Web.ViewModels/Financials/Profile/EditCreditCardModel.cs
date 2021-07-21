@@ -3,22 +3,15 @@
     using System.ComponentModel.DataAnnotations;
 
     using PaymentSystem.Common.Mapping;
-    using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Models.CreditCards;
     using PaymentSystem.WalletApp.Web.Infrastructure.ValidationAttributes;
 
     using static PaymentSystem.WalletApp.Web.Infrastructure.WebConstants;
 
-    public class AddCreditCardProfileModel : IMapTo<AddCreditCardServiceModel>
+    public class EditCreditCardModel : IMapTo<EditCreditCardServiceModel>
     {
         [Required]
-        public bool IsCredit { get; set; }
-
-        public CardType CardType { get; set; }
-
-        [Required]
-        [CreditCard]
-        public string CardNumber { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [CreditCardExpiryDate]

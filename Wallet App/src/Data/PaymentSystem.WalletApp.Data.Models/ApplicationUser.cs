@@ -3,11 +3,15 @@ namespace PaymentSystem.WalletApp.Data.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     using PaymentSystem.WalletApp.Data.Common.Models;
+
+    using static Data.Common.DataConstants.ApplicationUser;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity, IEntityTypeConfiguration<ApplicationUser>
     {
@@ -28,10 +32,13 @@ namespace PaymentSystem.WalletApp.Data.Models
             this.CreditCards = new HashSet<CreditCard>();
         }
 
+        [StringLength(FirstNameLength)]
         public string FirstName { get; set; }
 
+        [StringLength(LastNameLength)]
         public string LastName { get; set; }
 
+        [StringLength(ProfilePictureLength)]
         public string ProfilePicture { get; set; }
 
         public DateTime DateOfBirth { get; set; }

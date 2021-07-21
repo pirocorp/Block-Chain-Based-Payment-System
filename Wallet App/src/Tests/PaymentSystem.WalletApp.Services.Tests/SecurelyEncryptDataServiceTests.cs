@@ -14,7 +14,6 @@ namespace PaymentSystem.WalletApp.Services.Tests
             {
                 CardHolderName = "Piroman Piromanov",
                 CVV = "555",
-                ExpiryDate = "05/25",
                 CardNumber = "4176449266512499"
             };
 
@@ -29,7 +28,6 @@ namespace PaymentSystem.WalletApp.Services.Tests
 
             Assert.Equal(cardData.CardHolderName, decoded.CardHolderName);
             Assert.Equal(cardData.CVV, decoded.CVV);
-            Assert.Equal(cardData.ExpiryDate, decoded.ExpiryDate);
             Assert.Equal(cardData.CardNumber, decoded.CardNumber);
         }
     }

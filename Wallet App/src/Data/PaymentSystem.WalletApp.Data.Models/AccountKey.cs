@@ -1,8 +1,13 @@
 ﻿namespace PaymentSystem.WalletApp.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     using PaymentSystem.WalletApp.Data.Common.Models;
+
+    using static Data.Common.DataConstants;
 
     public class AccountKey : BaseModel<string>, IEntityTypeConfiguration<AccountKey>
     {

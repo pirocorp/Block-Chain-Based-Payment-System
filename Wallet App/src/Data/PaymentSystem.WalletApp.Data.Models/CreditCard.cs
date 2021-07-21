@@ -5,6 +5,9 @@
 
     using PaymentSystem.WalletApp.Data.Common.Models;
 
+    using static Data.Common.DataConstants;
+    using static Data.Common.DataConstants.CreditCard;
+
     /// <summary>
     /// Don't do it in real project. Use payment processor instead.
     /// </summary>
@@ -21,13 +24,13 @@
 
         public string CardData { get; set; }
 
-        [StringLength(4)]
+        [StringLength(LastFourDigitsLength)]
         public string LastFourDigits { get; set; }
 
-        [StringLength(5)]
+        [StringLength(ExpiryDateLength)]
         public string ExpiryDate { get; set; }
 
-        [StringLength(128)]
+        [StringLength(SecurityStampLength)]
         public string SecurityStamp { get; set; }
 
         public string UserId { get; set; }

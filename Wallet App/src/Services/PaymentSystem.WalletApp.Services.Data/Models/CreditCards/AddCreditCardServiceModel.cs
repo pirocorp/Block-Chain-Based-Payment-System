@@ -1,6 +1,5 @@
-﻿namespace PaymentSystem.WalletApp.Services.Data.Models
+﻿namespace PaymentSystem.WalletApp.Services.Data.Models.CreditCards
 {
-    using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
 
     public class AddCreditCardServiceModel
