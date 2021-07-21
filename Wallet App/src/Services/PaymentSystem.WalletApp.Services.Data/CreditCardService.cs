@@ -33,6 +33,9 @@
             this.mapper = mapper;
         }
 
+        public async Task<bool> Exists(string cardId)
+            => await this.dbContext.CreditCards.AnyAsync(c => c.Id == cardId);
+
         public Task<bool> UserOwnsCard(string cardId, string userId)
             => this.dbContext.CreditCards
                 .AnyAsync(c => c.Id == cardId && c.UserId == userId);
@@ -73,9 +76,12 @@
 
         public async Task<CreditCardDetailsServiceModel> GetCardInformation(string cardId, byte[] key)
         {
-            var card = await this.dbContext.CreditCards
-                .Where(c => c.Id == cardId)
-                .FirstOrDefaultAsync();
+            var card = await this.dbContext.CreditCards.FindAsync(cardId);
+
+            if (card is null)
+            {
+                return null;
+            }
 
             var cardData = this.GetCardData(key, card);
 
@@ -89,8 +95,7 @@
 
         public async Task UpdateCardInformation(byte[] key, EditCreditCardServiceModel model)
         {
-            var card = await this.dbContext.CreditCards
-                .FirstOrDefaultAsync(c => c.Id == model.Id);
+            var card = await this.dbContext.CreditCards.FindAsync(model.Id);
 
             if (card is null)
             {
@@ -111,6 +116,19 @@
             card.CardData = encryptedCardData;
 
             this.dbContext.Update(card);
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteCreditCard(string cardId)
+        {
+            var creditCard = await this.dbContext.CreditCards.FindAsync(cardId);
+
+            if (creditCard is null)
+            {
+                return;
+            }
+
+            this.dbContext.CreditCards.Remove(creditCard);
             await this.dbContext.SaveChangesAsync();
         }
 

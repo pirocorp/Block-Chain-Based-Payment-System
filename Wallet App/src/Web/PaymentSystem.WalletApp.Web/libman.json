@@ -15,9 +15,11 @@
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
         "dist/css/bootstrap.css",
+        "dist/css/bootstrap.css.map",
         "dist/css/bootstrap.min.css",
         "dist/js/bootstrap.bundle.min.js",
         "dist/js/bootstrap.bundle.js",
+        "dist/js/bootstrap.bundle.js.map",
         "dist/js/bootstrap.js",
         "dist/js/bootstrap.min.js"
       ]

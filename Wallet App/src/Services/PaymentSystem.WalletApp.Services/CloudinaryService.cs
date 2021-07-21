@@ -56,6 +56,7 @@
         public string GetProfileImageAddress(string source)
         {
             return this.cloudinary.Api.UrlImgUp
+                .Secure()
                 .Transform(new Transformation()
                     .Height(100)
                     .Width(100)

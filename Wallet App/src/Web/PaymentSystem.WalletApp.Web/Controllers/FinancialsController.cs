@@ -54,7 +54,7 @@
                 return this.View(nameof(this.Profile), profileUser);
             }
 
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
+            var controller = ControllerHelpers.GetControllerName<FinancialsController>();
 
             var serviceModel = this.mapper.Map<AddCreditCardServiceModel>(model);
             var userId = this.userManager.GetUserId(this.User);
@@ -87,13 +87,17 @@
             await this.creditCardService.UpdateCardInformation(key, serviceModel);
 
             var controller = ControllerHelpers.GetControllerName<UsersController>();
-
             return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
         public async Task<IActionResult> GetCreditCardDetails(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
+            {
+                return this.BadRequest();
+            }
+
+            if (!await this.creditCardService.Exists(id))
             {
                 return this.BadRequest();
             }
@@ -111,6 +115,32 @@
                 .GetCardInformation(id, key);
 
             return this.Ok(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCreditCard(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return this.BadRequest();
+            }
+
+            if (!await this.creditCardService.Exists(id))
+            {
+                return this.BadRequest();
+            }
+
+            var userId = this.userManager.GetUserId(this.User);
+
+            if (!await this.creditCardService.UserOwnsCard(id, userId))
+            {
+                return this.BadRequest();
+            }
+
+            await this.creditCardService.DeleteCreditCard(id);
+
+            var controller = ControllerHelpers.GetControllerName<FinancialsController>();
+            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
         private async Task<ProfileFinancialViewModel> GetUserProfile()

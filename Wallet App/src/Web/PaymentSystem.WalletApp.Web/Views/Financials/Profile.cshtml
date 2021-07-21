@@ -11,7 +11,7 @@
 
 @section Scripts
 {
-    <script>
+<script>
     function getCreditCardDetails(id) {
         const uri = `/financials/getCreditCardDetails?id=${id}`;
 
@@ -47,8 +47,32 @@
                 id.value = res.id;
             })
             .catch(err => console.log(err));
-        };
-    </script>
+    };
+
+    function deleteCreditCardDetails(id) {
+        const result = confirm("Are you sure you want to delete this card.");
+
+        if (result) {
+            const uri = '/financials/deleteCreditCard';
+            const antiForgeryToken = document.getElementsByName("__RequestVerificationToken")[0].value;
+
+            const formData = new FormData();
+            formData.append('id', id);
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': antiForgeryToken
+                },
+                body: formData
+            };
+
+            return fetch(uri, options)
+                .then(res => window.location.href = '/financials/profile')
+                .catch(err => console.log(err));
+        }
+    };
+</script>
 }
 
     <!-- Middle Panel ============================================= -->
@@ -67,12 +91,12 @@
                                 <span class="account-card-expire text-uppercase d-inline-block opacity-6 mr-2">
                                     Valid<br>
                                     thru<br>
-                                </span> <span class="text-4 opacity-9">@card.ExpiryDate</span> <span class="bg-light text-0 text-body font-weight-500 rounded-pill d-inline-block px-2 line-height-4 opacity-8 ml-auto">Primary</span>
+                                </span> <span class="text-4 opacity-9">@card.ExpiryDate</span>
                             </p>
                             <p class="d-flex align-items-center m-0"> <span class="text-uppercase font-weight-500">@this.Model.FirstName @this.Model.LastName</span> <img class="ml-auto" src="/images/payment/@(@card.CardType.ToString()).png" alt="visa" title=""> </p>
                             <div class="account-card-overlay rounded">
                                 <a onclick="getCreditCardDetails('@card.Id')" href="#" data-target="#edit-card-details" data-toggle="modal" class="text-light btn-link mx-2"><span class="mr-1"><i class="fas fa-edit"></i></span>Edit</a> 
-                                <a href="#" class="text-light btn-link mx-2"><span class="mr-1"><i class="fas fa-minus-circle"></i></span>Delete</a>
+                                <a onclick="deleteCreditCardDetails('@card.Id')" href="#" class="text-light btn-link mx-2"><span class="mr-1"><i class="fas fa-minus-circle"></i></span>Delete</a>
                             </div>
                         </div>
                     </div>
@@ -187,6 +211,7 @@
             </div>
         </div>
         <!-- Credit or Debit Cards End -->
+
         <!-- Bank Accounts ============================================= -->
         <div class="bg-light shadow-sm rounded p-4 mb-4">
             <h3 class="text-5 font-weight-400 mb-4">Bank Accounts <span class="text-muted text-4">(for withdrawal)</span></h3>
