@@ -11,7 +11,7 @@
     /// <summary>
     /// Don't do it in real project. Use payment processor instead.
     /// </summary>
-    public class CreditCard : BaseDeletableModel<string>
+    public class CreditCard : BaseModel<string>
     {
         public CreditCard()
         {
