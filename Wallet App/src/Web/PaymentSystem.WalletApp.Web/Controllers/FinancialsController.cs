@@ -1,20 +1,24 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Controllers
 {
+    using System;
     using System.Text;
     using System.Threading.Tasks;
+
     using AutoMapper;
-    using Data.Models;
-    using Infrastructure;
-    using Infrastructure.Helpers;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using Services;
-    using Services.Data;
-    using Services.Data.Models.BankAccounts;
-    using Services.Data.Models.CreditCards;
-    using ViewModels.Financials.Profile;
+
+    using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Services;
+    using PaymentSystem.WalletApp.Services.Data;
+    using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
+    using PaymentSystem.WalletApp.Services.Data.Models.CreditCards;
+    using PaymentSystem.WalletApp.Web.Infrastructure;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
+    using PaymentSystem.WalletApp.Web.ViewModels.Financials.Profile;
 
     [Authorize]
     public class FinancialsController : BaseController
@@ -24,6 +28,7 @@
         private readonly ICloudinaryService cloudinaryService;
         private readonly ICreditCardService creditCardService;
         private readonly IBankAccountService bankAccountService;
+        private readonly IFingerprintService fingerprintService;
         private readonly IOptions<EncryptionOptions> encryptionOptions;
 
         public FinancialsController(
@@ -32,6 +37,7 @@
             ICloudinaryService cloudinaryService,
             ICreditCardService creditCardService,
             IBankAccountService bankAccountService,
+            IFingerprintService fingerprintService,
             IOptions<EncryptionOptions> encryptionOptions)
         {
             this.userManager = userManager;
@@ -39,6 +45,7 @@
             this.cloudinaryService = cloudinaryService;
             this.creditCardService = creditCardService;
             this.bankAccountService = bankAccountService;
+            this.fingerprintService = fingerprintService;
             this.encryptionOptions = encryptionOptions;
         }
 
@@ -52,6 +59,11 @@
         [HttpPost]
         public async Task<IActionResult> AddCreditCard(AddCreditCardProfileModel model)
         {
+            if (await this.fingerprintService.Exists(model.CardNumber))
+            {
+                this.ModelState.AddModelError(string.Empty, "Card number already exists.");
+            }
+
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetUserProfile();

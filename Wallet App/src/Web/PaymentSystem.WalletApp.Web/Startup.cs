@@ -2,8 +2,6 @@
 {
     using System.Reflection;
 
-    using CloudinaryDotNet;
-    using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -19,10 +17,12 @@
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services;
     using PaymentSystem.WalletApp.Services.Data;
+    using PaymentSystem.WalletApp.Services.Data.Implementations;
+    using PaymentSystem.WalletApp.Services.Data.Models;
     using PaymentSystem.WalletApp.Services.Messaging;
     using PaymentSystem.WalletApp.Web.Extensions;
+    using PaymentSystem.WalletApp.Web.Infrastructure;
     using PaymentSystem.WalletApp.Web.ViewModels;
-    using Services.Data.Models;
 
     public class Startup
     {
@@ -37,6 +37,7 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<EncryptionOptions>(this.configuration.GetSection("Encryption"));
+            services.Configure<FingerprintOptions>(this.configuration.GetSection("Fingerprint"));
 
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
@@ -99,6 +100,7 @@
 
             // Application services
             services.AddTransient<ISaltService, SaltService>();
+            services.AddTransient<IFingerprintService, FingerprintService>();
             services.AddTransient<ISecurelyEncryptDataService, SecurelyEncryptDataService>();
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ITestimonialService, TestimonialService>();

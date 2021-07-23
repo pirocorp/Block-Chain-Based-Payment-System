@@ -1,5 +1,6 @@
-﻿namespace PaymentSystem.WalletApp.Services.Data
+﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -19,17 +20,20 @@
         private readonly ApplicationDbContext dbContext;
         private readonly ISaltService saltService;
         private readonly ISecurelyEncryptDataService securelyEncryptDataService;
+        private readonly IFingerprintService fingerprintService;
         private readonly IMapper mapper;
 
         public CreditCardService(
             ApplicationDbContext dbContext,
             ISaltService saltService,
             ISecurelyEncryptDataService securelyEncryptDataService,
+            IFingerprintService fingerprintService,
             IMapper mapper)
         {
             this.dbContext = dbContext;
             this.saltService = saltService;
             this.securelyEncryptDataService = securelyEncryptDataService;
+            this.fingerprintService = fingerprintService;
             this.mapper = mapper;
         }
 
@@ -64,8 +68,23 @@
                 LastFourDigits = model.CardNumber[^4..],
             };
 
-            await this.dbContext.AddAsync(creditCard);
-            await this.dbContext.SaveChangesAsync();
+            await using var transaction = await this.dbContext.Database.BeginTransactionAsync();
+
+            try
+            {
+                await transaction.CreateSavepointAsync("BeforeAddNewCreditCard");
+
+                await this.dbContext.AddAsync(creditCard);
+                await this.dbContext.SaveChangesAsync();
+
+                await this.fingerprintService.CreateFingerprint(model.CardNumber);
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackToSavepointAsync("BeforeMoreBlogs");
+            }
+
+            await transaction.CommitAsync();
         }
 
         public async Task<IEnumerable<T>> GetCreditCards<T>(string userId)

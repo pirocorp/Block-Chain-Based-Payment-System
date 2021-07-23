@@ -1,16 +1,14 @@
-﻿namespace PaymentSystem.WalletApp.Services.Data
+﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
     using AutoMapper;
     using Microsoft.EntityFrameworkCore;
-
+    using Models.BankAccounts;
     using PaymentSystem.Common.Mapping;
-    using PaymentSystem.WalletApp.Data;
-    using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
+    using WalletApp.Data;
+    using WalletApp.Data.Models;
 
     public class BankAccountService : IBankAccountService
     {

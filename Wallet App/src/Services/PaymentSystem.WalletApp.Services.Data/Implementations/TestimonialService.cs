@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Services.Data
+﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
     using System;
     using System.Collections.Generic;
@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
+
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data;
 

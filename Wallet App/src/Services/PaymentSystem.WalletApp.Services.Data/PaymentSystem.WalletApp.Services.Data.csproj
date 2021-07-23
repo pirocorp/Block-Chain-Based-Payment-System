@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\Data\PaymentSystem.WalletApp.Data.Common\PaymentSystem.WalletApp.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.WalletApp.Data.Models\PaymentSystem.WalletApp.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.WalletApp.Data\PaymentSystem.WalletApp.Data.csproj" />
+    <ProjectReference Include="..\..\Web\PaymentSystem.WalletApp.Web.Infrastructure\PaymentSystem.WalletApp.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\PaymentSystem.WalletApp.Services\PaymentSystem.WalletApp.Services.csproj" />
   </ItemGroup>
 

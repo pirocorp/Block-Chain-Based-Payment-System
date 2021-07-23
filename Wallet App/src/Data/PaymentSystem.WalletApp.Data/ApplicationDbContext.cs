@@ -36,6 +36,8 @@
 
         public DbSet<CreditCard> CreditCards { get; set; }
 
+        public DbSet<Fingerprint> Fingerprints { get; set; }
+
         public DbSet<Transaction> Transactions { get; set; }
 
         public DbSet<Testimonial> Testimonials { get; set; }
