@@ -37,9 +37,13 @@
 
             public const int AccountHolderNameLength = 300;
 
-            public const int IBANLength = 40;
+            public const int IBANLength = 34;
 
-            public const int SwiftLength = 15;
+            public const int IBANMinLength = 5;
+
+            public const int SwiftLength = 11;
+
+            public const int SwiftMinLength = 8;
         }
 
         public static class Beneficiary

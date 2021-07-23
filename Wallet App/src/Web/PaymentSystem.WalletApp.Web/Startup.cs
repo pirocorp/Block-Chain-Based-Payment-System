@@ -88,6 +88,7 @@
             services.AddAutoMapper(
                 typeof(ErrorViewModel).GetTypeInfo().Assembly,
                 typeof(IServiceModel).GetTypeInfo().Assembly);
+
             services.AddCloudinary(this.configuration);
 
             // External Services
@@ -102,6 +103,7 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ITestimonialService, TestimonialService>();
             services.AddTransient<ICreditCardService, CreditCardService>();
+            services.AddTransient<IBankAccountService, BankAccountService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

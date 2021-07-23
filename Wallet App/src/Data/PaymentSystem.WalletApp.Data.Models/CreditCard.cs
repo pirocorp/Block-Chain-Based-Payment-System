@@ -5,7 +5,6 @@
 
     using PaymentSystem.WalletApp.Data.Common.Models;
 
-    using static Data.Common.DataConstants;
     using static Data.Common.DataConstants.CreditCard;
 
     /// <summary>

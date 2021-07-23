@@ -7,6 +7,12 @@
 
     public class ProfileFinancialViewModel : IMapFrom<ApplicationUser>
     {
+        public ProfileFinancialViewModel()
+        {
+            this.CreditCards = new List<ProfileCreditCardModel>();
+            this.BankAccounts = new List<ProfileBankAccountModel>();
+        }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -18,5 +24,7 @@
         public double TotalBalance { get; set; }
 
         public IEnumerable<ProfileCreditCardModel> CreditCards { get; set; }
+
+        public IEnumerable<ProfileBankAccountModel> BankAccounts { get; set; }
     }
 }
