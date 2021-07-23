@@ -1,4 +1,6 @@
-﻿@{
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout.ProfileLayoutUserModel
+
+@{
     Layout = "_Layout.cshtml";
 }
 
@@ -11,7 +13,10 @@
                     <a is-active-route="active" asp-area="" asp-controller="Users" asp-action="Profile" class="nav-link">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a is-active-route="active" asp-area="" asp-controller="Financials" asp-action="Profile" class="nav-link">Cards & Accounts</a>
+                    <a is-active-route="active" asp-area="" asp-controller="Financials" asp-action="Profile" class="nav-link">Cards & Bank Accounts</a>
+                </li>
+                <li class="nav-item">
+                    <a is-active-route="active" asp-area="" asp-controller="Accounts" asp-action="Profile" class="nav-link">Coin Accounts</a>
                 </li>
             </ul>
         </div>
@@ -51,7 +56,7 @@
                 <!-- Available Balance =============================== -->
                 <div class="bg-light shadow-sm rounded text-center p-3 mb-4">
                     <div class="text-17 text-light my-3"><i class="fas fa-wallet"></i></div>
-                    <h3 class="text-9 font-weight-400">P0.00</h3>
+                    <h3 class="text-9 font-weight-400">P @this.Model.TotalBalance.ToString("F2")</h3>
                     <p class="mb-2 text-muted opacity-8">Available Balance</p>
                     <hr class="mx-n3">
                     <div class="d-flex"><a href="withdraw-money.html" class="btn-link mr-auto">Withdraw</a> <a href="deposit-money.html" class="btn-link ml-auto">Deposit</a></div>

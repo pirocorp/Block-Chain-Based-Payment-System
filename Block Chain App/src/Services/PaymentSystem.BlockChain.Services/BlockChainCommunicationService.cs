@@ -3,10 +3,11 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using Common;
+    
     using Grpc.Core;
 
     using PaymentSystem.BlockChain.Services.Data;
+    using PaymentSystem.Common;
     using PaymentSystem.Common.Data.Models;
     using PaymentSystem.Common.GrpcService;
     using PaymentSystem.Common.Transactions;
@@ -14,15 +15,31 @@
 
     public class BlockChainCommunicationService : ComunicationService.ComunicationServiceBase
     {
+        private readonly IAccountService accountService;
         private readonly IBlockChainService blockChainService;
         private readonly ITransactionPool transactionPool;
 
         public BlockChainCommunicationService(
+            IAccountService accountService,
             IBlockChainService blockChainService,
             ITransactionPool transactionPool)
         {
+            this.accountService = accountService;
             this.blockChainService = blockChainService;
             this.transactionPool = transactionPool;
+        }
+
+        public override async Task<AccountCreationResponse> CreateAccount(EmptyRequest request, ServerCallContext context)
+        {
+            var account = await this.accountService.Create();
+
+            return new AccountCreationResponse()
+            {
+                Address = account.Address,
+                Balance = account.Balance,
+                PublicKey = account.PublicKey,
+                Secret = account.Secret
+            };
         }
 
         public override async Task<BlockResponse> GenesisBlock(EmptyRequest request, ServerCallContext context)
@@ -133,7 +150,7 @@
 
             return await Task.FromResult(response);
         }
-
+        
         private static TransactionResponse InvalidTransactionResponse()
         {
             var response = new TransactionResponse()

@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Services
+﻿namespace PaymentSystem.WalletApp.Services.Implementations
 {
     using System.IO;
     using System.Security.Cryptography;

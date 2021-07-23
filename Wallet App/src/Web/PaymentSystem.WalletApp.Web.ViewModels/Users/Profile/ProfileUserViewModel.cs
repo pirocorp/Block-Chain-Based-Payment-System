@@ -2,17 +2,11 @@
 {
     using System;
 
-    using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout;
 
-    public class ProfileUserViewModel : IMapFrom<ApplicationUser>
+    public class ProfileUserViewModel : ProfileLayoutUserModel
     {
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string ProfilePicture { get; set; }
-
         public DateTime DateOfBirth { get; set; }
 
         public Address Address { get; set; }
@@ -20,10 +14,6 @@
         public string Email { get; set; }
 
         public string PhoneNumber { get; set; }
-
-        public double TotalBalance { get; set; }
-
-        public string ProfilePictureAddress { get; set; }
 
         public bool HaveAddress =>
                this.Address.Street != null

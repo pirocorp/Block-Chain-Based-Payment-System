@@ -20,13 +20,13 @@
             this.InboundTransactions = new HashSet<Transaction>();
         }
 
+        public string Address { get; set; }
+
         /// <summary>
         /// Payments, Savings, etc.
         /// </summary>
         [StringLength(NameLength)]
         public string Name { get; set; }
-
-        public string Address { get; set; }
 
         public string PublicKey { get; set; }
 

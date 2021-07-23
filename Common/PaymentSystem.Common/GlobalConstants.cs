@@ -6,11 +6,13 @@
 
         public const int BlockChainBatchSize = 100;
 
-        public const double WelcomeBonus = 500;
+        public const double WelcomeBonus = 0;
 
         public const string PushNotificationUrl = "/notification";
 
         public const int MaxBlockPageSize = 5;
+
+        public const string GrpcChanelAddress = "https://localhost:44319/";
 
         public static class Block
         {

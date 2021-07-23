@@ -2,10 +2,9 @@
 {
     using System.Collections.Generic;
 
-    using PaymentSystem.Common.Mapping;
-    using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout;
 
-    public class ProfileFinancialViewModel : IMapFrom<ApplicationUser>
+    public class ProfileFinancialViewModel : ProfileLayoutUserModel
     {
         public ProfileFinancialViewModel()
         {
@@ -13,15 +12,7 @@
             this.BankAccounts = new List<ProfileBankAccountModel>();
         }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string ProfilePicture { get; set; }
-
-        public string ProfilePictureAddress { get; set; }
-
-        public double TotalBalance { get; set; }
+        public string Id { get; set; }
 
         public IEnumerable<ProfileCreditCardModel> CreditCards { get; set; }
 

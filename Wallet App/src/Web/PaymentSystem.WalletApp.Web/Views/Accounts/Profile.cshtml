@@ -1,0 +1,48 @@
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Accounts.Profile.ProfileAccountsViewModel
+
+@{
+    Layout = "/Views/Shared/_ProfileLayout.cshtml";
+}
+
+<!-- Middle Panel ============================================= -->
+<div class="col-lg-9">
+
+    <!-- Coin Accounts ============================================ -->
+    <div class="bg-light shadow-sm rounded p-4 mb-4">
+        <h3 class="text-5 font-weight-400 mb-4">Coin Accounts <span class="text-muted text-4">(crypto)</span></h3>
+        <div class="row">
+            @foreach (var account in this.Model.Accounts)
+            {
+                <div class="col-12 col-sm-6 mb-4">
+                    <div class="account-card account-card-primary text-white rounded mb-4 mb-lg-0">
+                        <div class="row no-gutters">
+                            <div class="col-3 d-flex justify-content-center p-3">
+                                <div class="my-auto text-center text-13">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                            </div>
+                            <div class="col-9 border-left">
+                                <div class="py-4 my-2 pl-4">
+                                    <p class="text-4 font-weight-500 mb-1">@account.Name</p>
+                                    <p class="text-4 opacity-9 mb-1">@account.Address</p>
+                                    <p class="text-4 font-weight-500 mb-1">@account.Balance</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="account-card-overlay rounded">
+                            <a onclick="getBankAccountsDetails('@account.Address')" href="#" data-target="#bank-account-details" data-toggle="modal" class="text-light btn-link mx-2"><span class="mr-1"><i class="fas fa-minus-circle"></i></span>Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-12 col-sm-6">
+                <a asp-area="" asp-controller="Accounts" asp-action="CreateCoinAccount" class="account-card-new d-flex align-items-center rounded h-100 p-3 mb-4 mb-lg-0">
+                    <p class="w-100 text-center line-height-4 m-0"> <span class="text-3"><i class="fas fa-plus-circle"></i></span> <span class="d-block text-body text-3">Create New Coin Account</span> </p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Coin Accounts End ======================================== -->
+
+</div>
+<!-- Middle Panel End -->

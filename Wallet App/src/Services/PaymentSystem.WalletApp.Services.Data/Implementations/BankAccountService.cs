@@ -5,10 +5,10 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using Microsoft.EntityFrameworkCore;
-    using Models.BankAccounts;
+    using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
     using PaymentSystem.Common.Mapping;
-    using WalletApp.Data;
-    using WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Data;
+    using PaymentSystem.WalletApp.Data.Models;
 
     public class BankAccountService : IBankAccountService
     {

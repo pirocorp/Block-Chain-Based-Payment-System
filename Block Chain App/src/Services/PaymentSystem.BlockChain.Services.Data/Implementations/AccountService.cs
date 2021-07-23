@@ -7,7 +7,9 @@
     using PaymentSystem.BlockChain.Data;
     using PaymentSystem.BlockChain.Data.Models;
     using PaymentSystem.Common;
-
+    using PaymentSystem.Common.Utilities;
+    using PaymentSystem.BlockChain.Services.Data.Models;
+    
     public class AccountService : IAccountService
     {
         private readonly ApplicationDbContext context;
@@ -20,17 +22,29 @@
         public async Task<bool> Exists(string address)
             => await this.context.Accounts.AnyAsync(x => x.Address == address);
 
-        public async Task Create(string address, string publicKey)
+        public async Task<AccountServiceModel> Create()
         {
+            var accountKeys = AccountHelpers.CreateAccount();
+
             var account = new Account()
             {
-                Address = address,
-                PublicKey = publicKey,
+                Address = accountKeys.Address,
+                PublicKey = accountKeys.PublicKey.PublicKeyToString(),
                 Balance = GlobalConstants.WelcomeBonus,
             };
 
             await this.context.AddAsync(account);
             await this.context.SaveChangesAsync();
+
+            var model = new AccountServiceModel()
+            {
+                Address = account.Address,
+                PublicKey = account.PublicKey,
+                Balance = account.Balance,
+                Secret = accountKeys.Secret.BigIntegerToHex(),
+            };
+
+            return model;
         }
 
         /// <summary>

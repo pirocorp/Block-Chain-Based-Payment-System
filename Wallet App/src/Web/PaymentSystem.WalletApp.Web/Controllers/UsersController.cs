@@ -6,35 +6,30 @@
 
     using AutoMapper;
 
-    using Common;
-    using Data.Models;
-    using Infrastructure.Helpers;
-    using ViewModels.Users.Profile;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Services;
+
+    using PaymentSystem.WalletApp.Common;
+    using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Services;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
+    using PaymentSystem.WalletApp.Web.ViewModels.Users.Profile;
 
     [Authorize]
-    public class UsersController : BaseController
+    public class UsersController : ProfileController
     {
-        private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly IMapper mapper;
-        private readonly ICloudinaryService cloudinaryService;
 
         public UsersController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IMapper mapper,
-            ICloudinaryService cloudinaryService)
+            ICloudinaryService cloudinaryService) 
+            : base(userManager, mapper, cloudinaryService)
         {
-            this.userManager = userManager;
             this.signInManager = signInManager;
-            this.mapper = mapper;
-            this.cloudinaryService = cloudinaryService;
         }
 
         public async Task<IActionResult> Dashboard()
@@ -52,8 +47,6 @@
         [HttpPost]
         public async Task<IActionResult> Profile(PersonalDetailsUpdateModel model)
         {
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
-
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
@@ -79,14 +72,13 @@
 
             await this.userManager.UpdateAsync(user);
 
+            var controller = ControllerHelpers.GetControllerName<UsersController>();
             return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
         [HttpPost]
         public async Task<IActionResult> EmailUpdate(EmailUpdateModel model)
         {
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
-
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
@@ -97,6 +89,7 @@
             user.Email = model.Email;
             await this.userManager.UpdateAsync(user);
 
+            var controller = ControllerHelpers.GetControllerName<UsersController>();
             return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
@@ -170,13 +163,10 @@
 
         private async Task<ProfileUserViewModel> GetProfileUser()
         {
-            var user = await this.userManager.GetUserAsync(this.User);
-            var profileUser = this.mapper.Map<ProfileUserViewModel>(user);
+            var profileUser = await this.GetProfileUser<ProfileUserViewModel>();
 
             profileUser.Address ??= new Address();
-            profileUser.ProfilePictureAddress =
-                this.cloudinaryService.GetProfileImageAddress(profileUser.ProfilePicture);
-            
+
             return profileUser;
         }
     }

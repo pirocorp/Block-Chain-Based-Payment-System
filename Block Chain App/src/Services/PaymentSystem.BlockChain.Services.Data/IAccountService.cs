@@ -2,11 +2,13 @@
 {
     using System.Threading.Tasks;
 
+    using Models;
+
     public interface IAccountService
     {
         Task<bool> Exists(string address);
 
-        Task Create(string address, string publicKey);
+        Task<AccountServiceModel> Create();
 
         Task<bool> TryDeposit(string address, double amount);
 

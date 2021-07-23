@@ -2,7 +2,10 @@ namespace PaymentSystem.WalletApp.Services.Tests
 {
     using System;
     using System.Text;
-    using Data.Models;
+
+    using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Services.Implementations;
+
     using Xunit;
 
     public class SecurelyEncryptDataServiceTests

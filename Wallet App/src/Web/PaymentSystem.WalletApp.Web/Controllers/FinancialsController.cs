@@ -1,6 +1,5 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Controllers
 {
-    using System;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -21,11 +20,8 @@
     using PaymentSystem.WalletApp.Web.ViewModels.Financials.Profile;
 
     [Authorize]
-    public class FinancialsController : BaseController
+    public class FinancialsController : ProfileController
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly IMapper mapper;
-        private readonly ICloudinaryService cloudinaryService;
         private readonly ICreditCardService creditCardService;
         private readonly IBankAccountService bankAccountService;
         private readonly IFingerprintService fingerprintService;
@@ -38,11 +34,9 @@
             ICreditCardService creditCardService,
             IBankAccountService bankAccountService,
             IFingerprintService fingerprintService,
-            IOptions<EncryptionOptions> encryptionOptions)
+            IOptions<EncryptionOptions> encryptionOptions) 
+            : base(userManager, mapper, cloudinaryService)
         {
-            this.userManager = userManager;
-            this.mapper = mapper;
-            this.cloudinaryService = cloudinaryService;
             this.creditCardService = creditCardService;
             this.bankAccountService = bankAccountService;
             this.fingerprintService = fingerprintService;
@@ -218,14 +212,10 @@
 
         private async Task<ProfileFinancialViewModel> GetUserProfile()
         {
-            var user = await this.userManager.GetUserAsync(this.User);
-            var profileUser = this.mapper.Map<ProfileFinancialViewModel>(user);
+            var profileUser = await this.GetProfileUser<ProfileFinancialViewModel>();
 
-            profileUser.ProfilePictureAddress =
-                this.cloudinaryService.GetProfileImageAddress(profileUser.ProfilePicture);
-
-            profileUser.CreditCards = await this.creditCardService.GetCreditCards<ProfileCreditCardModel>(user.Id);
-            profileUser.BankAccounts = await this.bankAccountService.GetAccounts<ProfileBankAccountModel>(user.Id);
+            profileUser.CreditCards = await this.creditCardService.GetCreditCards<ProfileCreditCardModel>(profileUser.Id);
+            profileUser.BankAccounts = await this.bankAccountService.GetAccounts<ProfileBankAccountModel>(profileUser.Id);
 
             return profileUser;
         }

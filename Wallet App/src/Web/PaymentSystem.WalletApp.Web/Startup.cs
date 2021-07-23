@@ -23,6 +23,7 @@
     using PaymentSystem.WalletApp.Web.Extensions;
     using PaymentSystem.WalletApp.Web.Infrastructure;
     using PaymentSystem.WalletApp.Web.ViewModels;
+    using Services.Implementations;
 
     public class Startup
     {
