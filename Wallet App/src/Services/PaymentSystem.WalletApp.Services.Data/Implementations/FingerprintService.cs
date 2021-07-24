@@ -8,7 +8,7 @@
     using PaymentSystem.Common.Utilities;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Web.Infrastructure;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Options;
 
     public class FingerprintService : IFingerprintService
     {

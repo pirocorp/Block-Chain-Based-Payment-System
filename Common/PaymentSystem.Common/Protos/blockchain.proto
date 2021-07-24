@@ -3,7 +3,7 @@
 option csharp_namespace = "PaymentSystem.Common.GrpcService";
 
 service ComunicationService {
-	rpc CreateAccount(.EmptyRequest) returns (AccountCreationResponse);
+	rpc CreateAccount(EmptyRequest) returns (AccountCreationResponse);
 	rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
 	rpc LastBlock(EmptyRequest) returns (BlockResponse);
 	rpc GetBlockByHash(HashRequest) returns (BlockModel);

@@ -2,6 +2,8 @@
 {
     public static class DataConstants
     {
+        public const int SecurityStampLength = 128;
+
         public static class Account
         {
             public const int NameLength = 100;
@@ -56,8 +58,6 @@
             public const int LastFourDigitsLength = 4;
 
             public const int ExpiryDateLength = 5;
-
-            public const int SecurityStampLength = 128;
         }
 
         public static class Testimonial

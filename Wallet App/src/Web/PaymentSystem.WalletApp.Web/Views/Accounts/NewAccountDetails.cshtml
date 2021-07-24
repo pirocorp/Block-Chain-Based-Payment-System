@@ -1,0 +1,81 @@
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Accounts.Profile.NewAccountDetailsViewModel
+
+@{
+    Layout = "/Views/Shared/_ProfileLayout.cshtml";
+}
+
+<!-- Middle Panel ============================================= -->
+<div class="col-lg-9">
+
+    <!-- Coin Account ============================================= -->
+    <div id="coin-account-details">
+        <div class="transaction-details" role="document">
+            <div class="modal-content">
+                <div class="row no-gutters">
+                    <div class="col-sm-5 d-flex justify-content-center bg-primary rounded-left py-4">
+                        <div class="my-auto text-center">
+                            <div class="text-17 text-white mb-3"><i class="fab fa-bitcoin"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <h5 class="text-5 font-weight-400 m-3">
+                            Coin Account Details
+                            <a asp-area="" asp-controller="Accounts" asp-action="Profile" class="close font-weight-400"> <span aria-hidden="true">&times;</span> </a>
+                        </h5>
+                        <p class="ml-2  text-danger">Warning! Remember secret or store it in wallet.</p>
+                        <hr>
+                        <div class="px-3">
+                            <ul class="list-unstyled">
+                                <li class="font-weight-500">Address:</li>
+                                <li id="principal-name" class="text-muted">@this.Model.NewAccountDetails.Address</li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="font-weight-500">Public Key:</li>
+                                <li id="iban" class="text-muted">@this.Model.NewAccountDetails.PublicKey</li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="font-weight-500">Balance:</li>
+                                <li id="country" class="text-muted">@this.Model.NewAccountDetails.Balance</li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li class="font-weight-500">Secret:</li>
+                                <li id="status" class="text-muted">@this.Model.NewAccountDetails.Secret</li>
+                            </ul>
+                            <div class="mb-2">
+                                <a href="" data-target="#add-keys-to-wallet" data-toggle="modal" class="btn btn-sm btn-outline-success btn-block shadow-none"><span class="mr-1"><i class="far fa-save"></i></span>Store Keys In Wallet</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Coin Account End ========================================= -->
+    
+    <!-- Secret Coin Account Modal ================================== -->
+    <div id="add-keys-to-wallet" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-400">Save Keys</h5>
+                    <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="updateCard" method="post" asp-area="" asp-controller="Accounts" asp-action="StoreSecret">
+                        <div class="form-group">
+                            <label for="secret">Secret</label>
+                            <input id="secret" name="secret" type="text" class="form-control" readonly="" value="@this.Model.NewAccountDetails.Secret" placeholder="Secret">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input id="address" name="address" type="text" class="form-control" readonly="" value="@this.Model.NewAccountDetails.Address" placeholder="Address">
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">Save Keys</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Middle Panel End -->

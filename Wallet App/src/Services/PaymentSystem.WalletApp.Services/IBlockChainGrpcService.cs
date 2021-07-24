@@ -1,8 +1,11 @@
 ﻿namespace PaymentSystem.WalletApp.Services
 {
-    using PaymentSystem.WalletApp.Services.Implementations;
+    using System.Threading.Tasks;
+
+    using PaymentSystem.Common.GrpcService;
 
     public interface IBlockChainGrpcService
     {
+        Task<AccountCreationResponse> CreateAccount();
     }
 }

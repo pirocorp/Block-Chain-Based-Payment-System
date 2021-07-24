@@ -1,5 +1,6 @@
 ﻿namespace PaymentSystem.WalletApp.Data.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,11 @@
 
     public class AccountKey : BaseModel<string>, IEntityTypeConfiguration<AccountKey>
     {
+        public AccountKey()
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
+
         public string Address { get; set; }
 
         public Account Account { get; set; }
@@ -19,8 +25,11 @@
 
         public ApplicationUser User { get; set; }
 
+        [StringLength(SecurityStampLength)]
+        public string SecurityStamp { get; set; }
+
         /// <summary>
-        /// Gets or Sets, symmetrically encrypted key with password provided from user.
+        /// Gets or Sets, symmetrically encrypted key.
         /// Key is used to be restored Private public key pair
         /// for signing transactions.
         /// </summary>

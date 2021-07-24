@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.Infrastructure
+﻿namespace PaymentSystem.WalletApp.Web.Infrastructure.Options
 {
     public class EncryptionOptions
     {

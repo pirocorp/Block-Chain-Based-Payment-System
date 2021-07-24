@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -15,8 +14,8 @@
     using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
     using PaymentSystem.WalletApp.Services.Data.Models.CreditCards;
-    using PaymentSystem.WalletApp.Web.Infrastructure;
     using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Options;
     using PaymentSystem.WalletApp.Web.ViewModels.Financials.Profile;
 
     [Authorize]
