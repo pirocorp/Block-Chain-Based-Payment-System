@@ -52,6 +52,7 @@
                     Address = icoAccount.Address.ToUpper(),
                     Balance = icoAccount.Balance,
                     PublicKey = icoAccount.PublicKey,
+                    IsMarketMaker = true,
                 };
 
                 accounts.Add(account);

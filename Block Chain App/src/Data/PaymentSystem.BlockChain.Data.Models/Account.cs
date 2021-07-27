@@ -11,6 +11,8 @@
 
         public double Balance { get; set; }
 
+        public bool IsMarketMaker { get; set; }
+
         public void Configure(EntityTypeBuilder<Account> builder)
         {
             builder.HasKey(a => a.Address);

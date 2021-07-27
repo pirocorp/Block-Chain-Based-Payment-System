@@ -10,15 +10,15 @@
 
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext dbContext;
 
         public UserService(ApplicationDbContext dbContext)
         {
-            this._dbContext = dbContext;
+            this.dbContext = dbContext;
         }
 
         public async Task<T> GetUser<T>(string id)
-            => await this._dbContext.Users
+            => await this.dbContext.Users
                 .Where(u => u.Id == id)
                 .To<T>()
                 .FirstOrDefaultAsync();

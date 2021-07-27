@@ -21,3 +21,11 @@
 .coin-account-details-card {
     border: none;
 }
+
+.remove-arrow-spinners,
+.remove-arrow-spinners::-webkit-outer-spin-button,
+.remove-arrow-spinners::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield;
+}

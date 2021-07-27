@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+}
+
+@section SecondaryMenu{
+    <div class="bg-white">
+        <div class="container d-flex justify-content-center">
+            <ul class="nav secondary-nav alternate">
+                <li class="nav-item">
+                     <a class="nav-link" is-active-route="active" asp-area="" asp-controller="Transfers" asp-action="Deposit">Deposit</a>
+                </li>
+                <li class="nav-item">
+                     <a class="nav-link" is-active-route="active" asp-area="" asp-controller="Transfers" asp-action="Withdraw">Withdraw</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+}
+
+@section Styles{
+    @await this.RenderSectionAsync("Styles", required: false)
+}
+
+@section Scripts{
+    @await this.RenderSectionAsync("Scripts", required: false)
+}
+
+@this.RenderBody()

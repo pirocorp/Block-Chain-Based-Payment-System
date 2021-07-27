@@ -1,0 +1,48 @@
+﻿@using PaymentSystem.WalletApp.Web.ViewModels.Transfers
+@using PaymentSystem.Common.Extensions
+@{
+    Layout = "/Views/Shared/_TransfersLayout.cshtml";
+    var selectListItems = Enum.GetValues<DepositModelPaymentMethod>()
+        .Select(e => new SelectListItem(e.GetDisplayNameValue(), e.ToString()));
+}
+
+@section Scripts{
+    <script>
+        const onAmountChange = (value) => document.getElementById('total-amount').textContent = `${value} USD`;
+    </script>
+}
+
+    <div class="py-4">
+        <div class="container">
+            <h2 class="font-weight-400 text-center mt-3 mb-4">Deposit Money</h2>
+            <div class="row">
+                <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+                    <div class="bg-light shadow-sm rounded p-3 p-sm-4 mb-4">
+
+                        <!-- Deposit Money Form ============================================= -->
+                        <form id="form-send-money" method="post" asp-area="" asp-controller="Transfers" asp-action="Deposit">
+                            <div class="form-group">
+                                <label for="youSend">Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"> <span class="input-group-text">P</span> </div>
+                                    <input name="amount" onChange="onAmountChange(this.value)" type="number" class="form-control remove-arrow-spinners" data-bv-field="youSend" id="youSend" placeholder="How many prirocoins">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="paymentMethod">Payment Method</label>
+                                <select name="paymentMethod" asp-items="selectListItems" id="paymentMethod" class="custom-select" required>
+                                    <option selected="selected" disabled="disabled">Select Payment Method</option>
+                                </select>
+                            </div>
+                            <p class="text-muted mt-4">Transactions fees <span class="float-right d-flex align-items-center"><span class="bg-success text-1 text-white font-weight-500 rounded d-inline-block px-2 line-height-4 ml-2">Free</span></span></p>
+                            <hr>
+                            <p class="font-weight-500">Total cost <span id="total-amount" class="text-3 float-right">0 USD</span></p>
+                            <button type="submit" class="btn btn-primary btn-block">Continue</button>
+                        </form>
+                        <!-- Deposit Money Form end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content end -->
