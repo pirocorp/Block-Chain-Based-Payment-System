@@ -16,25 +16,36 @@
     using PaymentSystem.WalletApp.Services;
     using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
     using PaymentSystem.WalletApp.Web.ViewModels.Users.Profile;
+    using Services.Data;
+    using ViewModels.Users.Dashboard;
 
     [Authorize]
     public class UsersController : ProfileController
     {
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IUserService userService;
 
         public UsersController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IMapper mapper,
-            ICloudinaryService cloudinaryService) 
+            ICloudinaryService cloudinaryService,
+            IUserService userService) 
             : base(userManager, mapper, cloudinaryService)
         {
             this.signInManager = signInManager;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> Dashboard()
         {
-            return this.View();
+            var userId = this.userManager.GetUserId(this.User);
+            var dashboardUser = await this.userService.GetUser<DashboardUser>(userId);
+
+            dashboardUser.ProfilePictureAddress =
+                this.cloudinaryService.GetProfileImageAddress(dashboardUser.ProfilePicture);
+
+            return this.View(dashboardUser);
         }
 
         public async Task<IActionResult> Profile()

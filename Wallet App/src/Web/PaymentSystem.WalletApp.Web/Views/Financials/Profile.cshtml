@@ -3,7 +3,7 @@
 @model PaymentSystem.WalletApp.Web.ViewModels.Financials.Profile.ProfileFinancialViewModel;
 
 @{
-    Layout = "/Views/Shared/_ProfileLayout.cshtml";
+    Layout = "/Views/Shared/_ProfileWithSecondaryMenuLayout.cshtml";
 
     var cardTypesSelectList = Enum.GetValues(typeof(CardType))
         .Cast<CardType>()

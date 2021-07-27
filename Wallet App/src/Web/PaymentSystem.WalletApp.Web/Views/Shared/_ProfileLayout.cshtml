@@ -4,23 +4,8 @@
     Layout = "_Layout.cshtml";
 }
 
-@section SecondaryMenu
-{
-    <div class="bg-primary">
-        <div class="container d-flex justify-content-center">
-            <ul class="nav secondary-nav">
-                <li class="nav-item">
-                    <a is-active-route="active" asp-area="" asp-controller="Users" asp-action="Profile" class="nav-link">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a is-active-route="active" asp-area="" asp-controller="Financials" asp-action="Profile" class="nav-link">Cards & Bank Accounts</a>
-                </li>
-                <li class="nav-item">
-                    <a is-active-route="active" asp-area="" asp-controller="Accounts" asp-action="Profile" class="nav-link">Coin Accounts</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+@section SecondaryMenu{
+    @await this.RenderSectionAsync("SecondaryMenu", required: false)
 }
 
 @section Styles{
@@ -69,5 +54,3 @@
         </div>
     </div>
 </div>
-
-

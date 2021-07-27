@@ -22,10 +22,9 @@
 
         public async Task<IActionResult> Index()
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (this.User.Identity?.IsAuthenticated ?? false)
             {
                 var controller = ControllerHelpers.GetControllerName<UsersController>();
-
                 return this.Redirect($"/{controller}/{nameof(UsersController.Dashboard)}");
             }
 
