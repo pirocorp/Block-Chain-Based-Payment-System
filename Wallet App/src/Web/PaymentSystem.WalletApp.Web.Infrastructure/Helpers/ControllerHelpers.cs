@@ -1,13 +1,26 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Infrastructure.Helpers
 {
     using System;
-
+    using System.Reflection;
     using Microsoft.AspNetCore.Mvc;
 
     public static class ControllerHelpers
     {
         public static string GetControllerName<T>()
             where T : Controller
-            => typeof(T).Name.Replace(nameof(Controller), string.Empty);
+            => GetName(typeof(T));
+
+        public static string GetControllerName(Type controllerType)
+        {
+            if (!controllerType.IsSubclassOf(typeof(Controller)))
+            {
+                throw new NotSupportedException($"{controllerType.Name} must inherit Controller.");
+            }
+
+            return GetName(controllerType);
+        }
+
+        private static string GetName(Type type)
+            => type.Name.Replace(nameof(Controller), string.Empty);
     }
 }

@@ -1,20 +1,22 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Controllers
 {
-    using System;
     using System.Threading.Tasks;
 
     using AutoMapper;
-    using Infrastructure.Helpers;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+
     using Newtonsoft.Json;
+
     using PaymentSystem.Common.GrpcService;
     using PaymentSystem.WalletApp.Data.Models;
-
     using PaymentSystem.WalletApp.Services;
+    using PaymentSystem.WalletApp.Services.Data;
+    using PaymentSystem.WalletApp.Services.Data.Models.AccountsKeys;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
     using PaymentSystem.WalletApp.Web.ViewModels.Accounts.Profile;
-    using Services.Data;
-    using Services.Data.Models.AccountsKeys;
+    using Services.Data.Models.Accounts;
 
     public class AccountsController : ProfileController
     {
@@ -88,9 +90,48 @@
             return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
+        public async Task<IActionResult> GetAccountDetails(string address)
+            => this.Ok(await this.accountService.GetAccount<ProfileAccountModel>(address));
+
+        [HttpPost]
+        public async Task<IActionResult> EditAccountDetails(EditAccountDetailsModel model)
+        {
+            var userId = this.userManager.GetUserId(this.User);
+
+            if (!await this.accountService.UserOwnsAccount(userId, model.Address))
+            {
+                return this.BadRequest();
+            }
+
+            var serviceModel = this.mapper.Map<EditAccountServiceModel>(model);
+            await this.accountService.EditAccount(serviceModel);
+
+            var controller = ControllerHelpers.GetControllerName<AccountsController>();
+            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCoinAccount(string address)
+        {
+            var userId = this.userManager.GetUserId(this.User);
+
+            if (!await this.accountService.UserOwnsAccount(userId, address))
+            {
+                return this.BadRequest();
+            }
+
+            await this.accountService.Delete(address);
+
+            var controller = ControllerHelpers.GetControllerName<AccountsController>();
+            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+        }
+
         private async Task<ProfileAccountsViewModel> GetUserProfile()
         {
             var profileUser = await this.GetProfileUser<ProfileAccountsViewModel>();
+
+            var userId = this.userManager.GetUserId(this.User);
+            profileUser.Accounts = await this.accountService.GetAccounts<ProfileAccountModel>(userId);
 
             return profileUser;
         }

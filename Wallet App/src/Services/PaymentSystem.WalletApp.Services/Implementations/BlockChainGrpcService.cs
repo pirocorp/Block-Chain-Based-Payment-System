@@ -19,5 +19,11 @@
 
         public async Task<AccountCreationResponse> CreateAccount()
             => await this.service.CreateAccountAsync(new EmptyRequest());
+
+        public async Task<BoolResponse> DeleteAccount(string address)
+            => await this.service.DeleteAccountAsync(new AccountAddressRequest()
+            {
+                Address = address,
+            });
     }
 }

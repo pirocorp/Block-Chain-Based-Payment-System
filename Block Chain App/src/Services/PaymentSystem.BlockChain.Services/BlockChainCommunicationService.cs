@@ -42,6 +42,9 @@
             };
         }
 
+        public override async Task<BoolResponse> DeleteAccount(AccountAddressRequest request, ServerCallContext context)
+            => new() { Success = await this.accountService.Delete(request.Address) };
+
         public override async Task<BlockResponse> GenesisBlock(EmptyRequest request, ServerCallContext context)
         {
             var block = await this.blockChainService.GetGenesisBlock();

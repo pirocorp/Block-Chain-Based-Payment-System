@@ -9,7 +9,7 @@
 
     <!-- Coin Account ============================================= -->
     <div id="coin-account-details">
-        <div class="transaction-details" role="document">
+        <div role="document">
             <div class="modal-content">
                 <div class="row no-gutters">
                     <div class="col-sm-5 d-flex justify-content-center bg-primary rounded-left py-4">
@@ -22,14 +22,14 @@
                             Coin Account Details
                             <a asp-area="" asp-controller="Accounts" asp-action="Profile" class="close font-weight-400"> <span aria-hidden="true">&times;</span> </a>
                         </h5>
-                        <p class="ml-2  text-danger">Warning! Remember secret or store it in wallet.</p>
+                        <p class="ml-2  text-danger">Warning! Remember the secret or store it in the wallet.</p>
                         <hr>
                         <div class="px-3">
-                            <ul class="list-unstyled">
+                            <ul class="card list-unstyled coin-account-details-card">
                                 <li class="font-weight-500">Address:</li>
                                 <li id="principal-name" class="text-muted">@this.Model.NewAccountDetails.Address</li>
                             </ul>
-                            <ul class="list-unstyled">
+                            <ul class="card list-unstyled coin-account-details-card">
                                 <li class="font-weight-500">Public Key:</li>
                                 <li id="iban" class="text-muted">@this.Model.NewAccountDetails.PublicKey</li>
                             </ul>
@@ -37,7 +37,7 @@
                                 <li class="font-weight-500">Balance:</li>
                                 <li id="country" class="text-muted">@this.Model.NewAccountDetails.Balance</li>
                             </ul>
-                            <ul class="list-unstyled">
+                            <ul class="card list-unstyled coin-account-details-card">
                                 <li class="font-weight-500">Secret:</li>
                                 <li id="status" class="text-muted">@this.Model.NewAccountDetails.Secret</li>
                             </ul>

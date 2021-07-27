@@ -4,6 +4,7 @@ option csharp_namespace = "PaymentSystem.Common.GrpcService";
 
 service ComunicationService {
 	rpc CreateAccount(EmptyRequest) returns (AccountCreationResponse);
+	rpc DeleteAccount(AccountAddressRequest) returns (BoolResponse);
 	rpc GenesisBlock(EmptyRequest) returns (BlockResponse);
 	rpc LastBlock(EmptyRequest) returns (BlockResponse);
 	rpc GetBlockByHash(HashRequest) returns (BlockModel);
@@ -14,6 +15,10 @@ service ComunicationService {
 }
 
 message EmptyRequest {
+}
+
+message AccountAddressRequest {
+	string address = 1;
 }
 
 message HashRequest {
@@ -63,6 +68,10 @@ message SearchRequest {
 	string query = 1;
 	int32 page_number = 2;
 	int32 result_per_page = 3; 
+}
+
+message BoolResponse {
+	bool success = 1;
 }
 
 message TransactionModel {

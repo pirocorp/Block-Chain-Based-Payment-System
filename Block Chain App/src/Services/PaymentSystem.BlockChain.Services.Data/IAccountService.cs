@@ -10,6 +10,8 @@
 
         Task<AccountServiceModel> Create();
 
+        Task<bool> Delete(string address);
+
         Task<bool> TryDeposit(string address, double amount);
 
         Task<bool> TryWithdraw(string address, double amount);

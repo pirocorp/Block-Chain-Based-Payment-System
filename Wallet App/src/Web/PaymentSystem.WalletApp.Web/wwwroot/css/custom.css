@@ -17,3 +17,7 @@
     list-style: none;
     padding: 0;
 }
+
+.coin-account-details-card {
+    border: none;
+}

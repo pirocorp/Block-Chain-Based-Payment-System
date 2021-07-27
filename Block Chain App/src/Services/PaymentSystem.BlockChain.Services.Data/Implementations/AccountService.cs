@@ -47,6 +47,21 @@
             return model;
         }
 
+        public async Task<bool> Delete(string address)
+        {
+            var account = await this.context.Accounts.FindAsync(address);
+
+            if (account is null)
+            {
+                return false;
+            }
+
+            this.context.Accounts.Remove(account);
+            await this.context.SaveChangesAsync();
+
+            return true;
+        }
+
         /// <summary>
         /// Most block chain implementations sends money to address that are not in the system.
         /// There are number of such bitcoins in 'not valid' addresses.

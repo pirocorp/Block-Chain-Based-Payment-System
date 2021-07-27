@@ -4,6 +4,58 @@
     Layout = "/Views/Shared/_ProfileLayout.cshtml";
 }
 
+@section Scripts{
+    <script>
+        async function getCoinAccountDetails(address) {
+            console.log(address);
+            const uri = `/accounts/getAccountDetails?address=${address}`;
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            const response = await fetch(uri, options);
+            return await response.json();
+        };
+
+        function getDeleteAccountDetails(address) {
+            getCoinAccountDetails(address)
+                .then(res => {
+                    const accountName = document.getElementById('account-name');
+                    accountName.textContent = res.name;
+
+                    const accountAddress = document.getElementById('account-address');
+                    accountAddress.textContent = res.address;
+
+                    const accountBalance = document.getElementById('account-balance');
+                    accountBalance.textContent = res.balance;
+
+                    const deleteAccountAddress = document.getElementById('delete-account-address');
+                    deleteAccountAddress.value = res.address;
+                })
+                .catch(err => console.log(err));
+        };
+
+        function getEditAccountDetails(address) {
+            const accountName = document.getElementById('edit-account-name');
+            accountName.setAttribute("disabled", "disabled");
+
+            getCoinAccountDetails(address)
+                .then(res => {
+                    const accountAddress = document.getElementById('edit-account-address');
+                    accountAddress.value = res.address;
+                    
+                    accountName.removeAttribute("disabled");
+                    accountName.textContent = res.name;
+                })
+                .catch();
+        }
+    </script>
+}
+
 <!-- Middle Panel ============================================= -->
 <div class="col-lg-9">
 
@@ -18,19 +70,30 @@
                         <div class="row no-gutters">
                             <div class="col-3 d-flex justify-content-center p-3">
                                 <div class="my-auto text-center text-13">
-                                    <i class="fas fa-university"></i>
+                                    <i class="fab fa-bitcoin"></i>
                                 </div>
                             </div>
                             <div class="col-9 border-left">
                                 <div class="py-4 my-2 pl-4">
                                     <p class="text-4 font-weight-500 mb-1">@account.Name</p>
-                                    <p class="text-4 opacity-9 mb-1">@account.Address</p>
+                                    <p class="text-4 opacity-9 mb-1">XXXX-@account.Address[^12..]</p>
                                     <p class="text-4 font-weight-500 mb-1">@account.Balance</p>
                                 </div>
                             </div>
                         </div>
                         <div class="account-card-overlay rounded">
-                            <a onclick="getBankAccountsDetails('@account.Address')" href="#" data-target="#bank-account-details" data-toggle="modal" class="text-light btn-link mx-2"><span class="mr-1"><i class="fas fa-minus-circle"></i></span>Delete</a>
+                            <a onclick="getDeleteAccountDetails('@account.Address')" href="#" data-target="#coin-account-details" data-toggle="modal" class="text-light btn-link mx-2">
+                                <span class="mr-1">
+                                    <i class="fas fa-minus-circle"></i>
+                                </span>
+                                Delete
+                            </a>
+                            <a onclick="getEditAccountDetails('@account.Address')" href="#" data-target="#edit-account-details" data-toggle="modal" class="text-light btn-link mx-2">
+                                <span class="mr-1">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                                Edit Name
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -44,6 +107,78 @@
             </div>
         </div>
     </div>
+
+    <!-- Delete Coin Account Details Modal ======================================== -->
+    <div id="coin-account-details" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered transaction-details" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row no-gutters">
+                        <div class="col-sm-5 d-flex justify-content-center bg-primary rounded-left py-4">
+                            <div class="my-auto text-center">
+                                <div class="text-17 text-white mb-3"><i class="fas fa-university"></i></div>
+                                <h3 id="bank-name" class="text-6 text-white my-3">Bank Name</h3>
+                                <div id="bank-account-short" class="text-4 text-white my-4">XXXX-0000</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <h5 class="text-5 font-weight-400 m-3">
+                                Bank Account Details
+                                <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                            </h5>
+                            <hr>
+                            <div class="px-3">
+                                <ul class="card list-unstyled coin-account-details-card">
+                                    <li class="font-weight-500">Account Name:</li>
+                                    <li id="account-name" disabled class="text-muted">Account Name</li>
+                                </ul>
+                                <ul class="card list-unstyled coin-account-details-card">
+                                    <li class="font-weight-500">Account Address:</li>
+                                    <li id="account-address" disabled class="text-muted">XXXXXXXXXXXXXXXXX</li>
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <li class="font-weight-500">Balance:</li>
+                                    <li id="account-balance" disabled class="text-muted"></li>
+                                </ul>
+                                <div class="mb-2">
+                                    <form asp-area="" asp-controller="Accounts" asp-action="DeleteCoinAccount" method="post">
+                                        <input id="delete-account-address" type="hidden" name="address" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger btn-block shadow-none"><span class="mr-1"><i class="fas fa-minus-circle"></i></span>Delete Account</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Coin Account Modal ================================== -->
+    <div id="edit-account-details" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-400">Update Card</h5>
+                    <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="updateCard" method="post" asp-area="" asp-controller="Accounts" asp-action="EditAccountDetails">
+                        <div class="form-group">
+                            <label for="edit-account-address">Account Address</label>
+                            <input id="edit-account-address" name="address" type="text" class="form-control" data-bv-field="edircardNumber" readonly value="XXXXXXXXXXXXXXX" placeholder="Account Address">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-account-name">Account Name</label>
+                            <input id="edit-account-name" name="name" type="text" class="form-control" data-bv-field="editcardHolderName" disabled required value="Account Name" placeholder="Account Name">
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">Update Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Coin Accounts End ======================================== -->
 
 </div>

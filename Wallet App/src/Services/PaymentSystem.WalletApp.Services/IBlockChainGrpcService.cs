@@ -7,5 +7,7 @@
     public interface IBlockChainGrpcService
     {
         Task<AccountCreationResponse> CreateAccount();
+
+        Task<BoolResponse> DeleteAccount(string address);
     }
 }

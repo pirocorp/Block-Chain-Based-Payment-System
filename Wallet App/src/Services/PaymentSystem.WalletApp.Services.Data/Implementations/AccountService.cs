@@ -1,10 +1,13 @@
 ﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
-
+    using Models.Accounts;
     using PaymentSystem.Common.GrpcService;
+    using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
 
@@ -28,6 +31,18 @@
             => await this.dbContext.Accounts
                 .AnyAsync(a => a.Address == address && a.UserId == userId);
 
+        public async Task<T> GetAccount<T>(string address)
+            => await this.dbContext.Accounts
+                .Where(a => a.Address == address)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<T>> GetAccounts<T>(string userId)
+            => await this.dbContext.Accounts
+                .Where(a => a.UserId == userId)
+                .To<T>()
+                .ToListAsync();
+
         public async Task<AccountCreationResponse> Create(string userId)
         {
             var blockchainAccount = await this.blockChainGrpcService.CreateAccount();
@@ -44,6 +59,29 @@
             await this.dbContext.SaveChangesAsync();
 
             return blockchainAccount;
+        }
+
+        public async Task EditAccount(EditAccountServiceModel model)
+        {
+            var account = await this.dbContext.Accounts.FindAsync(model.Address);
+            account.Name = model.Name;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task Delete(string address)
+        {
+            await this.blockChainGrpcService.DeleteAccount(address);
+
+            var account = await this.dbContext.Accounts.FindAsync(address);
+
+            var accountKeys = await this.dbContext.AccountsKeys
+                .Where(ak => ak.Address == address)
+                .ToListAsync();
+
+            this.dbContext.AccountsKeys.RemoveRange(accountKeys);
+            this.dbContext.Accounts.Remove(account);
+            await this.dbContext.SaveChangesAsync();
         }
     }
 }
