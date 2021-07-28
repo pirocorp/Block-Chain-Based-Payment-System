@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
+    using Common.Utilities;
     using Coravel.Invocable;
     using Microsoft.AspNetCore.SignalR;
 
@@ -14,21 +15,24 @@
 
     public class BlockJob : IInvocable
     {
-        private readonly IMapper mapper;
-        private readonly ICancelTransactionPool cancelTransactionPool;
-        private readonly IBlockChainService blockChainService;
+        private readonly SystemKeys systemKeys;
         private readonly IHubContext<BroadcastHub, IBlockNotificationClient> broadcastHubContext;
+        private readonly IBlockChainService blockChainService;
+        private readonly ICancelTransactionPool cancelTransactionPool;
+        private readonly IMapper mapper;
 
         public BlockJob(
-            IMapper mapper,
-            ICancelTransactionPool cancelTransactionPool,
+            SystemKeys systemKeys,
+            IHubContext<BroadcastHub, IBlockNotificationClient> broadcastHubContext,
             IBlockChainService blockChainService,
-            IHubContext<BroadcastHub, IBlockNotificationClient> broadcastHubContext)
+            ICancelTransactionPool cancelTransactionPool, 
+            IMapper mapper)
         {
-            this.mapper = mapper;
-            this.cancelTransactionPool = cancelTransactionPool;
-            this.blockChainService = blockChainService;
+            this.systemKeys = systemKeys;
             this.broadcastHubContext = broadcastHubContext;
+            this.blockChainService = blockChainService;
+            this.cancelTransactionPool = cancelTransactionPool;
+            this.mapper = mapper;
         }
 
         public async Task Invoke()
@@ -41,6 +45,10 @@
             }
 
             var notificationBlock = this.mapper.Map<NotificationBlock>(block);
+
+            notificationBlock.BlockChainPublicKey = this.systemKeys.PublicKey.PublicKeyToString();
+            notificationBlock.BlockChainSignature = BlockChainHashing
+                .CreateSignature(notificationBlock.Hash, this.systemKeys.PrivateKey);
 
             notificationBlock.CanceledTransactions = this.cancelTransactionPool.GetAll()
                 .Select(t => this.mapper.Map<TransactionNotification>(t));

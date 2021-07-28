@@ -58,6 +58,15 @@
         /// <param name="secret">Secret to get private key.</param>
         /// <returns></returns>
         public static string CreateSignature(string message, string secret)
-            => Ecdsa.sign(message, AccountHelpers.RestoreAccount(secret).PrivateKey).toBase64();
+            => CreateSignature(message, AccountHelpers.RestoreAccount(secret).PrivateKey);
+
+        /// <summary>
+        /// This method signs message with private key.
+        /// </summary>
+        /// <param name="message">Message.</param>
+        /// <param name="privateKey">Private key.</param>
+        /// <returns></returns>
+        public static string CreateSignature(string message, PrivateKey privateKey)
+            => Ecdsa.sign(message, privateKey).toBase64();
     }
 }
