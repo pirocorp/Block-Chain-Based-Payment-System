@@ -27,8 +27,9 @@ namespace PaymentSystem.WalletApp.Data.Models
 
             this.Accounts = new HashSet<Account>();
             this.AccountKeys = new HashSet<AccountKey>();
+            this.Activities = new HashSet<Activity>();
             this.BankAccounts = new HashSet<BankAccount>();
-            this.Beneficiaries = new HashSet<Beneficiary>();
+            this.Beneficiaries = new HashSet<Counterparty>();
             this.CreditCards = new HashSet<CreditCard>();
         }
 
@@ -65,9 +66,11 @@ namespace PaymentSystem.WalletApp.Data.Models
 
         public ICollection<AccountKey> AccountKeys { get; set; }
 
+        public ICollection<Activity> Activities { get; set; }
+
         public ICollection<BankAccount> BankAccounts { get; set; }
 
-        public ICollection<Beneficiary> Beneficiaries { get; set; }
+        public ICollection<Counterparty> Beneficiaries { get; set; }
 
         public ICollection<CreditCard> CreditCards { get; set; }
 
@@ -93,19 +96,6 @@ namespace PaymentSystem.WalletApp.Data.Models
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .HasMany(e => e.Accounts)
-                .WithOne(a => a.User)
-                .HasForeignKey(e => e.UserId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .HasMany(e => e.Beneficiaries)
-                .WithOne(a => a.User)
-                .HasForeignKey(e => e.UserId)
-                .IsRequired();
         }
     }
 }

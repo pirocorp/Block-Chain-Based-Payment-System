@@ -1,0 +1,48 @@
+﻿@using PaymentSystem.WalletApp.Services.Data.Models
+@model PaymentSystem.WalletApp.Web.ViewModels.Transfers.DepositConfirm.DepositConfirmModel
+
+@{
+    Layout = "/Views/Shared/_TransfersLayout.cshtml";
+    var paymentMethod = this.Model.PaymentMethod switch {
+
+        PaymentMethod.CreditOrDebitCard => "Card",
+        PaymentMethod.BankAccount => "Bank",
+        _ => string.Empty
+    };
+}
+
+<!-- Content ============================================= -->
+<div class="py-4">
+    <div class="container">
+        <h2 class="font-weight-400 text-center mt-3 mb-4">Deposit Money</h2>
+        <div class="row">
+            <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+                <div class="bg-light shadow-sm rounded p-3 p-sm-4 mb-4">
+                    <h3 class="text-5 font-weight-400 mb-3">Deposit Money via</h3>
+                    <!-- Deposit Money Confirm ============================================= -->
+                    <form id="form-send-money" method="post">
+                        <div class="form-group">
+                            <label for="paymentMethod">@paymentMethod</label>
+                            <select name="paymentMethod" id="paymentMethod" asp-items="@this.Model.PaymentMethods" class="custom-select" required>
+                            </select>
+                        </div>
+                        <h3 class="text-5 font-weight-400 mb-3">Details</h3>
+                        <div class="form-group">
+                            <label for="coinAccount">Account</label>
+                            <select name="account" id="coinAccount" asp-items="@this.Model.Accounts" class="custom-select" required>
+                            </select>
+                        </div>
+                        <p class="mb-1">Deposit Amount <span class="text-3 float-right">@this.Model.Amount.ToString("F2") P</span></p>
+                        <hr>
+                        <p class="font-weight-500">Total<span class="text-3 float-right">@this.Model.Total.ToString("F2") USD</span></p>
+                        <input type="hidden" name="paymentType" value="@this.Model.PaymentMethod.ToString()" />
+                        <input type="hidden" name="amount" value="@this.Model.Amount" />
+                        <button type="submit" class="btn btn-primary btn-block">Confirm</button>
+                    </form>
+                    <!-- Deposit Money Confirm end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Content end -->

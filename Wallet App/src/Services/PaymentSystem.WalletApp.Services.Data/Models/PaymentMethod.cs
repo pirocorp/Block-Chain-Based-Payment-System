@@ -1,8 +1,8 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Transfers
+﻿namespace PaymentSystem.WalletApp.Services.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
 
-    public enum DepositModelPaymentMethod
+    public enum PaymentMethod
     {
         [Display(Name = "Credit or Debit card")]
         CreditOrDebitCard = 1,

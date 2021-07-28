@@ -1,8 +1,10 @@
-﻿@using PaymentSystem.WalletApp.Web.ViewModels.Transfers
-@using PaymentSystem.Common.Extensions
+﻿@using PaymentSystem.Common.Extensions
+@using PaymentSystem.WalletApp.Services.Data.Models
+
 @{
     Layout = "/Views/Shared/_TransfersLayout.cshtml";
-    var selectListItems = Enum.GetValues<DepositModelPaymentMethod>()
+    var selectListItems = Enum
+        .GetValues<PaymentMethod>()
         .Select(e => new SelectListItem(e.GetDisplayNameValue(), e.ToString()));
 }
 
@@ -31,7 +33,6 @@
                             <div class="form-group">
                                 <label for="paymentMethod">Payment Method</label>
                                 <select name="paymentMethod" asp-items="selectListItems" id="paymentMethod" class="custom-select" required>
-                                    <option selected="selected" disabled="disabled">Select Payment Method</option>
                                 </select>
                             </div>
                             <p class="text-muted mt-4">Transactions fees <span class="float-right d-flex align-items-center"><span class="bg-success text-1 text-white font-weight-500 rounded d-inline-block px-2 line-height-4 ml-2">Free</span></span></p>

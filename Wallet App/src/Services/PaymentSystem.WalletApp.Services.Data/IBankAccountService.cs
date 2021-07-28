@@ -9,9 +9,9 @@
     {
         Task<bool> Exists(string id);
 
-        Task<bool> UserOwnsCard(string id, string userId);
+        Task<bool> UserOwnsAccount(string id, string userId);
 
-        Task<T> GetCardInformation<T>(string id);
+        Task<T> GetAccountInformation<T>(string id);
 
         Task<IEnumerable<T>> GetAccounts<T>(string userId);
 

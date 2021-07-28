@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaymentSystem.WalletApp.Data;
 
 namespace PaymentSystem.WalletApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210728130103_ActivitiesTable")]
+    partial class ActivitiesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -474,7 +476,6 @@ namespace PaymentSystem.WalletApp.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -488,7 +489,6 @@ namespace PaymentSystem.WalletApp.Data.Migrations
                         .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("PublicKey")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
@@ -743,7 +743,7 @@ namespace PaymentSystem.WalletApp.Data.Migrations
             modelBuilder.Entity("PaymentSystem.WalletApp.Data.Models.Activity", b =>
                 {
                     b.HasOne("PaymentSystem.WalletApp.Data.Models.ApplicationUser", "User")
-                        .WithMany("Activities")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -835,8 +835,6 @@ namespace PaymentSystem.WalletApp.Data.Migrations
                     b.Navigation("AccountKeys");
 
                     b.Navigation("Accounts");
-
-                    b.Navigation("Activities");
 
                     b.Navigation("BankAccounts");
 

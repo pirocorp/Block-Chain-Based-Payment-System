@@ -25,5 +25,8 @@
             {
                 Address = address,
             });
+
+        public async Task<TransactionResponse> AddTransactionToPool(SendRequest sendRequest)
+            => await this.service.AddTransactionToPoolAsync(sendRequest);
     }
 }

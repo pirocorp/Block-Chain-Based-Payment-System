@@ -37,4 +37,8 @@
     <Protobuf Include="..\..\..\..\Common\PaymentSystem.Common\Protos\blockchain.proto" GrpcServices="Client" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

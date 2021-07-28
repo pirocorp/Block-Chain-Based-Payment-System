@@ -39,6 +39,7 @@
             services.Configure<EncryptionOptions>(this.configuration.GetSection("Encryption"));
             services.Configure<FingerprintOptions>(this.configuration.GetSection("Fingerprint"));
             services.Configure<SecretOptions>(this.configuration.GetSection("Secret"));
+            services.Configure<WalletProviderOptions>(this.configuration.GetSection("WalletProvider"));
 
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
@@ -103,6 +104,7 @@
             // Application services
             services.AddTransient<IAccountsKeyService, AccountsKeyService>();
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IActivityService, ActivityService>();
             services.AddTransient<IBankAccountService, BankAccountService>();
             services.AddTransient<ICreditCardService, CreditCardService>();
             services.AddTransient<IFingerprintService, FingerprintService>();
@@ -110,6 +112,7 @@
             services.AddTransient<ISaltService, SaltService>();
             services.AddTransient<ISecurelyEncryptDataService, SecurelyEncryptDataService>();
             services.AddTransient<ITestimonialService, TestimonialService>();
+            services.AddTransient<ITransferService, TransferService>();
             services.AddTransient<IUserService, UserService>();
         }
 

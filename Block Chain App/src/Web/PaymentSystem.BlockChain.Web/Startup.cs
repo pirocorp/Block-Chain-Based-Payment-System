@@ -1,8 +1,9 @@
 ﻿namespace PaymentSystem.BlockChain.Web
 {
     using System.Reflection;
-    using Common.Hubs.Models;
+
     using Coravel;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -20,6 +21,7 @@
     using PaymentSystem.BlockChain.Web.Scheduler;
     using PaymentSystem.Common;
     using PaymentSystem.Common.Extensions;
+    using PaymentSystem.Common.Hubs.Models;
 
     public class Startup
     {

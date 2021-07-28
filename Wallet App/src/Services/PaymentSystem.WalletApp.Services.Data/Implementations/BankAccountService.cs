@@ -26,10 +26,10 @@
         public async Task<bool> Exists(string id)
             => await this.dbContext.BankAccounts.AnyAsync(a => a.Id == id);
 
-        public async Task<bool> UserOwnsCard(string id, string userId)
+        public async Task<bool> UserOwnsAccount(string id, string userId)
             => await this.dbContext.BankAccounts.AnyAsync(a => a.Id == id && a.UserId == userId);
 
-        public async Task<T> GetCardInformation<T>(string id)
+        public async Task<T> GetAccountInformation<T>(string id)
             => await this.dbContext.BankAccounts
                 .Where(a => a.Id == id)
                 .To<T>()

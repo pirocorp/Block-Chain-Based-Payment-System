@@ -181,12 +181,12 @@
 
             var userId = this.userManager.GetUserId(this.User);
 
-            if (!await this.bankAccountService.UserOwnsCard(id, userId))
+            if (!await this.bankAccountService.UserOwnsAccount(id, userId))
             {
                 return this.BadRequest();
             }
 
-            var model = await this.bankAccountService.GetCardInformation<ProfileDeleteBankAccountModel>(id);
+            var model = await this.bankAccountService.GetAccountInformation<ProfileDeleteBankAccountModel>(id);
             return this.Ok(model);
         }
 

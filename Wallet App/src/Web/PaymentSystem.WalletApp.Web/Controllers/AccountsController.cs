@@ -57,6 +57,11 @@
 
         public async Task<IActionResult> NewAccountDetails()
         {
+            if (!this.TempData.ContainsKey(AccountTempDataKey))
+            {
+                return this.BadRequest();
+            }
+
             var serializedObject = (string)this.TempData[AccountTempDataKey];
 
             if (string.IsNullOrWhiteSpace(serializedObject))

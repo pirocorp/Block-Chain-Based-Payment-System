@@ -124,7 +124,7 @@
             var transaction = new Transaction()
             {
                 Hash = request.TransactionId,
-                TimeStamp = DateTime.UtcNow.Ticks,
+                TimeStamp = request.TransactionInput.TimeStamp,
                 Sender = request.TransactionInput.SenderAddress,
                 Recipient = request.TransactionOutput.RecipientAddress,
                 Amount = request.TransactionOutput.Amount,

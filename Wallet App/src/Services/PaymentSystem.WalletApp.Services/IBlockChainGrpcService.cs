@@ -9,5 +9,7 @@
         Task<AccountCreationResponse> CreateAccount();
 
         Task<BoolResponse> DeleteAccount(string address);
+
+        Task<TransactionResponse> AddTransactionToPool(SendRequest sendRequest);
     }
 }

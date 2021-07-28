@@ -9,6 +9,11 @@
     {
         private readonly IPool<Transaction> pool;
 
+        public CancelTransactionPool()
+        {
+            this.pool = new Pool<Transaction>();
+        }
+
         public void Add(Transaction transaction)
             => this.pool.Add(transaction.Hash, transaction);
 
