@@ -4,6 +4,13 @@
     {
         public const int SecurityStampLength = 128;
 
+        public static class Activity
+        {
+            public const int DescriptionLength = 5000;
+
+            public const int TransactionHashLength = 128;
+        }
+
         public static class Account
         {
             public const int NameLength = 100;

@@ -96,6 +96,7 @@
 
             // External Services
             services.AddTransient<IBlockChainGrpcService, BlockChainGrpcService>();
+            services.AddTransient<IBlockChainSignalRService, BlockChainSignalRService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
 
             // Data repositories
@@ -106,6 +107,7 @@
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IActivityService, ActivityService>();
             services.AddTransient<IBankAccountService, BankAccountService>();
+            services.AddTransient<IBlockService, BlockService>();
             services.AddTransient<ICreditCardService, CreditCardService>();
             services.AddTransient<IFingerprintService, FingerprintService>();
             services.AddTransient<IEmailSender, NullMessageSender>();
@@ -121,6 +123,7 @@
         {
             app.ApplyMigrations<ApplicationDbContext>();
             app.SeedData();
+            app.UseBlockNotifications();
 
             if (env.IsDevelopment())
             {

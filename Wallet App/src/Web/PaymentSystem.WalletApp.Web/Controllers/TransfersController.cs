@@ -120,7 +120,6 @@
                 return this.View(nameof(this.Deposit));
             }
 
-            this.TempData[DepositAmountTempData] = JsonConvert.SerializeObject(model.Amount);
             return this.Redirect($"/{this.ControllerName}/{nameof(this.DepositSuccess)}");
         }
 

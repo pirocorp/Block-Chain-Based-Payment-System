@@ -5,6 +5,8 @@
 
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Seeding;
+    using PaymentSystem.WalletApp.Services.Data;
+    using Services;
 
     public static class ApplicationBuilderExtensions
     {
@@ -13,7 +15,23 @@
             using var serviceScope = builder.ApplicationServices.CreateScope();
             var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-            new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+            new ApplicationDbContextSeeder()
+                .SeedAsync(dbContext, serviceScope.ServiceProvider)
+                .GetAwaiter()
+                .GetResult();
+
+            return builder;
+        }
+
+        public static IApplicationBuilder UseBlockNotifications(this IApplicationBuilder builder)
+        {
+            var signalRNotificationService =
+                builder.ApplicationServices.GetRequiredService<IBlockChainSignalRService>();
+
+            signalRNotificationService
+                .Run()
+                .GetAwaiter()
+                .GetResult();
 
             return builder;
         }

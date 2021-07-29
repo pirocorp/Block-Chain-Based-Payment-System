@@ -76,6 +76,7 @@
                 Description = WebConstants.DepositDescription,
                 UserId = userId,
                 Status = success ? ActivityStatus.Pending : ActivityStatus.Canceled,
+                TransactionHash = transactionHash,
             };
 
             await this.activityService.AddActivity(activity);

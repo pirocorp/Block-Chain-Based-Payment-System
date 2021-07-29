@@ -13,7 +13,7 @@
 
         public BlockChainGrpcService()
         {
-            var chanel = GrpcChannel.ForAddress(GlobalConstants.GrpcChanelAddress);
+            var chanel = GrpcChannel.ForAddress(GlobalConstants.ChanelAddress);
             this.service = new ComunicationService.ComunicationServiceClient(chanel);
         }
 

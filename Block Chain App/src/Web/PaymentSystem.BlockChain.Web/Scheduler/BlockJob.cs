@@ -37,12 +37,8 @@
 
         public async Task Invoke()
         {
-            var block = await this.blockChainService.MineBlock();
-
-            if (block is null)
-            {
-                return;
-            }
+            var block = await this.blockChainService.MineBlock() 
+                        ?? await this.blockChainService.GetLastBlock();
 
             var notificationBlock = this.mapper.Map<NotificationBlock>(block);
 
@@ -51,7 +47,7 @@
                 .CreateSignature(notificationBlock.Hash, this.systemKeys.PrivateKey);
 
             notificationBlock.CanceledTransactions = this.cancelTransactionPool.GetAll()
-                .Select(t => this.mapper.Map<TransactionNotification>(t));
+                .Select(t => this.mapper.Map<CanceledTransaction>(t));
 
             await this.broadcastHubContext.Clients.All.ReceiveBlock(notificationBlock);
         }

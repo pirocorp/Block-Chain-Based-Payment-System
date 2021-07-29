@@ -12,7 +12,7 @@
 
         public const int MaxBlockPageSize = 5;
 
-        public const string GrpcChanelAddress = "https://localhost:8081/";
+        public const string ChanelAddress = "https://localhost:8081";
 
         public static class Block
         {

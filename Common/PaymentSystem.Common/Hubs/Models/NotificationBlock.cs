@@ -17,8 +17,6 @@
 
         public IEnumerable<TransactionNotification> Transactions { get; set; }
 
-        public string Validator { get; set; }
-
         [IgnoreMap]
         public string BlockChainPublicKey { get; set; }
 
@@ -27,6 +25,6 @@
         public string BlockChainSignature { get; set; }
 
         [IgnoreMap]
-        public IEnumerable<TransactionNotification> CanceledTransactions { get; set; }
+        public IEnumerable<CanceledTransaction> CanceledTransactions { get; set; }
     }
 }
