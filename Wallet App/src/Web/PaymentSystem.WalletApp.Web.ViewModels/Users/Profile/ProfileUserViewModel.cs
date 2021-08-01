@@ -1,11 +1,15 @@
 ﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Users.Profile
 {
     using System;
+    using System.Linq;
 
+    using AutoMapper;
+
+    using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout;
 
-    public class ProfileUserViewModel : ProfileLayoutUserModel
+    public class ProfileUserViewModel : ProfileLayoutUserModel, IHaveCustomMappings
     {
         public DateTime DateOfBirth { get; set; }
 
@@ -21,5 +25,13 @@
             || this.Address.StateProvince != null
             || this.Address.Zip != null
             || this.Address.Country != null;
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration
+                .CreateMap<ApplicationUser, ProfileUserViewModel>()
+                .ForMember(d => d.TotalBalance, opt
+                    => opt.MapFrom(s => s.Accounts.Sum(a => a.Balance)));
+        }
     }
 }

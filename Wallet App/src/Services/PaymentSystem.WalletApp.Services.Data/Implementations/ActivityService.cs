@@ -1,11 +1,14 @@
 ﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using AutoMapper;
 
     using Microsoft.EntityFrameworkCore;
-
+    using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Models.Activities;
@@ -29,6 +32,7 @@
         public async Task AddActivity(ActivityServiceModel model)
         {
             var activity = this.mapper.Map<Activity>(model);
+            activity.TimeStamp = DateTime.UtcNow.Ticks;
 
             await this.dbContext.AddAsync(activity);
             await this.dbContext.SaveChangesAsync();
@@ -43,5 +47,26 @@
 
             await this.dbContext.SaveChangesAsync();
         }
+
+        public async Task<T> GetActivity<T>(string id)
+            => await this.dbContext.Activities
+                .Where(a => a.Id == id)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<T>> GetLastActivities<T>(int count)
+            => await this.dbContext.Activities
+                .OrderByDescending(a => a.TimeStamp)
+                .To<T>()
+                .Take(count)
+                .ToListAsync();
+
+        public async Task<IEnumerable<T>> GetActivities<T>(int page, int pageSize)
+            => await this.dbContext.Activities
+                .OrderByDescending(a => a.TimeStamp)
+                .To<T>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
     }
 }

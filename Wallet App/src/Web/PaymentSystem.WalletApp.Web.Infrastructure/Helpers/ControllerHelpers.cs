@@ -1,7 +1,7 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Infrastructure.Helpers
 {
     using System;
-    using System.Reflection;
+
     using Microsoft.AspNetCore.Mvc;
 
     public static class ControllerHelpers

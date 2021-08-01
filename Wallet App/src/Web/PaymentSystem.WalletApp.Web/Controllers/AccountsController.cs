@@ -29,8 +29,9 @@
             IMapper mapper, 
             ICloudinaryService cloudinaryService,
             IAccountService accountService,
-            IAccountsKeyService accountsKeyService) 
-            : base(userManager, mapper, cloudinaryService)
+            IAccountsKeyService accountsKeyService,
+            IUserService userService) 
+            : base(userManager, mapper, cloudinaryService, userService)
         {
             this.accountService = accountService;
             this.accountsKeyService = accountsKeyService;

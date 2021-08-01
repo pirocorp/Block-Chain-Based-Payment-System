@@ -28,6 +28,7 @@
 
         public async Task<T> GetUser<T>(string id)
             => await this.dbContext.Users
+                .AsNoTracking()
                 .Where(u => u.Id == id)
                 .To<T>()
                 .FirstOrDefaultAsync();

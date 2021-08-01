@@ -20,7 +20,6 @@
     public class TransfersController : BaseController
     {
         private const string DepositTempData = "depositTempData";
-        private const string DepositAmountTempData = "depositAmountTempData";
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IAccountService accountService;

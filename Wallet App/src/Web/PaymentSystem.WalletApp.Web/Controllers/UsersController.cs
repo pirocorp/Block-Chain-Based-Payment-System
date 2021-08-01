@@ -23,18 +23,19 @@
     public class UsersController : ProfileController
     {
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly IUserService userService;
+        private readonly ITransactionService transactionService;
 
         public UsersController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IMapper mapper,
             ICloudinaryService cloudinaryService,
-            IUserService userService) 
-            : base(userManager, mapper, cloudinaryService)
+            IUserService userService,
+            ITransactionService transactionService) 
+            : base(userManager, mapper, cloudinaryService, userService)
         {
             this.signInManager = signInManager;
-            this.userService = userService;
+            this.transactionService = transactionService;
         }
 
         public async Task<IActionResult> Dashboard()
@@ -170,6 +171,14 @@
             }
 
             return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+        }
+
+        public async Task<IActionResult> GetTransactionDetails(string id)
+        {
+            var activity = await this.transactionService
+                .GetTransaction<DashboardTransactionDetails>(id);
+
+            return this.Ok(activity);
         }
 
         private async Task<ProfileUserViewModel> GetProfileUser()

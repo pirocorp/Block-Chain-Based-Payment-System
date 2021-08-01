@@ -1,4 +1,5 @@
-﻿@model PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard.DashboardUser
+﻿@using System.Globalization
+@model PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard.DashboardUser
 
 @{
     Layout = "/Views/Shared/_ProfileLayout.cshtml";
@@ -11,6 +12,57 @@
     };
 
     var completeness = (completenessFactors.Count() / (double) completenessFactors.Count(f => f)) * 100;
+}
+
+@section Scripts
+{
+    <script>
+        function getTransactionInfo(id) {
+            console.log(id);
+
+            const uri = `/users/getTransactionDetails?id=${id}`;
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            fetch(uri, options)
+                .then(res => res.json())
+                .then(res => {
+                    const totalAmountValue = res.amount - res.fee;
+
+                    const totalAmountHeader = document.getElementById('total-amount-header');
+                    totalAmountHeader.textContent = `${totalAmountValue.toFixed(2)}P`;
+
+                    const dateHeader = document.getElementById('date-header');
+                    dateHeader.textContent = res.date;
+
+                    const paymentAmount = document.getElementById('payment-amount');
+                    paymentAmount.textContent = `${res.amount.toFixed(2)}P`;
+
+                    const transactionFee = document.getElementById('transaction-fee');
+                    transactionFee.textContent = `${res.fee.toFixed(2)}P`;
+
+                    const totalAmount = document.getElementById('total-amount');
+                    totalAmount.textContent = `${totalAmountValue.toFixed(2)}P`;
+
+                    const senderAddress = document.getElementById('sender-address');
+                    senderAddress.textContent = res.sender;
+
+                    const recipientAddress = document.getElementById('recipient-address');
+                    recipientAddress.textContent = res.recipient;
+
+                    const transactionHash = document.getElementById('transaction-hash');
+                    transactionHash.textContent = res.hash;
+
+                    const blockHash = document.getElementById('block-hash');
+                    blockHash.textContent = res.blockHash;
+                });
+        }
+    </script>
 }
 
 <!-- Middle Panel ============================================= -->
@@ -136,62 +188,17 @@
         
         <!-- Transaction List  =============================== -->
         <div class="transaction-list">
-            <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail">
-                <div class="row align-items-center flex-row">
-                    <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">16</span> <span class="d-block text-1 font-weight-300 text-uppercase">APR</span> </div>
-                    <div class="col col-sm-7"> <span class="d-block text-4">HDFC Bank</span> <span class="text-muted">Withdraw to Bank account</span> </div>
-                    <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-warning" data-toggle="tooltip" data-original-title="In Progress"><i class="fas fa-ellipsis-h"></i></span> </div>
-                    <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">- $562</span> <span class="text-2 text-uppercase">(USD)</span> </div>
+            @foreach (var activity in this.Model.Activities.OrderByDescending(a => a.TimeStamp))
+            {
+                <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail" onclick="getTransactionInfo('@activity.TransactionHash')">
+                    <div class="row align-items-center flex-row">
+                        <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">@activity.Date.Day</span> <span class="d-block text-1 font-weight-300 text-uppercase">@activity.Date.ToString("MMM", CultureInfo.InvariantCulture)</span> </div>
+                        <div class="col col-sm-7"> <span class="d-block text-4">@activity.CounterpartyAddress</span> <span class="text-muted">@(activity.Description.Length > 50 ? activity.Description[..50] : activity.Description)</span> </div>
+                        <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <activity-status status="@activity.Status"></activity-status> </div>
+                        <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">@($"{activity.Amount:F2}")</span> <span class="text-2 text-uppercase">(pir)</span> </div>
+                    </div>
                 </div>
-            </div>
-            <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail">
-                <div class="row align-items-center flex-row">
-                    <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">15</span> <span class="d-block text-1 font-weight-300 text-uppercase">APR</span> </div>
-                    <div class="col col-sm-7"> <span class="d-block text-4">Envato Pty Ltd</span> <span class="text-muted">Payment Received</span> </div>
-                    <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success" data-toggle="tooltip" data-original-title="Completed"><i class="fas fa-check-circle"></i></span> </div>
-                    <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">+ $562</span> <span class="text-2 text-uppercase">(USD)</span> </div>
-                </div>
-            </div>
-            <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail">
-                <div class="row align-items-center flex-row">
-                    <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">04</span> <span class="d-block text-1 font-weight-300 text-uppercase">APR</span> </div>
-                    <div class="col col-sm-7"> <span class="d-block text-4">HDFC Bank</span> <span class="text-muted">Withdraw to Bank account</span> </div>
-                    <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success" data-toggle="tooltip" data-original-title="Completed"><i class="fas fa-check-circle"></i></span> </div>
-                    <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">- $106</span> <span class="text-2 text-uppercase">(USD)</span> </div>
-                </div>
-            </div>
-            <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail">
-                <div class="row align-items-center flex-row">
-                    <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">28</span> <span class="d-block text-1 font-weight-300 text-uppercase">MAR</span> </div>
-                    <div class="col col-sm-7"> <span class="d-block text-4">Patrick Cary</span> <span class="text-muted">Refund</span> </div>
-                    <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success" data-toggle="tooltip" data-original-title="Completed"><i class="fas fa-check-circle"></i></span> </div>
-                    <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">+ $60</span> <span class="text-2 text-uppercase">(USD)</span> </div>
-                </div>
-            </div>
-            <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail">
-                <div class="row align-items-center flex-row">
-                    <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">28</span> <span class="d-block text-1 font-weight-300 text-uppercase">MAR</span> </div>
-                    <div class="col col-sm-7"> <span class="d-block text-4">Patrick Cary</span> <span class="text-muted">Payment Sent</span> </div>
-                    <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-danger" data-toggle="tooltip" data-original-title="Cancelled"><i class="fas fa-times-circle"></i></span> </div>
-                    <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">- $60</span> <span class="text-2 text-uppercase">(USD)</span> </div>
-                </div>
-            </div>
-            <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail">
-                <div class="row align-items-center flex-row">
-                    <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">16</span> <span class="d-block text-1 font-weight-300 text-uppercase">FEB</span> </div>
-                    <div class="col col-sm-7"> <span class="d-block text-4">HDFC Bank</span> <span class="text-muted">Withdraw to Bank account</span> </div>
-                    <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success" data-toggle="tooltip" data-original-title="Completed"><i class="fas fa-check-circle"></i></span> </div>
-                    <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">- $1498</span> <span class="text-2 text-uppercase">(USD)</span> </div>
-                </div>
-            </div>
-            <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail">
-                <div class="row align-items-center flex-row">
-                    <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">15</span> <span class="d-block text-1 font-weight-300 text-uppercase">FEB</span> </div>
-                    <div class="col col-sm-7"> <span class="d-block text-4">Envato Pty Ltd</span> <span class="text-muted">Payment Received</span> </div>
-                    <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success" data-toggle="tooltip" data-original-title="Completed"><i class="fas fa-check-circle"></i></span> </div>
-                    <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">+ $1498</span> <span class="text-2 text-uppercase">(USD)</span> </div>
-                </div>
-            </div>
+            }
         </div>
         <!-- Transaction List End -->
         
@@ -204,9 +211,9 @@
                             <div class="col-sm-5 d-flex justify-content-center bg-primary rounded-left py-4">
                                 <div class="my-auto text-center">
                                     <div class="text-17 text-white my-3"><i class="fas fa-building"></i></div>
-                                    <h3 class="text-4 text-white font-weight-400 my-3">Envato Pty Ltd</h3>
-                                    <div class="text-8 font-weight-500 text-white my-4">$557.20</div>
-                                    <p class="text-white">15 March 2019</p>
+                                    <h3 class="text-4 text-white font-weight-400 my-3">XXX</h3>
+                                    <div id="total-amount-header" class="text-8 font-weight-500 text-white my-4">00.00P</div>
+                                    <p id="date-header" class="text-white"></p>
                                 </div>
                             </div>
                             <div class="col-sm-7">
@@ -217,26 +224,26 @@
                                 <hr>
                                 <div class="px-3">
                                     <ul class="list-unstyled">
-                                        <li class="mb-2">Payment Amount <span class="float-right text-3">$562.00</span></li>
-                                        <li class="mb-2">Fee <span class="float-right text-3">-$4.80</span></li>
+                                        <li class="mb-2">Payment Amount <span id="payment-amount" class="float-right text-3">00.00P</span></li>
+                                        <li class="mb-2">Fee <span id="transaction-fee" class="float-right text-3">-0.00P</span></li>
                                     </ul>
                                     <hr class="mb-2">
-                                    <p class="d-flex align-items-center font-weight-500 mb-4">Total Amount <span class="text-3 ml-auto">$557.20</span></p>
-                                    <ul class="list-unstyled">
-                                        <li class="font-weight-500">Paid By:</li>
-                                        <li class="text-muted">Envato Pty Ltd</li>
+                                    <p id="total-amount" class="d-flex align-items-center font-weight-500 mb-4">Total Amount <span class="text-3 ml-auto">00.00P</span></p>
+                                    <ul class="card list-unstyled coin-account-details-card">
+                                        <li class="font-weight-500">Sender Address:</li>
+                                        <li id="sender-address" class="text-muted">XXXX</li>
                                     </ul>
-                                    <ul class="list-unstyled">
-                                        <li class="font-weight-500">Transaction ID:</li>
-                                        <li class="text-muted">26566689645685976589</li>
+                                    <ul class="card list-unstyled coin-account-details-card">
+                                        <li class="font-weight-500">Recipient Address:</li>
+                                        <li id="recipient-address" class="text-muted">XXXX</li>
                                     </ul>
-                                    <ul class="list-unstyled">
-                                        <li class="font-weight-500">Description:</li>
-                                        <li class="text-muted">Envato March 2019 Member Payment</li>
+                                    <ul class="card list-unstyled coin-account-details-card">
+                                        <li class="font-weight-500">Transaction Hash:</li>
+                                        <li id="transaction-hash" class="text-muted">-----</li>
                                     </ul>
-                                    <ul class="list-unstyled">
-                                        <li class="font-weight-500">Status:</li>
-                                        <li class="text-muted">Completed</li>
+                                    <ul class="card list-unstyled coin-account-details-card">
+                                        <li class="font-weight-500">Block Hash:</li>
+                                        <li id="block-hash" class="text-muted">-----</li>
                                     </ul>
                                 </div>
                             </div>

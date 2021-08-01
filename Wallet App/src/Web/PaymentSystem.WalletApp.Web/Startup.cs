@@ -94,29 +94,17 @@
 
             services.AddCloudinary(this.configuration);
 
-            // External Services
+            // Additional Services
             services.AddTransient<IBlockChainGrpcService, BlockChainGrpcService>();
-            services.AddTransient<IBlockChainSignalRService, BlockChainSignalRService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
+            services.AddTransient<ISaltService, SaltService>();
+            services.AddTransient<ISecurelyEncryptDataService, SecurelyEncryptDataService>();
 
             // Data repositories
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IAccountsKeyService, AccountsKeyService>();
-            services.AddTransient<IAccountService, AccountService>();
-            services.AddTransient<IActivityService, ActivityService>();
-            services.AddTransient<IBankAccountService, BankAccountService>();
-            services.AddTransient<IBlockService, BlockService>();
-            services.AddTransient<ICreditCardService, CreditCardService>();
-            services.AddTransient<IFingerprintService, FingerprintService>();
-            services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISaltService, SaltService>();
-            services.AddTransient<ISecurelyEncryptDataService, SecurelyEncryptDataService>();
-            services.AddTransient<ISettingService, SettingService>();
-            services.AddTransient<ITestimonialService, TestimonialService>();
-            services.AddTransient<ITransferService, TransferService>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddDomainServices(typeof(IService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -30,11 +30,12 @@
             UserManager<ApplicationUser> userManager,
             IMapper mapper,
             ICloudinaryService cloudinaryService,
+            IUserService userService,
             ICreditCardService creditCardService,
             IBankAccountService bankAccountService,
             IFingerprintService fingerprintService,
             IOptions<EncryptionOptions> encryptionOptions) 
-            : base(userManager, mapper, cloudinaryService)
+            : base(userManager, mapper, cloudinaryService, userService)
         {
             this.creditCardService = creditCardService;
             this.bankAccountService = bankAccountService;
