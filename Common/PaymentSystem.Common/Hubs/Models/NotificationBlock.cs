@@ -17,9 +17,6 @@
 
         public IEnumerable<TransactionNotification> Transactions { get; set; }
 
-        [IgnoreMap]
-        public string BlockChainPublicKey { get; set; }
-
         // Signature will be made over block hash.
         [IgnoreMap]
         public string BlockChainSignature { get; set; }

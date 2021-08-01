@@ -113,6 +113,7 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISaltService, SaltService>();
             services.AddTransient<ISecurelyEncryptDataService, SecurelyEncryptDataService>();
+            services.AddTransient<ISettingService, SettingService>();
             services.AddTransient<ITestimonialService, TestimonialService>();
             services.AddTransient<ITransferService, TransferService>();
             services.AddTransient<IUserService, UserService>();

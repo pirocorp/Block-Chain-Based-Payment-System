@@ -18,6 +18,10 @@
 
         Task<AccountCreationResponse> Create(string userId);
 
+        Task Deposit(string address, double amount);
+
+        Task Withdraw(string address, double amount);
+
         Task EditAccount(EditAccountServiceModel model);
 
         Task Delete(string address);

@@ -1,25 +1,15 @@
 ﻿namespace PaymentSystem.WalletApp.Data.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    using PaymentSystem.Common.Data.Models;
     using PaymentSystem.WalletApp.Data.Common.Models;
 
     using static Common.DataConstants.Account;
 
-    public class Account : IAuditInfo, IEntityTypeConfiguration<Account>
+    public class Account : IAuditInfo
     {
-        public Account()
-        {
-            this.OutboundTransactions = new HashSet<Transaction>();
-            this.InboundTransactions = new HashSet<Transaction>();
-        }
-
+        [Key]
         public string Address { get; set; }
 
         /// <summary>
@@ -33,36 +23,16 @@
         [Range(0, double.MaxValue)]
         public double Balance { get; set; }
 
+        [Range(0, double.MaxValue)]
+        public double BlockedBalance { get; set; }
+
         [Required]
         public string UserId { get; set; }
 
         public ApplicationUser User { get; set; }
 
-        public ICollection<Transaction> OutboundTransactions { get; set; }
-
-        public ICollection<Transaction> InboundTransactions { get; set; }
-
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
-
-        public void Configure(EntityTypeBuilder<Account> builder)
-        {
-            builder.HasKey(a => a.Address);
-
-            builder
-                .HasMany(a => a.OutboundTransactions)
-                .WithOne()
-                .HasForeignKey(t => t.Sender)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .HasMany(a => a.InboundTransactions)
-                .WithOne()
-                .HasForeignKey(t => t.Recipient)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
-        }
     }
 }

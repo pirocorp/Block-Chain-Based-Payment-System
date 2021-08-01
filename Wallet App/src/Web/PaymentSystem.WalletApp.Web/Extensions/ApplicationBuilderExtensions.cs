@@ -7,6 +7,7 @@
     using PaymentSystem.WalletApp.Data.Seeding;
     using PaymentSystem.WalletApp.Services.Data;
     using Services;
+    using Services.Data.Implementations;
 
     public static class ApplicationBuilderExtensions
     {
@@ -25,8 +26,7 @@
 
         public static IApplicationBuilder UseBlockNotifications(this IApplicationBuilder builder)
         {
-            var signalRNotificationService =
-                builder.ApplicationServices.GetRequiredService<IBlockChainSignalRService>();
+            var signalRNotificationService = new BlockChainSignalRService(builder.ApplicationServices);
 
             signalRNotificationService
                 .Run()

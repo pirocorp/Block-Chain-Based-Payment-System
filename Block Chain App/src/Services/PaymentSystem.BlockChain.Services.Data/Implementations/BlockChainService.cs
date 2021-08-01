@@ -4,11 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Common.Utilities;
     using Microsoft.EntityFrameworkCore;
 
     using PaymentSystem.BlockChain.Data;
-    using PaymentSystem.BlockChain.Infrastructure;
     using PaymentSystem.Common;
     using PaymentSystem.Common.Data.Models;
 
@@ -127,8 +126,8 @@
                 Transactions = validTransactions,
             };
 
-            block.BlockHeader.MerkleRoot = BlockHelpers.GenerateMerkleRoot(validTransactions);
-            block.Hash = BlockHelpers.GenerateBlockHash(block);
+            block.BlockHeader.MerkleRoot = BlockChainHashing.GenerateMerkleRoot(validTransactions);
+            block.Hash = BlockChainHashing.GenerateBlockHash(block);
 
             validTransactions.ForEach(t => t.BlockHash = block.Hash);
 

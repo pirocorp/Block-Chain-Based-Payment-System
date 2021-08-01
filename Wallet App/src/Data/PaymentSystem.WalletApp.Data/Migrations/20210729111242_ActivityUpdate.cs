@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace PaymentSystem.WalletApp.Data.Migrations
+﻿namespace PaymentSystem.WalletApp.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class ActivityUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

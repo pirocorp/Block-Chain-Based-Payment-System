@@ -4,8 +4,10 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
+
     using Common.Utilities;
     using Coravel.Invocable;
+
     using Microsoft.AspNetCore.SignalR;
 
     using PaymentSystem.BlockChain.Services.Data;
@@ -42,7 +44,6 @@
 
             var notificationBlock = this.mapper.Map<NotificationBlock>(block);
 
-            notificationBlock.BlockChainPublicKey = this.systemKeys.PublicKey.PublicKeyToString();
             notificationBlock.BlockChainSignature = BlockChainHashing
                 .CreateSignature(notificationBlock.Hash, this.systemKeys.PrivateKey);
 

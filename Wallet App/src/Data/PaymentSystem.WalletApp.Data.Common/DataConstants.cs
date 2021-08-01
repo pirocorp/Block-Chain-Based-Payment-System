@@ -4,6 +4,10 @@
     {
         public const int SecurityStampLength = 128;
 
+        public const string BlockChainAddress = "Block Chain Address";
+
+        public const string BlockChainPublicKey = "Block Chain Public Key";
+
         public static class Activity
         {
             public const int DescriptionLength = 5000;

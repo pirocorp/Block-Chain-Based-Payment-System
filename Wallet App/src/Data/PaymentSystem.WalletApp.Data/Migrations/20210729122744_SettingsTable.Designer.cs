@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaymentSystem.WalletApp.Data;
 
 namespace PaymentSystem.WalletApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210729122744_SettingsTable")]
+    partial class SettingsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,9 +185,6 @@ namespace PaymentSystem.WalletApp.Data.Migrations
                     b.Property<double>("Balance")
                         .HasColumnType("float");
 
-                    b.Property<double>("BlockedBalance")
-                        .HasColumnType("float");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -281,7 +280,6 @@ namespace PaymentSystem.WalletApp.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("TransactionHash")
-                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
@@ -292,9 +290,6 @@ namespace PaymentSystem.WalletApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
-
-                    b.HasIndex("TransactionHash")
-                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -729,6 +724,18 @@ namespace PaymentSystem.WalletApp.Data.Migrations
                         .WithMany("Transactions")
                         .HasForeignKey("BlockHash");
 
+                    b.HasOne("PaymentSystem.WalletApp.Data.Models.Account", null)
+                        .WithMany("InboundTransactions")
+                        .HasForeignKey("Recipient")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PaymentSystem.WalletApp.Data.Models.Account", null)
+                        .WithMany("OutboundTransactions")
+                        .HasForeignKey("Sender")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Block");
                 });
 
@@ -843,6 +850,13 @@ namespace PaymentSystem.WalletApp.Data.Migrations
             modelBuilder.Entity("PaymentSystem.Common.Data.Models.Block", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("PaymentSystem.WalletApp.Data.Models.Account", b =>
+                {
+                    b.Navigation("InboundTransactions");
+
+                    b.Navigation("OutboundTransactions");
                 });
 
             modelBuilder.Entity("PaymentSystem.WalletApp.Data.Models.ApplicationUser", b =>

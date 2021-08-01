@@ -4,8 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using PaymentSystem.BlockChain.Infrastructure;
+    
     using PaymentSystem.Common;
     using PaymentSystem.Common.Data.Models;
     using PaymentSystem.Common.Utilities;
@@ -54,8 +53,8 @@
                 Transactions = transactions,
             };
 
-            genesisBlock.BlockHeader.MerkleRoot = BlockHelpers.GenerateMerkleRoot(transactions);
-            genesisBlock.Hash = BlockHelpers.GenerateBlockHash(genesisBlock);
+            genesisBlock.BlockHeader.MerkleRoot = BlockChainHashing.GenerateMerkleRoot(transactions);
+            genesisBlock.Hash = BlockChainHashing.GenerateBlockHash(genesisBlock);
 
             var account = dbContext.Accounts.First(a => a.Address == systemAddress);
             account.Balance = firstTransaction.Amount;

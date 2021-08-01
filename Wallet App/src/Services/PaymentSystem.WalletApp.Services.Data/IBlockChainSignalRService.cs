@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Services
+﻿namespace PaymentSystem.WalletApp.Services.Data
 {
     using System.Threading.Tasks;
 

@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
 
     using PaymentSystem.BlockChain.Data.Models;
-    using PaymentSystem.BlockChain.Infrastructure;
     using PaymentSystem.Common;
     using PaymentSystem.Common.Data.Models;
     using PaymentSystem.Common.Utilities;
@@ -73,8 +72,8 @@
                 Transactions = transactions,
             };
 
-            block.BlockHeader.MerkleRoot = BlockHelpers.GenerateMerkleRoot(transactions);
-            block.Hash = BlockHelpers.GenerateBlockHash(block);
+            block.BlockHeader.MerkleRoot = BlockChainHashing.GenerateMerkleRoot(transactions);
+            block.Hash = BlockChainHashing.GenerateBlockHash(block);
 
             await dbContext.AddAsync(block);
             await dbContext.AddRangeAsync(accounts);

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaymentSystem.WalletApp.Data;
 
 namespace PaymentSystem.WalletApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210801074515_ActivitiesTableUpdate")]
+    partial class ActivitiesTableUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,9 +183,6 @@ namespace PaymentSystem.WalletApp.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Balance")
-                        .HasColumnType("float");
-
-                    b.Property<double>("BlockedBalance")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("CreatedOn")
@@ -729,6 +728,18 @@ namespace PaymentSystem.WalletApp.Data.Migrations
                         .WithMany("Transactions")
                         .HasForeignKey("BlockHash");
 
+                    b.HasOne("PaymentSystem.WalletApp.Data.Models.Account", null)
+                        .WithMany("InboundTransactions")
+                        .HasForeignKey("Recipient")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PaymentSystem.WalletApp.Data.Models.Account", null)
+                        .WithMany("OutboundTransactions")
+                        .HasForeignKey("Sender")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Block");
                 });
 
@@ -843,6 +854,13 @@ namespace PaymentSystem.WalletApp.Data.Migrations
             modelBuilder.Entity("PaymentSystem.Common.Data.Models.Block", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("PaymentSystem.WalletApp.Data.Models.Account", b =>
+                {
+                    b.Navigation("InboundTransactions");
+
+                    b.Navigation("OutboundTransactions");
                 });
 
             modelBuilder.Entity("PaymentSystem.WalletApp.Data.Models.ApplicationUser", b =>

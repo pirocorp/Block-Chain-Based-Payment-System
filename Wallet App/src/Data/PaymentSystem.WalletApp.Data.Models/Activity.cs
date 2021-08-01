@@ -3,11 +3,14 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     using PaymentSystem.WalletApp.Data.Common.Models;
 
     using static Common.DataConstants.Activity;
 
-    public class Activity : BaseDeletableModel<string>
+    public class Activity : BaseDeletableModel<string>, IEntityTypeConfiguration<Activity>
     {
         public Activity()
         {
@@ -31,7 +34,15 @@
 
         public long TimeStamp { get; set; }
 
+        [Required]
         [StringLength(TransactionHashLength)]
         public string TransactionHash { get; set; }
+
+        public void Configure(EntityTypeBuilder<Activity> builder)
+        {
+            builder
+                .HasIndex(b => b.TransactionHash)
+                .IsUnique();
+        }
     }
 }

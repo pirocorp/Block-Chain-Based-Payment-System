@@ -1,14 +1,14 @@
-﻿namespace PaymentSystem.WalletApp.Data.Migrations
+﻿namespace PaymentSystem.BlockChain.Data.Migrations
 {
     using Microsoft.EntityFrameworkCore.Migrations;
 
-    public partial class UpdateCounterpartyTable : Migration
+    public partial class UpdateAccount : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "PublicKey",
-                table: "Counterparties",
+                name: "Sender",
+                table: "Transactions",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "",
@@ -17,8 +17,8 @@
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Address",
-                table: "Counterparties",
+                name: "Recipient",
+                table: "Transactions",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "",
@@ -30,16 +30,16 @@
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "PublicKey",
-                table: "Counterparties",
+                name: "Sender",
+                table: "Transactions",
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Address",
-                table: "Counterparties",
+                name: "Recipient",
+                table: "Transactions",
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),

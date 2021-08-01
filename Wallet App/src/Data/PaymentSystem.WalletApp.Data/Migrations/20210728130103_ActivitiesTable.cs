@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace PaymentSystem.WalletApp.Data.Migrations
+﻿namespace PaymentSystem.WalletApp.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class ActivitiesTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

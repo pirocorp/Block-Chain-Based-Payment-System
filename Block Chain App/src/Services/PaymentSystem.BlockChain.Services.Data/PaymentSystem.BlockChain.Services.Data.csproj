@@ -16,7 +16,6 @@
     <ProjectReference Include="..\..\..\..\Common\PaymentSystem.Common\PaymentSystem.Common.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data.Models\PaymentSystem.BlockChain.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\PaymentSystem.BlockChain.Data\PaymentSystem.BlockChain.Data.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\PaymentSystem.BlockChain.Infrastructure\PaymentSystem.BlockChain.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

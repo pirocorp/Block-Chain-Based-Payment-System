@@ -40,6 +40,8 @@
 
         public DbSet<Fingerprint> Fingerprints { get; set; }
 
+        public DbSet<Setting> Settings { get; set; }
+
         public DbSet<Transaction> Transactions { get; set; }
 
         public DbSet<Testimonial> Testimonials { get; set; }
@@ -102,7 +104,9 @@
 
         // Applies configurations
         private void ConfigureUserIdentityRelations(ModelBuilder builder)
-             => builder.ApplyConfigurationsFromAssembly(typeof(ApplicationUser).Assembly);
+        {
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationUser).Assembly);
+        }
 
         private void ApplyAuditInfoRules()
         {
