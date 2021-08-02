@@ -6,6 +6,8 @@
 
     public interface ITransferService
     {
-        Task<bool> DepositToAccount(string userId, CreateTransactionServiceModel model);
+        Task<bool> DepositToAccount(string userId, DepositServiceModel model);
+
+        Task<bool> WithdrawFromAccount(string userId, WithdrawServiceModel model);
     }
 }

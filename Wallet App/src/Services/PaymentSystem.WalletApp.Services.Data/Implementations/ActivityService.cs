@@ -40,8 +40,7 @@
 
         public async Task SetActivityStatus(string transactionHash, ActivityStatus status)
         {
-            var activity = await this.dbContext.Activities
-                .FirstOrDefaultAsync(a => a.TransactionHash == transactionHash);
+            var activity = await this.GetActivity(transactionHash);
 
             activity.Status = status;
 
@@ -68,5 +67,26 @@
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+        public async Task ReturnBlockedAmount(string transactionHash)
+        {
+            var activity = await this.dbContext.Activities
+                .FirstOrDefaultAsync(a => a.TransactionHash == transactionHash);
+
+            var account = await this.dbContext.Accounts
+                .FirstOrDefaultAsync(a => a.UserId == activity.UserId);
+
+            account.BlockedBalance -= activity.BlockedAmount;
+            account.Balance += activity.BlockedAmount;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        private async Task<Activity> GetActivity(string transactionHash)
+        {
+            var activity = await this.dbContext.Activities
+                .FirstOrDefaultAsync(a => a.TransactionHash == transactionHash);
+            return activity;
+        }
     }
 }

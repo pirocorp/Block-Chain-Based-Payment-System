@@ -1,7 +1,51 @@
-﻿@{
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Transfers.Withdraw.WithdrawViewModel
+
+@{
     Layout = "/Views/Shared/_TransfersLayout.cshtml";
 }
 
+@section Scripts
+{
+    <script>
+        const accountBalances = {};
+
+        @foreach (var d in Model.CoinAccounts)
+        {
+            @:accountBalances["@d.Address"] = @d.Balance;
+        }
+
+        setCurrentAccountBalance();
+
+        function setCurrentAccountBalance() {
+            const coinAccount = document.getElementById('withdraw-from');
+            const balance = accountBalances[coinAccount.value];
+
+            const totalAmount = document.getElementById('total-amount');
+            totalAmount.textContent = `${balance.toFixed(2)} P`;
+        }
+
+        function coinAccountChangeHandler() {
+            setCurrentAccountBalance();
+        }
+
+        function onAmountChangeHandler(el) {
+            const value = el.value;
+
+            const withdrawTotal = document.getElementById('withdraw-total');
+            withdrawTotal.textContent = `${value} P`;
+        }
+
+        function onFullAmountWithdrawClickHandler() {
+            const coinAccount = document.getElementById('withdraw-from');
+            const balance = accountBalances[coinAccount.value];
+
+            const withdrawAmount = document.getElementById('withdraw-amount');
+            withdrawAmount.value = balance;
+
+            onAmountChangeHandler(withdrawAmount);
+        }
+    </script>
+}
 
 <!-- Content
 ============================================= -->
@@ -14,29 +58,30 @@
                 ============================================= -->
                 <div class="bg-light shadow-sm rounded p-3 p-sm-4 mb-4">
                     <div class="text-center bg-primary p-4 rounded mb-4">
-                        <h3 class="text-10 text-white font-weight-400">$2956.00</h3>
+                        <h3 id="total-amount" class="text-10 text-white font-weight-400">00.00 P</h3>
                         <p class="text-white">Available Balance</p>
-                        <a href="" class="btn btn-outline-light btn-sm shadow-none text-uppercase rounded-pill text-1">Withdraw Full Amount</a>
+                        <button onclick="onFullAmountWithdrawClickHandler()" class="btn btn-outline-light btn-sm shadow-none text-uppercase rounded-pill text-1">Withdraw Full Amount</button>
                     </div>
                     <form id="form-send-money" method="post">
                         <div class="form-group">
-                            <label for="withdrawto">Withdraw to</label>
-                            <select id="withdrawto" class="custom-select" required="">
-                                <option value="">HDFC Bank - XXXXXXXXXXXX-9025</option>
-                                <option>Bank A/c 2 - XXXXXX-1211</option>
-                                <option>Bank A/c 3 - XXXXXX-2011</option>
-                                <option>Bank A/c 4 - XXXXXX-2011</option>
+                            <label for="withdraw-to">Bank Account</label>
+                            <select name="bankAccount" id="withdraw-to" asp-items="@this.Model.Banks" class="custom-select" required="required">
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="youSend">Amount</label>
+                            <label for="withdraw-from">Coin Account</label>
+                            <select name="coinAccount" onchange="coinAccountChangeHandler()" id="withdraw-from" asp-items="@this.Model.Coins"  class="custom-select" required="required">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="withdraw-amount">Amount</label>
                             <div class="input-group">
                                 <div class="input-group-prepend"> <span class="input-group-text">$</span> </div>
-                                <input type="text" class="form-control" data-bv-field="youSend" id="youSend" value="1,000" placeholder="">
+                                <input name="amount" oninput="onAmountChangeHandler(this)" required="required" type="number" class="remove-arrow-spinners form-control" data-bv-field="youSend" id="withdraw-amount" placeholder="1,000">
                             </div>
                         </div>
-                        <p class="text-muted mt-4">Transactions fees <span class="float-right d-flex align-items-center">5.00 USD</span></p>
-                        <p class="font-weight-500">Amount to Withdraw <span class="text-3 float-right">1,000.00 USD</span></p>
+                        <p class="text-muted mt-4">Transactions fees <span class="float-right d-flex align-items-center">0.00 P</span></p>
+                        <p class="font-weight-500">Amount to Withdraw <span id="withdraw-total" class="text-3 float-right">0.00 P</span></p>
                         <button class="btn btn-primary btn-block">Continue</button>
                     </form>
                 </div>

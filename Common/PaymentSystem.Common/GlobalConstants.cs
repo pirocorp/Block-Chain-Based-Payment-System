@@ -14,6 +14,10 @@
 
         public const string ChanelAddress = "https://localhost:8081";
 
+        public const double DefaultDepositFee = 0;
+
+        public const double DefaultWithdrawFee = 0;
+
         public static class Block
         {
             public const int Version = 1;

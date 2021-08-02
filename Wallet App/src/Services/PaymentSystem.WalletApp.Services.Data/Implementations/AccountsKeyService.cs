@@ -1,13 +1,15 @@
 ﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
     using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Options;
+
     using PaymentSystem.Common.Utilities;
+    using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Models.AccountsKeys;
     using PaymentSystem.WalletApp.Web.Infrastructure.Options;
-    using WalletApp.Data;
 
     public class AccountsKeyService : IAccountsKeyService
     {
@@ -49,6 +51,18 @@
 
             await this.dbContext.AddAsync(accountKey);
             await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<KeyData> GetKeyData(string address, string userId)
+        {
+            var accountKey = await this.dbContext.AccountsKeys
+                .FirstOrDefaultAsync(a => a.Address == address && a.UserId == userId);
+
+            var encryptedData = accountKey.Key.HexToBytes();
+            var keyData = this.secretOptions.Value.Key.ToByteArray();
+            var saltData = accountKey.SecurityStamp.HexToBytes();
+
+            return this.securelyEncryptDataService.Decrypt<KeyData>(encryptedData, keyData, saltData);
         }
     }
 }

@@ -1,20 +1,23 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Controllers
 {
+    using System;
     using System.Threading.Tasks;
+    using AutoMapper;
     using Infrastructure;
+    using Infrastructure.Helpers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using Newtonsoft.Json;
-
+    using PaymentSystem.Common;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Web.ViewModels.Transfers.Deposit;
     using PaymentSystem.WalletApp.Web.ViewModels.Transfers.DepositConfirm;
     using PaymentSystem.WalletApp.Services.Data;
-    using Services.Data.Models;
-    using Services.Data.Models.Activities;
-    using Services.Data.Models.Transactions;
+    using PaymentSystem.WalletApp.Services.Data.Models;
+    using PaymentSystem.WalletApp.Services.Data.Models.Transactions;
+    using ViewModels.Transfers.Withdraw;
 
     [Authorize]
     public class TransfersController : BaseController
@@ -22,6 +25,7 @@
         private const string DepositTempData = "depositTempData";
 
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IMapper mapper;
         private readonly IAccountService accountService;
         private readonly IBankAccountService bankAccountService;
         private readonly ICreditCardService creditCardService;
@@ -30,6 +34,7 @@
         
         public TransfersController(
             UserManager<ApplicationUser> userManager,
+            IMapper mapper,
             IAccountService accountService,
             IBankAccountService bankAccountService,
             ICreditCardService creditCardService,
@@ -37,6 +42,7 @@
             IUserService userService)
         {
             this.userManager = userManager;
+            this.mapper = mapper;
             this.accountService = accountService;
             this.bankAccountService = bankAccountService;
             this.creditCardService = creditCardService;
@@ -94,7 +100,7 @@
             }
 
             var userId = this.userManager.GetUserId(this.User);
-            var userOwnsAccount = await this.accountService.UserOwnsAccount(userId, model.Account);
+            var userOwnsAccount = await this.accountService.UserOwnsAccount(model.Account, userId);
             var isPaymentMethodValid = model.PaymentType switch
             {
                 PaymentMethod.BankAccount => await this.bankAccountService.UserOwnsAccount(model.PaymentMethod, userId),
@@ -107,9 +113,10 @@
                 return this.BadRequest();
             }
 
-            var serviceModel = new CreateTransactionServiceModel()
+            var serviceModel = new DepositServiceModel()
             {
                 Amount = model.Amount,
+                Fee = GlobalConstants.DefaultDepositFee,
                 RecipientAddress = model.Account,
             };
 
@@ -126,7 +133,46 @@
 
         public async Task<IActionResult> Withdraw()
         {
-            return await Task.FromResult(this.View());
+            var userId = this.userManager.GetUserId(this.User);
+            var model = await this.userService.GetUser<WithdrawViewModel>(userId);
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Withdraw(WithdrawInputModel model)
+        {
+            var userId = this.userManager.GetUserId(this.User);
+
+            if (!await this.bankAccountService.Exists(model.BankAccount)
+                || !await this.bankAccountService.UserOwnsAccount(model.BankAccount, userId))
+            {
+                this.ModelState.AddModelError(string.Empty, WebConstants.WithdrawInputModel.BankAccountErrorMessage);
+            }
+
+            if (!await this.accountService.Exists(model.CoinAccount)
+                || !await this.accountService.UserOwnsAccount(model.CoinAccount, userId))
+            {
+                this.ModelState.AddModelError(string.Empty, WebConstants.WithdrawInputModel.CoinAccountErrorMessage);
+            }
+
+            if (!await this.accountService.HasSufficientFunds(model.CoinAccount, model.Amount))
+            {
+                this.ModelState.AddModelError(string.Empty, WebConstants.WithdrawInputModel.InsufficientFundsErrorMessage);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                var viewModel = await this.userService.GetUser<WithdrawViewModel>(userId);
+
+                return this.View(viewModel);
+            }
+
+            var serviceModel = this.mapper.Map<WithdrawServiceModel>(model);
+            await this.transferService.WithdrawFromAccount(userId, serviceModel);
+
+            var controller = ControllerHelpers.GetControllerName<UsersController>();
+            return this.Redirect($"/{controller}/{nameof(UsersController.Dashboard)}");
         }
     }
 }

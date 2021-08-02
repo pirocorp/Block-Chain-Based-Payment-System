@@ -20,7 +20,7 @@
                 <div class="bg-light shadow-sm rounded p-3 p-sm-4 mb-4">
                     <h3 class="text-5 font-weight-400 mb-3">Deposit Money via</h3>
                     <!-- Deposit Money Confirm ============================================= -->
-                    <form id="form-send-money" method="post">
+                    <form asp-area="" asp-controller="Transfers" asp-action="DepositConfirm" method="post">
                         <div class="form-group">
                             <label for="paymentMethod">@paymentMethod</label>
                             <select name="paymentMethod" id="paymentMethod" asp-items="@this.Model.PaymentMethods" class="custom-select" required>

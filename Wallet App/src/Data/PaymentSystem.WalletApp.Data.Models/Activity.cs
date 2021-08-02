@@ -24,6 +24,8 @@
 
         public double Amount { get; set; }
 
+        public double BlockedAmount { get; set; }
+
         [Required]
         public string CounterpartyAddress { get; set; }
 

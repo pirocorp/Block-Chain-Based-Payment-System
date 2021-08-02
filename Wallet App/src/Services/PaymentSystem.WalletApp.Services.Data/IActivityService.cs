@@ -19,5 +19,7 @@
         Task<IEnumerable<T>> GetLastActivities<T>(int count);
 
         Task<IEnumerable<T>> GetActivities<T>(int page, int pageSize);
+
+        Task ReturnBlockedAmount(string transactionHash);
     }
 }

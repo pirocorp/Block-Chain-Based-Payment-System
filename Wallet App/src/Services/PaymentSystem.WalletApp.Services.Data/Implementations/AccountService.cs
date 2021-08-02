@@ -28,9 +28,16 @@
         public async Task<bool> Exists(string address)
             => await this.dbContext.Accounts.AnyAsync(a => a.Address == address);
 
-        public async Task<bool> UserOwnsAccount(string userId, string address)
+        public async Task<bool> UserOwnsAccount(string address, string userId)
             => await this.dbContext.Accounts
                 .AnyAsync(a => a.Address == address && a.UserId == userId);
+
+        public async Task<bool> HasSufficientFunds(string address, double amount)
+            => await this.dbContext.Accounts
+                .AnyAsync(a => a.Address == address && a.Balance >= amount);
+
+        public async Task<string> GetPublicKey(string address)
+            => (await this.dbContext.Accounts.FirstOrDefaultAsync(a => a.Address == address)).PublicKey;
 
         public async Task<T> GetAccount<T>(string address)
             => await this.dbContext.Accounts
@@ -60,6 +67,14 @@
             await this.dbContext.SaveChangesAsync();
 
             return blockchainAccount;
+        }
+
+        public async Task BlockFunds(string address, double amount)
+        {
+            var account = await this.dbContext.Accounts.FindAsync(address);
+
+            account.Balance -= amount;
+            account.BlockedBalance += amount;
         }
 
         public async Task Deposit(string address, double amount)

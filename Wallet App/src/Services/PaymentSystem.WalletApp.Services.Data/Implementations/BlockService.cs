@@ -18,17 +18,20 @@
         private readonly IBlockChainGrpcService blockChainGrpcService;
         private readonly IActivityService activityService;
         private readonly IAccountService accountService;
+        private readonly ITransactionService transactionService;
 
         public BlockService(
             ApplicationDbContext dbContext,
             IBlockChainGrpcService blockChainGrpcService,
             IActivityService activityService,
-            IAccountService accountService)
+            IAccountService accountService,
+            ITransactionService transactionService)
         {
             this.dbContext = dbContext;
             this.blockChainGrpcService = blockChainGrpcService;
             this.activityService = activityService;
             this.accountService = accountService;
+            this.transactionService = transactionService;
         }
 
         public async Task<Block> GetLastBlock() => await this.dbContext.Blocks
@@ -103,6 +106,7 @@
             {
                 if (await this.activityService.Exists(transaction.Hash))
                 {
+                    await this.activityService.ReturnBlockedAmount(transaction.Hash);
                     await this.activityService.SetActivityStatus(transaction.Hash, ActivityStatus.Canceled);
                 }
             }
