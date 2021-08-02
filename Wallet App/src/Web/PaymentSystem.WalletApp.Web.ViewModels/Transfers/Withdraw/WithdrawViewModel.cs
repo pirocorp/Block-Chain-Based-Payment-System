@@ -26,8 +26,10 @@
         {
             configuration
                 .CreateMap<ApplicationUser, WithdrawViewModel>()
-                .ForMember(s => s.CoinAccounts, opt
-                    => opt.MapFrom(d => d.Accounts));
+                .ForMember(d => d.CoinAccounts, opt
+                    => opt.MapFrom(s => s.Accounts))
+                .ForMember(d => d.BankAccounts, opt
+                    => opt.MapFrom(s => s.BankAccounts.Where(b => b.IsApproved)));
         }
     }
 }

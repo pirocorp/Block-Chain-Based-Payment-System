@@ -20,26 +20,26 @@
     public class TransferService : ITransferService
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly IOptions<WalletProviderOptions> walletProviderOptions;
-        private readonly IBlockChainGrpcService blockChainGrpcService;
-        private readonly IActivityService activityService;
         private readonly IAccountService accountService;
         private readonly IAccountsKeyService accountsKeyService;
+        private readonly IActivityService activityService;
+        private readonly IBlockChainGrpcService blockChainGrpcService;
+        private readonly IOptions<WalletProviderOptions> walletProviderOptions;
 
         public TransferService(
             ApplicationDbContext dbContext,
-            IOptions<WalletProviderOptions> walletProviderOptions,
-            IBlockChainGrpcService blockChainGrpcService,
-            IActivityService activityService,
             IAccountService accountService,
-            IAccountsKeyService accountsKeyService)
+            IAccountsKeyService accountsKeyService,
+            IActivityService activityService,
+            IBlockChainGrpcService blockChainGrpcService,
+            IOptions<WalletProviderOptions> walletProviderOptions)
         {
             this.dbContext = dbContext;
-            this.walletProviderOptions = walletProviderOptions;
-            this.blockChainGrpcService = blockChainGrpcService;
-            this.activityService = activityService;
             this.accountService = accountService;
             this.accountsKeyService = accountsKeyService;
+            this.activityService = activityService;
+            this.blockChainGrpcService = blockChainGrpcService;
+            this.walletProviderOptions = walletProviderOptions;
         }
 
         public async Task<bool> DepositToAccount(string userId, DepositServiceModel model)
@@ -53,6 +53,7 @@
                     this.walletProviderOptions.Value.PublicKey);
 
             var success = await this.SendTransactionRequest(sendRequest, userId, WebConstants.DepositDescription);
+
             return success;
         }
 

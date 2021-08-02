@@ -11,6 +11,10 @@
 
         Task<bool> UserOwnsAccount(string id, string userId);
 
+        Task<bool> AccountIsConfirmed(string id);
+
+        Task ConfirmAccount(string id);
+
         Task<T> GetAccountInformation<T>(string id);
 
         Task<IEnumerable<T>> GetAccounts<T>(string userId);

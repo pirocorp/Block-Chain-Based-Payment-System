@@ -3,12 +3,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using AutoMapper;
+
     using Microsoft.EntityFrameworkCore;
-    using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
+
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
 
     public class BankAccountService : IBankAccountService
     {
@@ -28,6 +31,17 @@
 
         public async Task<bool> UserOwnsAccount(string id, string userId)
             => await this.dbContext.BankAccounts.AnyAsync(a => a.Id == id && a.UserId == userId);
+
+        public async Task<bool> AccountIsConfirmed(string id)
+            => (await this.dbContext.BankAccounts.FirstOrDefaultAsync(a => a.Id == id)).IsApproved;
+
+        public async Task ConfirmAccount(string id)
+        {
+            var account = await this.dbContext.BankAccounts.FindAsync(id);
+            account.IsApproved = true;
+
+            await this.dbContext.SaveChangesAsync();
+        }
 
         public async Task<T> GetAccountInformation<T>(string id)
             => await this.dbContext.BankAccounts
