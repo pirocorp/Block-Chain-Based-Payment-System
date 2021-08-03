@@ -7,13 +7,14 @@
 
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Web.Infrastructure;
     using PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout;
 
     public class DashboardUser : ProfileLayoutUserModel, IHaveCustomMappings
     {
         public DashboardUser()
         {
-            this.Activities = new List<DashboardUserActivity>();
+            this.Activities = new List<ActivityListingModel>();
         }
 
         public bool HasPhoneAdded { get; set; }
@@ -24,9 +25,9 @@
 
         public bool HasBankAccountAdded { get; set; }
 
-        public IEnumerable<DashboardUserActivity> Activities { get; set; }
+        public IEnumerable<ActivityListingModel> Activities { get; set; }
 
-        public new void CreateMappings(IProfileExpression configuration)
+        public void CreateMappings(IProfileExpression configuration)
         {
             configuration
                 .CreateMap<ApplicationUser, DashboardUser>()
@@ -39,7 +40,9 @@
                 .ForMember(d => d.HasBankAccountAdded, opt
                     => opt.MapFrom(s => s.BankAccounts.Any()))
                 .ForMember(d => d.TotalBalance, opt
-                    => opt.MapFrom(s => s.Accounts.Sum(a => a.Balance)));
+                    => opt.MapFrom(s => s.Accounts.Sum(a => a.Balance)))
+                .ForMember(d => d.Activities, opt 
+                    => opt.MapFrom(s => s.Activities.OrderByDescending(a => a.TimeStamp).Take(WebConstants.DefaultActivitiesResultPageSize)));
         }
     }
 }

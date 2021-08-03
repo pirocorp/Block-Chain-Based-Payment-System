@@ -1,5 +1,4 @@
-﻿@using System.Globalization
-@model PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard.DashboardUser
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard.DashboardUser
 
 @{
     Layout = "/Views/Shared/_ProfileLayout.cshtml";
@@ -12,57 +11,6 @@
     };
 
     var completeness = (completenessFactors.Count() / (double) completenessFactors.Count(f => f)) * 100;
-}
-
-@section Scripts
-{
-    <script>
-        function getTransactionInfo(id) {
-            console.log(id);
-
-            const uri = `/users/getTransactionDetails?id=${id}`;
-
-            const options = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            };
-
-            fetch(uri, options)
-                .then(res => res.json())
-                .then(res => {
-                    const totalAmountValue = res.amount - res.fee;
-
-                    const totalAmountHeader = document.getElementById('total-amount-header');
-                    totalAmountHeader.textContent = `${totalAmountValue.toFixed(2)}P`;
-
-                    const dateHeader = document.getElementById('date-header');
-                    dateHeader.textContent = res.date;
-
-                    const paymentAmount = document.getElementById('payment-amount');
-                    paymentAmount.textContent = `${res.amount.toFixed(2)}P`;
-
-                    const transactionFee = document.getElementById('transaction-fee');
-                    transactionFee.textContent = `${res.fee.toFixed(2)}P`;
-
-                    const totalAmount = document.getElementById('total-amount');
-                    totalAmount.textContent = `${totalAmountValue.toFixed(2)}P`;
-
-                    const senderAddress = document.getElementById('sender-address');
-                    senderAddress.textContent = res.sender;
-
-                    const recipientAddress = document.getElementById('recipient-address');
-                    recipientAddress.textContent = res.recipient;
-
-                    const transactionHash = document.getElementById('transaction-hash');
-                    transactionHash.textContent = res.hash;
-
-                    const blockHash = document.getElementById('block-hash');
-                    blockHash.textContent = res.blockHash;
-                });
-        }
-    </script>
 }
 
 <!-- Middle Panel ============================================= -->
@@ -175,87 +123,11 @@
     <div class="bg-light shadow-sm rounded py-4 mb-4">
         <h3 class="text-5 font-weight-400 d-flex align-items-center px-4 mb-3">Recent Activity</h3>
 
-        <!-- Title =============================== -->
-        <div class="transaction-title py-2 px-4">
-            <div class="row">
-                <div class="col-2 col-sm-1 text-center"><span class="">Date</span></div>
-                <div class="col col-sm-7">Description</div>
-                <div class="col-auto col-sm-2 d-none d-sm-block text-center">Status</div>
-                <div class="col-3 col-sm-2 text-right">Amount</div>
-            </div>
-        </div>
-        <!-- Title End -->
-        
-        <!-- Transaction List  =============================== -->
-        <div class="transaction-list">
-            @foreach (var activity in this.Model.Activities.OrderByDescending(a => a.TimeStamp))
-            {
-                <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail" onclick="getTransactionInfo('@activity.TransactionHash')">
-                    <div class="row align-items-center flex-row">
-                        <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">@activity.Date.Day</span> <span class="d-block text-1 font-weight-300 text-uppercase">@activity.Date.ToString("MMM", CultureInfo.InvariantCulture)</span> </div>
-                        <div class="col col-sm-7"> <span class="d-block text-4">@activity.CounterpartyAddress</span> <span class="text-muted">@(activity.Description.Length > 50 ? activity.Description[..50] : activity.Description)</span> </div>
-                        <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <activity-status status="@activity.Status"></activity-status> </div>
-                        <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">@($"{activity.Amount:F2}")</span> <span class="text-2 text-uppercase">(pir)</span> </div>
-                    </div>
-                </div>
-            }
-        </div>
-        <!-- Transaction List End -->
-        
-        <!-- Transaction Item Details Modal =========================================== -->
-        <div id="transaction-detail" class="modal fade" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered transaction-details" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row no-gutters">
-                            <div class="col-sm-5 d-flex justify-content-center bg-primary rounded-left py-4">
-                                <div class="my-auto text-center">
-                                    <div class="text-17 text-white my-3"><i class="fas fa-building"></i></div>
-                                    <h3 class="text-4 text-white font-weight-400 my-3">XXX</h3>
-                                    <div id="total-amount-header" class="text-8 font-weight-500 text-white my-4">00.00P</div>
-                                    <p id="date-header" class="text-white"></p>
-                                </div>
-                            </div>
-                            <div class="col-sm-7">
-                                <h5 class="text-5 font-weight-400 m-3">
-                                    Transaction Details
-                                    <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-                                </h5>
-                                <hr>
-                                <div class="px-3">
-                                    <ul class="list-unstyled">
-                                        <li class="mb-2">Payment Amount <span id="payment-amount" class="float-right text-3">00.00P</span></li>
-                                        <li class="mb-2">Fee <span id="transaction-fee" class="float-right text-3">-0.00P</span></li>
-                                    </ul>
-                                    <hr class="mb-2">
-                                    <p id="total-amount" class="d-flex align-items-center font-weight-500 mb-4">Total Amount <span class="text-3 ml-auto">00.00P</span></p>
-                                    <ul class="card list-unstyled coin-account-details-card">
-                                        <li class="font-weight-500">Sender Address:</li>
-                                        <li id="sender-address" class="text-muted">XXXX</li>
-                                    </ul>
-                                    <ul class="card list-unstyled coin-account-details-card">
-                                        <li class="font-weight-500">Recipient Address:</li>
-                                        <li id="recipient-address" class="text-muted">XXXX</li>
-                                    </ul>
-                                    <ul class="card list-unstyled coin-account-details-card">
-                                        <li class="font-weight-500">Transaction Hash:</li>
-                                        <li id="transaction-hash" class="text-muted">-----</li>
-                                    </ul>
-                                    <ul class="card list-unstyled coin-account-details-card">
-                                        <li class="font-weight-500">Block Hash:</li>
-                                        <li id="block-hash" class="text-muted">-----</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Transaction Item Details Modal End -->
-        
+        @*<vc:activities model="@this.Model.Activities"></vc:activities>*@
+        <partial name="/Views/Shared/Components/Activities/Default.cshtml" model="@this.Model.Activities" />
+
         <!-- View all Link =============================== -->
-        <div class="text-center mt-4"><a href="transactions.html" class="btn-link text-3">View all<i class="fas fa-chevron-right text-2 ml-2"></i></a></div>
+        <div class="text-center mt-4"><a asp-area="" asp-controller="Activities" asp-action="Index" class="btn-link text-3">View all<i class="fas fa-chevron-right text-2 ml-2"></i></a></div>
         <!-- View all Link End -->
 
     </div>

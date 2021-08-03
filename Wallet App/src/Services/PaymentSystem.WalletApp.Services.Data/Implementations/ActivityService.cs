@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -53,20 +54,44 @@
                 .To<T>()
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<T>> GetLastActivities<T>(int count)
-            => await this.dbContext.Activities
-                .OrderByDescending(a => a.TimeStamp)
-                .To<T>()
-                .Take(count)
-                .ToListAsync();
+        public async Task<(int Total, IEnumerable<T> Activities)> GetUserActivities<T>(
+            string userId,
+            int page,
+            int pageSize,
+            string dateRange = "")
+        {
+            var query = this.dbContext.Activities
+                .Where(a => a.UserId == userId);
 
-        public async Task<IEnumerable<T>> GetActivities<T>(int page, int pageSize)
-            => await this.dbContext.Activities
+            var dates = dateRange
+                .Split("-", StringSplitOptions.RemoveEmptyEntries)
+                .Select(d => DateTime.Parse(d, CultureInfo.InvariantCulture)).ToList();
+
+            if (dates.Any())
+            {
+                var startDate = dates[0];
+                var endDate = dates[1];
+
+                endDate = endDate.AddDays(1);
+
+                var startTimeStamp = startDate.Ticks;
+                var endTimeStamp = endDate.Ticks;
+
+                query = query
+                    .Where(a => a.TimeStamp >= startTimeStamp && a.TimeStamp < endTimeStamp);
+            }
+
+            var total = await query.CountAsync();
+
+            var activities = await query
                 .OrderByDescending(a => a.TimeStamp)
                 .To<T>()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            return (total, activities);
+        }
 
         public async Task ReturnBlockedAmount(string transactionHash)
         {

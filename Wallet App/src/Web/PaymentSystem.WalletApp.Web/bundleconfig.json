@@ -12,7 +12,8 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js"
+      "wwwroot/js/site.js",
+      "wwwroot/js/custom.js"
     ],
     // Optionally specify minification options
     "minify": {
@@ -21,5 +22,15 @@
     },
     // Optionally generate .map file
     "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/theme.min.js",
+    "inputFiles": [
+      "wwwroot/js/theme.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]

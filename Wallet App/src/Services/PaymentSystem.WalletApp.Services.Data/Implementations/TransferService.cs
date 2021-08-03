@@ -25,6 +25,7 @@
         private readonly IActivityService activityService;
         private readonly IBlockChainGrpcService blockChainGrpcService;
         private readonly IOptions<WalletProviderOptions> walletProviderOptions;
+        private readonly ITransactionService transactionService;
 
         public TransferService(
             ApplicationDbContext dbContext,
@@ -32,7 +33,8 @@
             IAccountsKeyService accountsKeyService,
             IActivityService activityService,
             IBlockChainGrpcService blockChainGrpcService,
-            IOptions<WalletProviderOptions> walletProviderOptions)
+            IOptions<WalletProviderOptions> walletProviderOptions,
+            ITransactionService transactionService)
         {
             this.dbContext = dbContext;
             this.accountService = accountService;
@@ -40,11 +42,12 @@
             this.activityService = activityService;
             this.blockChainGrpcService = blockChainGrpcService;
             this.walletProviderOptions = walletProviderOptions;
+            this.transactionService = transactionService;
         }
 
         public async Task<bool> DepositToAccount(string userId, DepositServiceModel model)
         {
-            var sendRequest = CreateTransactionRequest(
+            var (transactionStatus, transactionHash) = await this.transactionService.CreateTransaction(
                     this.walletProviderOptions.Value.Address,
                     model.RecipientAddress,
                     model.Amount,
@@ -52,8 +55,19 @@
                     this.walletProviderOptions.Value.Secret,
                     this.walletProviderOptions.Value.PublicKey);
 
-            var success = await this.SendTransactionRequest(sendRequest, userId, WebConstants.DepositDescription);
+            var success = TransactionIsSuccessful(transactionStatus);
 
+            var activity = new ActivityServiceModel
+            {
+                Amount = model.Amount,
+                CounterpartyAddress = $"XXXX - {model.RecipientAddress[^12..]}",
+                Description = WebConstants.DepositDescription,
+                UserId = userId,
+                Status = success ? ActivityStatus.Pending : ActivityStatus.Canceled,
+                TransactionHash = transactionHash,
+            };
+
+            await this.activityService.AddActivity(activity);
             return success;
         }
 
@@ -62,7 +76,7 @@
             var keyData = await this.accountsKeyService.GetKeyData(model.CoinAccount, userId);
             var publicKey = await this.accountService.GetPublicKey(model.CoinAccount);
 
-            var sendRequest = CreateTransactionRequest(
+            var (transactionStatus, transactionHash) = await this.transactionService.CreateTransaction(
                 model.CoinAccount,
                 this.walletProviderOptions.Value.Address,
                 model.Amount,
@@ -73,71 +87,30 @@
             var bankAccount = await this.dbContext.BankAccounts.FirstOrDefaultAsync(b => b.Id == model.BankAccount);
             var description = string.Format(WebConstants.WithdrawDescription, $"{bankAccount.BankName} - {bankAccount.IBAN[^12..]}");
 
-            await this.accountService.BlockFunds(model.CoinAccount, model.Amount);
+            var success = TransactionIsSuccessful(transactionStatus);
 
-            var success = await this.SendTransactionRequest(sendRequest, userId, description);
-            return success;
-        }
-
-        private static SendRequest CreateTransactionRequest(
-            string senderAddress,
-            string recipientAddress,
-            double amount,
-            double fee,
-            string secret,
-            string publicKey)
-        {
-            var transactionInput = new TransactionInput()
+            if (success)
             {
-                SenderAddress = senderAddress,
-                TimeStamp = DateTime.UtcNow.Ticks,
-            };
-
-            var transactionOutput = new TransactionOutput()
-            {
-                RecipientAddress = recipientAddress,
-                Amount = amount,
-                Fee = fee,
-            };
-
-            var transactionHash = BlockChainHashing
-                .GenerateTransactionHash(
-                    transactionInput.TimeStamp,
-                    transactionInput.SenderAddress,
-                    transactionOutput.RecipientAddress,
-                    transactionOutput.Amount,
-                    transactionOutput.Fee);
-
-            transactionInput.Signature = BlockChainHashing.CreateSignature(transactionHash, secret);
-
-            var sendRequest = new SendRequest()
-            {
-                TransactionId = transactionHash,
-                PublicKey = publicKey,
-                TransactionInput = transactionInput,
-                TransactionOutput = transactionOutput,
-            };
-
-            return sendRequest;
-        }
-
-        private async Task<bool> SendTransactionRequest(SendRequest sendRequest, string userId, string description)
-        {
-            var response = await this.blockChainGrpcService.AddTransactionToPool(sendRequest);
-            var success = response.Result != TransactionStatus.Canceled.ToString();
+                await this.accountService.BlockFunds(model.CoinAccount, model.Amount);
+            }
 
             var activity = new ActivityServiceModel
             {
-                Amount = sendRequest.TransactionOutput.Amount,
-                CounterpartyAddress = $"XXXX - {sendRequest.TransactionOutput.RecipientAddress[^12..]}",
+                Amount = model.Amount,
+                CounterpartyAddress = $"XXXX - {this.walletProviderOptions.Value.Address[^12..]}",
                 Description = description,
                 UserId = userId,
                 Status = success ? ActivityStatus.Pending : ActivityStatus.Canceled,
-                TransactionHash = sendRequest.TransactionId,
+                TransactionHash = transactionHash,
+                BlockedAmount = model.Amount,
             };
 
             await this.activityService.AddActivity(activity);
+
             return success;
         }
+
+        private static bool TransactionIsSuccessful(TransactionStatus transactionStatus)
+            => transactionStatus == TransactionStatus.Pending;
     }
 }

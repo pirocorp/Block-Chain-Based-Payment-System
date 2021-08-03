@@ -1,0 +1,137 @@
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Activities.Index.ActivitiesIndexViewModel
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles
+{
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/daterangepicker/daterangepicker.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/daterangepicker.min.css"
+              asp-fallback-href="~/lib/daterangepicker/daterangepicker.min.css"
+              asp-fallback-test-class="daterangepicker"
+              asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute"
+              integrity="sha512-CliXBuHwQxr4nHkBGnjI8GeVo/P3u+GN0OlXB22b7/0YZkMCKdt2a2G8CEHFk+fwGhRWyyAFib64f90kZoWBvQ=="
+              crossorigin="anonymous" />
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/daterangepicker/moment.min.js" asp-append-version="true"></script>
+        <script src="~/lib/daterangepicker/daterangepicker.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/moment.min.js"
+                integrity="sha512-i2CVnAiguN6SnJ3d2ChOOddMWQyvgQTzm0qSgiKhOqBMGCx4fGU5BtzXEybnKatWPDkXPFyCI0lbG42BnVjr/Q=="
+                crossorigin="anonymous"
+                asp-fallback-src="~/lib/daterangepicker/moment.min.js"
+                asp-fallback-test="window.moment">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/daterangepicker.min.js"
+                integrity="sha512-FEzFjtAJCunp3uJTwYfcHtJHlRbgkzRYNpvsShtjVu5jSoejpExyzHHSDOUJ46IgV7VoNAkuVxjbid5pkoLASg=="
+                crossorigin="anonymous"
+                asp-fallback-src="~/lib/daterangepicker/daterangepicker.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery().daterangepicker">
+        </script>
+    </environment>
+    <script>
+        $(function () {
+            'use strict';
+
+            // Date Range Picker
+            $(function () {
+                const start = moment();
+                const end = moment();
+                function defaultSelection(start, end) {
+                    $('#dateRange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                }
+                $('#dateRange').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, defaultSelection);
+                defaultSelection(start, end);
+            });
+        });
+    </script>
+    <environment include="Development">
+        <script src="js/theme.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="js/theme.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+
+<!-- Middle Panel ============================================= -->
+<div class="py-4 px-4">
+
+    <h2 class="font-weight-400 mb-3">Activities</h2>
+
+    <!-- Filter ============================================= -->
+    <div class="row">
+        <div class="col mb-2">
+            <form id="filterTransactions">
+                <div class="form-row">
+                    <!-- Date Range ========================= -->
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <input name="dateRange" id="dateRange" type="text" class="form-control" placeholder="Date Range">
+                        <span class="icon-inside"><i class="fas fa-calendar-alt"></i></span>
+                    </div>
+
+                    <div class="col-auto d-flex align-items-center mr-auto form-group">
+                        <button class="btn-sm btn-primary">Filter</button>
+                    </div>
+
+                    <div class="col-auto d-flex align-items-center ml-auto form-group">
+                        <div class="dropdown">
+                            <span class="text-muted btn-link" role="button" id="statements" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-3 mr-1"></i>Statements</span>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="statements">
+                                <a class="dropdown-item" href="#">CSV</a>
+                                <a class="dropdown-item" href="#">PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Filter End -->
+    
+    <!-- All Activities ============================================= -->
+    <div class="bg-light shadow-sm rounded py-4 mb-4">
+        <h3 class="text-5 font-weight-400 d-flex align-items-center px-4 mb-3">Activities</h3>
+
+        <partial name="/Views/Shared/Components/Activities/Default.cshtml" model="@this.Model.Activities" />
+
+        <!-- Pagination  ============================================= -->
+        <pagination class="pagination justify-content-center mt-4 mb-0"
+                    active-page-class="active"
+                    disabled-page-class="disabled"
+                    current-page="@this.Model.CurrentPage"
+                    total-pages="@this.Model.TotalPages"
+                    asp-area=""
+                    boundary="3"
+                    page-item-class="page-item"
+                    page-link-class="page-link"
+                    empty-link-class="page-item d-flex align-content-center flex-wrap text-muted text-5 mx-1"
+                    date-range="@this.Model.DateRange"></pagination>
+        <!-- Pagination end -->
+
+    </div>
+    <!-- All Activities End -->
+</div>
+<!-- Middle End -->

@@ -1,9 +1,13 @@
-﻿namespace PaymentSystem.WalletApp.Services.Data.Models.Activities
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels
 {
+    using System;
+
+    using AutoMapper;
+
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
 
-    public class ActivityServiceModel : IMapTo<Activity>
+    public class ActivityListingModel : IMapFrom<Activity>
     {
         public double Amount { get; set; }
 
@@ -13,10 +17,11 @@
 
         public ActivityStatus Status { get; set; }
 
-        public string UserId { get; set; }
+        public long TimeStamp { get; set; }
 
         public string TransactionHash { get; set; }
 
-        public double BlockedAmount { get; set; }
+        [IgnoreMap]
+        public DateTime Date => new(this.TimeStamp);
     }
 }

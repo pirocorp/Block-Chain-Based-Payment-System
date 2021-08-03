@@ -96,23 +96,28 @@
                                         <li is-active-route="active" asp-area="" asp-controller="Transfers" asp-action="Withdraw">
                                             <a asp-area="" asp-controller="Transfers" asp-action="Withdraw">Withdraw</a>
                                         </li>
-                                        <li class="dropdown">
-                                            <a class="dropdown-toggle dropdown-toggle" href="#">Transactions</a>
-                                            <ul class="dropdown-menu">
-                                                <li class="dropdown">
-                                                    <a class="dropdown-item" href="#">Transactions</a>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a class="dropdown-item" href="#">Send Money</a>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a class="dropdown-item" href="#">Request Money</a>
-                                                </li>
-                                            </ul>
+                                        <li is-active-route="active" asp-area="" asp-controller="Activities" asp-action="Index">
+                                            <a asp-area="" asp-controller="Activities" asp-action="Index">Activities</a>
                                         </li>
                                     }
-
-                                    <li><a href="about-us.html">About Us</a></li>
+                                    else
+                                    {
+                                        <li><a href="about-us.html">About Us</a></li>
+                                    }
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle dropdown-toggle" href="#">Blockchain Explorer</a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown">
+                                                <a class="dropdown-item" href="#">Browse Blocks</a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a class="dropdown-item" href="#">Genesis Block</a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a class="dropdown-item" href="#">Last Block</a>
+                                            </li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </div>
                         </nav>
@@ -221,6 +226,7 @@
     @await this.RenderSectionAsync("Scripts", required: false)
     <environment include="Development">
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="/js/custom.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/js/site.min.js" asp-append-version="true"></script>

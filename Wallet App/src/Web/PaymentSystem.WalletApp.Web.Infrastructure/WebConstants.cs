@@ -8,6 +8,7 @@
 
         public const string WithdrawDescription = "Withdraw to {0} bank account.";
 
+        public const int DefaultActivitiesResultPageSize = 10;
 
         public static class DepositConfirmInputModel
         {

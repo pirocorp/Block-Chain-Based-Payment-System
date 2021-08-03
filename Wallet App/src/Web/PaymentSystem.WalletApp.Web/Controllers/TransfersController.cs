@@ -177,7 +177,7 @@
 
             var serviceModel = this.mapper.Map<WithdrawServiceModel>(model);
 
-            if (await this.transferService.WithdrawFromAccount(userId, serviceModel))
+            if (!await this.transferService.WithdrawFromAccount(userId, serviceModel))
             {
                 this.ModelState.AddModelError(string.Empty, "Something went wrong try again.");
                 var viewModel = await this.GetWithdrawViewModel();

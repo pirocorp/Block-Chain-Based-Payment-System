@@ -14,10 +14,10 @@
     using PaymentSystem.WalletApp.Common;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services;
+    using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
+    using PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard;
     using PaymentSystem.WalletApp.Web.ViewModels.Users.Profile;
-    using Services.Data;
-    using ViewModels.Users.Dashboard;
 
     [Authorize]
     public class UsersController : ProfileController

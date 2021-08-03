@@ -21,33 +21,12 @@
         [HtmlAttributeName("is-active-route")]
         public string Class { get; set; }
 
-        /// <summary>
-        /// The name of the area.
-        /// </summary>
-        /// <remarks>Must be <c>null</c> if
-        /// <see cref="P:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper.Route" />
-        /// is non-<c>null</c>.
-        /// </remarks>
-        [HtmlAttributeName("asp-area")] 
+        [HtmlAttributeName("asp-area")]
         public string Area { get; set; }
 
-        /// <summary>
-        /// The name of the controller.
-        /// </summary>
-        /// <remarks>Must be <c>null</c> if
-        /// <see cref="P:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper.Route" />
-        /// is non-<c>null</c>.
-        /// </remarks>
         [HtmlAttributeName("asp-controller")]
         public string Controller { get; set; }
 
-        /// <summary>
-        /// The name of the action method.
-        /// </summary>
-        /// <remarks>Must be <c>null</c> if
-        /// <see cref="P:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper.Route" />
-        /// is non-<c>null</c>.
-        /// </remarks>
         [HtmlAttributeName("asp-action")]
         public string Action { get; set; }
 
@@ -97,21 +76,14 @@
 
         private void MakeActive(TagHelperOutput output)
         {
-            var classAttr = output.Attributes.FirstOrDefault(a => a.Name == "class");
+            var classAttr = output.Attributes
+                .FirstOrDefault(a => a.Name == "class");
 
-            if (classAttr == null)
-            {
-                classAttr = new TagHelperAttribute("class", this.Class);
-                output.Attributes.Add(classAttr);
-            }
-            else if (classAttr.Value == null || classAttr.Value.ToString().IndexOf(this.Class) < 0)
-            {
-                var @class = classAttr.Value == null
-                    ? this.Class
-                    : $"{classAttr.Value} {this.Class}";
+            var @class = string.IsNullOrWhiteSpace(classAttr?.Value.ToString())
+                ? this.Class
+                : $"{classAttr.Value} {this.Class}";
 
-                output.Attributes.SetAttribute("class", @class);
-            }
+            output.Attributes.SetAttribute("class", @class);
         }
     }
 }
