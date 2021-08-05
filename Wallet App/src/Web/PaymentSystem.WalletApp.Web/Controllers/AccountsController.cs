@@ -13,10 +13,10 @@
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services;
     using PaymentSystem.WalletApp.Services.Data;
+    using PaymentSystem.WalletApp.Services.Data.Models.Accounts;
     using PaymentSystem.WalletApp.Services.Data.Models.AccountsKeys;
     using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
     using PaymentSystem.WalletApp.Web.ViewModels.Accounts.Profile;
-    using Services.Data.Models.Accounts;
 
     public class AccountsController : ProfileController
     {
@@ -84,7 +84,7 @@
         {
             var userId = this.userManager.GetUserId(this.User);
 
-            if (!await this.accountService.UserOwnsAccount(userId, model.Address))
+            if (!await this.accountService.UserOwnsAccount(model.Address, userId))
             {
                 return this.BadRequest();
             }
@@ -104,7 +104,7 @@
         {
             var userId = this.userManager.GetUserId(this.User);
 
-            if (!await this.accountService.UserOwnsAccount(userId, model.Address))
+            if (!await this.accountService.UserOwnsAccount(model.Address, userId))
             {
                 return this.BadRequest();
             }
@@ -121,7 +121,7 @@
         {
             var userId = this.userManager.GetUserId(this.User);
 
-            if (!await this.accountService.UserOwnsAccount(userId, address))
+            if (!await this.accountService.UserOwnsAccount(address, userId))
             {
                 return this.BadRequest();
             }
@@ -137,7 +137,7 @@
             var profileUser = await this.GetProfileUser<ProfileAccountsViewModel>();
 
             var userId = this.userManager.GetUserId(this.User);
-            profileUser.Accounts = await this.accountService.GetAccounts<ProfileAccountModel>(userId);
+            profileUser.Accounts = await this.accountService.GetUserAccounts<ProfileAccountModel>(userId);
 
             return profileUser;
         }

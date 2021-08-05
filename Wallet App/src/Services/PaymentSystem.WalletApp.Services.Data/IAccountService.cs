@@ -16,9 +16,11 @@
 
         Task<string> GetPublicKey(string address);
 
+        Task<string> GetUserId(string address);
+
         Task<T> GetAccount<T>(string address);
 
-        Task<IEnumerable<T>> GetAccounts<T>(string userId);
+        Task<IEnumerable<T>> GetUserAccounts<T>(string userId);
 
         Task<AccountCreationResponse> Create(string userId);
 

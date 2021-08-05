@@ -1,7 +1,7 @@
 ﻿function getTransactionInfo(id) {
     console.log(id);
 
-    const uri = `/users/getTransactionDetails?id=${id}`;
+    const uri = `/transactions/getTransactionDetails?id=${id}`;
 
     const options = {
         method: 'GET',
@@ -13,7 +13,7 @@
     fetch(uri, options)
         .then(res => res.json())
         .then(res => {
-            const totalAmountValue = res.amount - res.fee;
+            const totalAmountValue = res.amount + res.fee;
 
             const totalAmountHeader = document.getElementById('total-amount-header');
             totalAmountHeader.textContent = `${totalAmountValue.toFixed(2)}P`;

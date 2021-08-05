@@ -8,13 +8,14 @@
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Web.Infrastructure;
+    using PaymentSystem.WalletApp.Web.ViewModels.Activities;
     using PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout;
 
     public class DashboardUser : ProfileLayoutUserModel, IHaveCustomMappings
     {
         public DashboardUser()
         {
-            this.Activities = new List<ActivityListingModel>();
+            this.Activities = new List<DetailsActivityModel>();
         }
 
         public bool HasPhoneAdded { get; set; }
@@ -25,7 +26,7 @@
 
         public bool HasBankAccountAdded { get; set; }
 
-        public IEnumerable<ActivityListingModel> Activities { get; set; }
+        public IEnumerable<DetailsActivityModel> Activities { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

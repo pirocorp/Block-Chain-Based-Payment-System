@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model IEnumerable<ActivityListingModel>
+@model IEnumerable<PaymentSystem.WalletApp.Web.ViewModels.Activities.DetailsActivityModel>
 
 <!-- Title =============================== -->
 <div class="transaction-title py-2 px-4">
@@ -19,7 +19,7 @@
         <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail" onclick="getTransactionInfo('@activity.TransactionHash')">
             <div class="row align-items-center flex-row">
                 <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">@activity.Date.Day</span> <span class="d-block text-1 font-weight-300 text-uppercase">@activity.Date.ToString("MMM", CultureInfo.InvariantCulture)</span> </div>
-                <div class="col col-sm-7"> <span class="d-block text-4">@activity.CounterpartyAddress</span> <span class="text-muted">@(activity.Description.Length > 50 ? activity.Description[..50] : activity.Description)</span> </div>
+                <div class="col col-sm-7"> <span class="d-block text-4">@($"XXXX - {activity.CounterpartyAddress[^12..]}")</span> <span class="text-muted">@(activity.Description.Length > 50 ? activity.Description[..50] : activity.Description)</span> </div>
                 <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <activity-status status="@activity.Status"></activity-status> </div>
                 <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">@($"{activity.Amount:F2}")</span> <span class="text-2 text-uppercase">(pir)</span> </div>
             </div>
@@ -54,7 +54,9 @@
                                 <li class="mb-2">Fee <span id="transaction-fee" class="float-right text-3">-0.00P</span></li>
                             </ul>
                             <hr class="mb-2">
-                            <p id="total-amount" class="d-flex align-items-center font-weight-500 mb-4">Total Amount <span class="text-3 ml-auto">00.00P</span></p>
+                            <p class="d-flex align-items-center font-weight-500 mb-4">Total Amount 
+                                <span id="total-amount" class="text-3 ml-auto">00.00P</span>
+                            </p>
                             <ul class="card list-unstyled coin-account-details-card">
                                 <li class="font-weight-500">Sender Address:</li>
                                 <li id="sender-address" class="text-muted">XXXX</li>

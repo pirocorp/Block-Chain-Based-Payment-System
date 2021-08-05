@@ -1,15 +1,12 @@
 ﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
-    using System;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Options;
 
     using PaymentSystem.Common;
-    using PaymentSystem.Common.GrpcService;
     using PaymentSystem.Common.Transactions;
-    using PaymentSystem.Common.Utilities;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Models.Activities;
@@ -73,7 +70,14 @@
 
         public async Task<bool> WithdrawFromAccount(string userId, WithdrawServiceModel model)
         {
-            var keyData = await this.accountsKeyService.GetKeyData(model.CoinAccount, userId);
+            var secret = model.Secret;
+
+            if (string.IsNullOrWhiteSpace(secret))
+            {
+                var keyData = await this.accountsKeyService.GetKeyData(model.CoinAccount, userId);
+                secret = keyData?.Secret;
+            }
+
             var publicKey = await this.accountService.GetPublicKey(model.CoinAccount);
 
             var (transactionStatus, transactionHash) = await this.transactionService.CreateTransaction(
@@ -81,11 +85,10 @@
                 this.walletProviderOptions.Value.Address,
                 model.Amount,
                 GlobalConstants.DefaultWithdrawFee,
-                keyData.Secret,
+                secret,
                 publicKey);
 
             var bankAccount = await this.dbContext.BankAccounts.FirstOrDefaultAsync(b => b.Id == model.BankAccount);
-            var description = string.Format(WebConstants.WithdrawDescription, $"{bankAccount.BankName} - {bankAccount.IBAN[^12..]}");
 
             var success = TransactionIsSuccessful(transactionStatus);
 
@@ -93,6 +96,8 @@
             {
                 await this.accountService.BlockFunds(model.CoinAccount, model.Amount);
             }
+
+            var description = string.Format(WebConstants.WithdrawDescription, $"{bankAccount.BankName} - {bankAccount.IBAN[^12..]}");
 
             var activity = new ActivityServiceModel
             {

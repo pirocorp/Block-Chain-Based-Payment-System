@@ -43,8 +43,7 @@
         public void Configure(EntityTypeBuilder<Activity> builder)
         {
             builder
-                .HasIndex(b => b.TransactionHash)
-                .IsUnique();
+                .HasIndex(b => b.TransactionHash);
         }
     }
 }

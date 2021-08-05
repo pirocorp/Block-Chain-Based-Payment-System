@@ -1,13 +1,14 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Transactions
 {
     using System;
     using System.Globalization;
+
     using AutoMapper;
 
     using PaymentSystem.Common.Data.Models;
     using PaymentSystem.Common.Mapping;
 
-    public class DashboardTransactionDetails : IMapFrom<Transaction>
+    public class TransactionDetails : IMapFrom<Transaction>
     {
         public string Hash { get; set; }
 

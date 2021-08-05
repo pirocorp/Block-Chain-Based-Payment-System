@@ -6,10 +6,10 @@
     {
         public ActivitiesIndexViewModel()
         {
-            this.Activities = new List<ActivityListingModel>();
+            this.Activities = new List<DetailsActivityModel>();
         }
 
-        public IEnumerable<ActivityListingModel> Activities { get; set; }
+        public IEnumerable<DetailsActivityModel> Activities { get; set; }
 
         public string DateRange { get; set; }
 

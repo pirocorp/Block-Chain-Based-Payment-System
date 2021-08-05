@@ -31,6 +31,8 @@
 
         public ApplicationUser User { get; set; }
 
+        public AccountKey AccountKey { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }

@@ -17,5 +17,7 @@
 
         [Range(1, double.MaxValue, ErrorMessage = AmountErrorMessage)]
         public double Amount { get; set; }
+
+        public string Secret { get; set; }
     }
 }

@@ -78,7 +78,7 @@ namespace PaymentSystem.WalletApp.Web.Areas.Identity.Pages.Account
         {
             returnUrl ??= this.Url.Content("~/");
             this.ExternalLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            
+
             if (this.ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = this.Input.Username, Email = this.Input.Email };

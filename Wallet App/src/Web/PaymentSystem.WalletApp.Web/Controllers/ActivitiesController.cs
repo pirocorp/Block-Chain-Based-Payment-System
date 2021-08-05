@@ -10,8 +10,8 @@
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Web.Infrastructure;
+    using PaymentSystem.WalletApp.Web.ViewModels.Activities;
     using PaymentSystem.WalletApp.Web.ViewModels.Activities.Index;
-    using ViewModels;
 
     [Authorize]
     public class ActivitiesController : BaseController
@@ -32,7 +32,7 @@
             var userId = this.userManager.GetUserId(this.User);
 
             var (total, activities) = await this.activityService
-                .GetUserActivities<ActivityListingModel>(userId, page, WebConstants.DefaultActivitiesResultPageSize, dateRange);
+                .GetUserActivities<DetailsActivityModel>(userId, page, WebConstants.DefaultActivitiesResultPageSize, dateRange);
 
             var model = new ActivitiesIndexViewModel()
             {

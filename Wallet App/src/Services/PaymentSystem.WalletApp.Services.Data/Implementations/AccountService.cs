@@ -39,13 +39,16 @@
         public async Task<string> GetPublicKey(string address)
             => (await this.dbContext.Accounts.FirstOrDefaultAsync(a => a.Address == address)).PublicKey;
 
+        public async Task<string> GetUserId(string address)
+            => (await this.dbContext.Accounts.FirstOrDefaultAsync(a => a.Address == address)).UserId;
+
         public async Task<T> GetAccount<T>(string address)
             => await this.dbContext.Accounts
                 .Where(a => a.Address == address)
                 .To<T>()
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<T>> GetAccounts<T>(string userId)
+        public async Task<IEnumerable<T>> GetUserAccounts<T>(string userId)
             => await this.dbContext.Accounts
                 .Where(a => a.UserId == userId)
                 .To<T>()

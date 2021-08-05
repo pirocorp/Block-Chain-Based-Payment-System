@@ -5,11 +5,11 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    using PaymentSystem.WalletApp.Web.ViewModels;
+    using PaymentSystem.WalletApp.Web.ViewModels.Activities;
 
     public class ActivitiesViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(IEnumerable<ActivityListingModel> model)
+        public async Task<IViewComponentResult> InvokeAsync(IEnumerable<DetailsActivityModel> model)
             => await Task.FromResult(this.View(model));
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Activities
 {
     using System;
 
@@ -7,7 +7,7 @@
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
 
-    public class ActivityListingModel : IMapFrom<Activity>
+    public class DetailsActivityModel : IMapFrom<Activity>
     {
         public double Amount { get; set; }
 

@@ -5,12 +5,16 @@
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Options;
 
     using PaymentSystem.Common.Data.Models;
     using PaymentSystem.Common.Hubs.Models;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data;
+    using PaymentSystem.WalletApp.Services.Data.Models.Activities;
+    using PaymentSystem.WalletApp.Web.Infrastructure;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Options;
 
     public class BlockService : IBlockService
     {
@@ -18,20 +22,20 @@
         private readonly IBlockChainGrpcService blockChainGrpcService;
         private readonly IActivityService activityService;
         private readonly IAccountService accountService;
-        private readonly ITransactionService transactionService;
+        private readonly IOptions<WalletProviderOptions> walletProviderOptions;
 
         public BlockService(
             ApplicationDbContext dbContext,
             IBlockChainGrpcService blockChainGrpcService,
             IActivityService activityService,
             IAccountService accountService,
-            ITransactionService transactionService)
+            IOptions<WalletProviderOptions> walletProviderOptions)
         {
             this.dbContext = dbContext;
             this.blockChainGrpcService = blockChainGrpcService;
             this.activityService = activityService;
             this.accountService = accountService;
-            this.transactionService = transactionService;
+            this.walletProviderOptions = walletProviderOptions;
         }
 
         public async Task<Block> GetLastBlock() => await this.dbContext.Blocks
@@ -90,6 +94,24 @@
                 if (await this.accountService.Exists(transaction.Recipient))
                 {
                     await this.accountService.Deposit(transaction.Recipient, transaction.Amount);
+
+                    if (transaction.Recipient != this.walletProviderOptions.Value.Address &&
+                        transaction.Sender != this.walletProviderOptions.Value.Address)
+                    {
+                        var userId = await this.accountService.GetUserId(transaction.Recipient);
+                        var model = new ActivityServiceModel()
+                        {
+                            Amount = transaction.Amount + transaction.Fee,
+                            BlockedAmount = 0,
+                            CounterpartyAddress = transaction.Sender,
+                            Description = string.Format(WebConstants.ReceiveDescription, transaction.Amount, transaction.Sender),
+                            Status = ActivityStatus.Completed,
+                            TransactionHash = transaction.Hash,
+                            UserId = userId,
+                        };
+
+                        await this.activityService.AddActivity(model);
+                    }
                 }
 
                 if (await this.accountService.Exists(transaction.Sender))

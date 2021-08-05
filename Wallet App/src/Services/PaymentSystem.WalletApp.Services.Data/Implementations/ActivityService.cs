@@ -60,7 +60,7 @@
             int pageSize,
             string dateRange = "")
         {
-            var query = this.dbContext.Activities
+            var activitiesQuery = this.dbContext.Activities
                 .Where(a => a.UserId == userId);
 
             var dates = dateRange
@@ -77,13 +77,13 @@
                 var startTimeStamp = startDate.Ticks;
                 var endTimeStamp = endDate.Ticks;
 
-                query = query
+                activitiesQuery = activitiesQuery
                     .Where(a => a.TimeStamp >= startTimeStamp && a.TimeStamp < endTimeStamp);
             }
 
-            var total = await query.CountAsync();
+            var total = await activitiesQuery.CountAsync();
 
-            var activities = await query
+            var activities = await activitiesQuery
                 .OrderByDescending(a => a.TimeStamp)
                 .To<T>()
                 .Skip((page - 1) * pageSize)

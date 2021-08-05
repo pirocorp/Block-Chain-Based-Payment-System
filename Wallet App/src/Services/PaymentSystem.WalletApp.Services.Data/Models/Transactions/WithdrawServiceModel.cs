@@ -7,5 +7,7 @@
         public string CoinAccount { get; set; }
 
         public double Amount { get; set; }
+
+        public string Secret { get; set; }
     }
 }

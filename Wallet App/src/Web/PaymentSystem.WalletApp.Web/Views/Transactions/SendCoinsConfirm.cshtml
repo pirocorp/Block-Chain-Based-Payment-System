@@ -1,0 +1,59 @@
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Transactions.SendCoinsConfirm.SendCoinsConfirmViewModel
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Content ============================================= -->
+<div id="content" class="py-4">
+    <div class="container">
+        <h2 class="font-weight-400 text-center mt-3">Send Money</h2>
+        <p class="text-4 text-center mb-4">Send your money on anytime, anywhere in the world.</p>
+        <div class="row">
+            <div class="col-lg-10 col-xl-8 mx-auto">
+                <div class="bg-light shadow-sm rounded p-3 p-sm-4 mb-4">
+                    <div class="card mb-4 shadow bg-white rounded">
+                        <div class="card-body text-warning text-center">
+                            Warning sending coins to invalid address will result in coin loss.
+                        </div>
+                    </div>
+                    <h3 class="text-5 font-weight-400 mb-3">Transaction Details</h3>
+                    <!-- Send Money Form ============================================= -->
+                    <form id="form-send-money" method="post">
+                        <div class="form-group">
+                            <label for="withdraw-from">Coin Account Address</label>
+                            <input name="coinAccount" value="@Model.CoinAccount" readonly="readonly" type="text" id="withdraw-from" class="form-control" />
+                        </div>
+                        @if (!this.Model.HasKey)
+                        {
+                            <div id="account-secret-group" class="form-group">
+                                <div class="form-group">
+                                    <label for="account-secret">Account Secret</label>
+                                    <input name="secret" type="text" id="account-secret" class="form-control" />
+                                </div>
+                            </div>
+                        }
+                        <div class="form-group">
+                            <label for="recipient-address">Recipient Address</label>
+                            <input name="Recipient" value="@Model.Recipient" readonly="readonly" type="text" id="recipient-address" class="form-control" required placeholder="Enter Recipient Address">
+                        </div>
+                        <div class="form-group">
+                            <label for="transaction-amount">Amount</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend"> <span class="input-group-text">P</span> </div>
+                                <input name="amount" value="@Model.Amount.ToString("F2")" readonly="readonly" type="number" class="form-control" data-bv-field="youSend" id="transaction-amount" step="any" placeholder="1000.00">
+                            </div>
+                        </div>
+                        <hr>
+                        <p class="text-muted mt-4">Total fees <span id="send-fees" class="text-3 float-right">@this.Model.Fees.ToString("F2") P</span></p>
+                        <p class="font-weight-500">Total To Pay <span id="send-total" class="text-3 float-right">@this.Model.TotalAmount.ToString("F2") P</span></p>
+                        <button class="btn btn-primary btn-block">Send Coins</button>
+                    </form>
+                    <!-- Send Money Form end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Content end --> 

@@ -173,14 +173,6 @@
             return this.Redirect($"/{controller}/{nameof(this.Profile)}");
         }
 
-        public async Task<IActionResult> GetTransactionDetails(string id)
-        {
-            var activity = await this.transactionService
-                .GetTransaction<DashboardTransactionDetails>(id);
-
-            return this.Ok(activity);
-        }
-
         private async Task<ProfileUserViewModel> GetProfileUser()
         {
             var profileUser = await this.GetProfileUser<ProfileUserViewModel>();

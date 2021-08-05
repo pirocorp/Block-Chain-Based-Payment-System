@@ -4,15 +4,18 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Common;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
-
+    using Models.Activities;
+    using PaymentSystem.Common;
     using PaymentSystem.Common.Mapping;
+    using PaymentSystem.Common.Transactions;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Services.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
     using PaymentSystem.WalletApp.Services.Data.Models.CreditCards;
+    using WalletApp.Data.Models;
 
     public class UserService : IUserService
     {
@@ -20,10 +23,23 @@
         private const int CoinAccountLastDigitCount = 12;
 
         private readonly ApplicationDbContext dbContext;
+        private readonly IAccountService accountService;
+        private readonly IAccountsKeyService accountsKeyService;
+        private readonly IActivityService activityService;
+        private readonly ITransactionService transactionService;
 
-        public UserService(ApplicationDbContext dbContext)
+        public UserService(
+            ApplicationDbContext dbContext,
+            IAccountService accountService,
+            IAccountsKeyService accountsKeyService,
+            IActivityService activityService,
+            ITransactionService transactionService)
         {
             this.dbContext = dbContext;
+            this.accountService = accountService;
+            this.accountsKeyService = accountsKeyService;
+            this.activityService = activityService;
+            this.transactionService = transactionService;
         }
 
         public async Task<T> GetUser<T>(string id)
@@ -69,5 +85,53 @@
                 .ToListAsync())
                 .Select(a => new SelectListItem($"XXXX - {a.Address[^CoinAccountLastDigitCount..]}", a.Address))
                 .ToList();
+
+        public async Task<bool> SendCoins(string senderAddress, string recipientAddress, double amount, string secret, string userId)
+        {
+            if (string.IsNullOrWhiteSpace(secret))
+            {
+                var keyData = await this.accountsKeyService.GetKeyData(senderAddress, userId);
+                secret = keyData?.Secret;
+            }
+
+            var publicKey = await this.accountService.GetPublicKey(senderAddress);
+            var fee = amount * (WalletConstants.DefaultFeePercent / 100);
+
+            var (transactionStatus, transactionHash) = await this.transactionService.CreateTransaction(
+                senderAddress,
+                recipientAddress,
+                amount,
+                fee,
+                secret,
+                publicKey);
+
+            var description = string.Format($"Send coins from {senderAddress[^12..]} to {recipientAddress[^12..]}");
+
+            var success = TransactionIsSuccessful(transactionStatus);
+            var blockedAmount = amount + fee;
+
+            if (success)
+            {
+                await this.accountService.BlockFunds(senderAddress, blockedAmount);
+            }
+
+            var activity = new ActivityServiceModel
+            {
+                Amount = amount + fee,
+                CounterpartyAddress = recipientAddress,
+                Description = description,
+                UserId = userId,
+                Status = success ? ActivityStatus.Pending : ActivityStatus.Canceled,
+                TransactionHash = transactionHash,
+                BlockedAmount = blockedAmount,
+            };
+
+            await this.activityService.AddActivity(activity);
+
+            return success;
+        }
+
+        private static bool TransactionIsSuccessful(TransactionStatus transactionStatus)
+            => transactionStatus == TransactionStatus.Pending;
     }
 }

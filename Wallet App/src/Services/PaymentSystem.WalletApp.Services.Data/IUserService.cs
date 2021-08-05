@@ -18,5 +18,7 @@
         Task<IEnumerable<SelectListItem>> GetPaymentMethods(string userId, PaymentMethod paymentMethod);
 
         Task<IEnumerable<SelectListItem>> GetCoinAccounts(string userId);
+
+        Task<bool> SendCoins(string senderAddress, string recipientAddress, double amount, string secret, string userId);
     }
 }

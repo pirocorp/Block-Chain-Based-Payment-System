@@ -9,12 +9,13 @@
 
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Web.ViewModels.Accounts;
 
     public class WithdrawViewModel : IMapFrom<ApplicationUser>, IHaveCustomMappings
     {
         public IEnumerable<WithdrawBankAccountModel> BankAccounts { get; set; }
 
-        public IEnumerable<WithdrawCoinAccountModel> CoinAccounts { get; set; }
+        public IEnumerable<CoinAccountModel> CoinAccounts { get; set; }
 
         public IEnumerable<SelectListItem> Banks => this.BankAccounts
             .Select(b => new SelectListItem($"{b.BankName} - {b.IBAN[^8..]}", b.Id));

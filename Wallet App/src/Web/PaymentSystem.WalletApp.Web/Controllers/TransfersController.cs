@@ -74,7 +74,7 @@
         {
             if (!this.TempData.ContainsKey(DepositTempData))
             {
-                return this.View(nameof(this.Deposit));
+                return this.Redirect($"/{this.ControllerName}/{nameof(this.Deposit)}");
             }
 
             var serializedObject = (string)this.TempData[DepositTempData];

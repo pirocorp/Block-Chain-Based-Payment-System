@@ -1,0 +1,96 @@
+﻿@using PaymentSystem.WalletApp.Common
+@model PaymentSystem.WalletApp.Web.ViewModels.Transactions.SendCoins.SendCoinsViewModel
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts
+{
+    <script>
+        const accountSecrets = {};
+
+        @foreach (var d in Model.Accounts)
+        {
+            @:accountSecrets["@d.Address"] = @d.HasStoredKey.ToString().ToLower();
+        }
+
+        setAccountSecret();
+
+        function setAccountSecret() {
+            const coinAccount = document.getElementById('withdraw-from');
+            const accountSecret = document.getElementById('account-secret');
+
+            if (accountSecrets[coinAccount.value]) {
+                accountSecret.value = true;
+            } else {
+                accountSecret.value = false;
+            }
+        };
+
+        function coinAccountChangeHandler() {
+            setAccountSecret();
+        };
+
+        function onAmountChangeHandler(el) {
+            const value = parseFloat(el.value);
+
+            const feesPercent = @(WalletConstants.DefaultFeePercent / 100);
+            const fees = value * feesPercent;
+            const total = value + fees;
+
+            const sendFees = document.getElementById('send-fees');
+            sendFees.textContent = `${fees.toFixed(2)} P`;
+
+            const sendTotal = document.getElementById('send-total');
+            sendTotal.textContent = `${total.toFixed(2)} P`;
+        }
+    </script>
+}
+
+<!-- Content ============================================= -->
+<div id="content" class="py-4">
+    <div class="container">
+        <div class="col-12 text-danger" asp-validation-summary="All"></div>
+        <h2 class="font-weight-400 text-center mt-3">Send Money</h2>
+        <p class="text-4 text-center mb-4">Send your money on anytime, anywhere in the world.</p>
+        <div class="row">
+            <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+                <div class="bg-light shadow-sm rounded p-3 p-sm-4 mb-4">
+                    <div class="card mb-4 shadow bg-white rounded">
+                        <div class="card-body text-warning text-center">
+                            Warning sending coins to invalid address will result in coin loss.
+                        </div>
+                    </div>
+                    <h3 class="text-5 font-weight-400 mb-3">Transaction Details</h3>
+                    <!-- Send Money Form ============================================= -->
+                    <form id="form-send-money" method="post">
+                        <div class="form-group">
+                            <label for="withdraw-from">Coin Account</label>
+                            <select name="coinAccount" onchange="coinAccountChangeHandler()" id="withdraw-from" asp-items="@this.Model.Coins" class="custom-select" required="required">
+                            </select>
+                        </div>
+                        <input type="hidden" name="hasKey" id="account-secret">
+                        <div class="form-group">
+                            <label for="emailID">Recipient Address</label>
+                            <input name="Recipient" type="text" value="" class="form-control" data-bv-field="emailid" id="emailID" required placeholder="Enter Recipient Address">
+                        </div>
+                        <div class="form-group">
+                            <label for="transaction-amount">Amount</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend"> <span class="input-group-text">P</span> </div>
+                                <input name="amount" type="number" oninput="onAmountChangeHandler(this)" class="form-control" data-bv-field="youSend" id="transaction-amount" step="any" placeholder="1000.00">
+                            </div>
+                        </div>
+                        <hr>
+                        <p class="text-muted mt-4">Total fees <span id="send-fees" class="text-3 float-right">0.00 P</span></p>
+                        <p class="font-weight-500">Total To Pay <span id="send-total" class="text-3 float-right">0.00 P</span></p>
+                        <button class="btn btn-primary btn-block">Continue</button>
+                    </form>
+                    <!-- Send Money Form end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Content end --> 

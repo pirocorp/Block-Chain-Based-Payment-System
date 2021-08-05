@@ -39,7 +39,7 @@
         {
             builder
                 .HasOne(ak => ak.Account)
-                .WithOne()
+                .WithOne(a => a.AccountKey)
                 .HasForeignKey<AccountKey>(ak => ak.Address)
                 .IsRequired();
 
