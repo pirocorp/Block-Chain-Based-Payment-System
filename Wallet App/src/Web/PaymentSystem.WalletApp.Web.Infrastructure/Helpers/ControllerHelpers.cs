@@ -22,5 +22,8 @@
 
         private static string GetName(Type type)
             => type.Name.Replace(nameof(Controller), string.Empty);
+
+        public static string GetAreaName(Type t)
+            => ((AreaAttribute) Attribute.GetCustomAttribute(t, typeof(AreaAttribute)))?.RouteValue ?? string.Empty;
     }
 }

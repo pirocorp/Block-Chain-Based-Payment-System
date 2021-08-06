@@ -17,7 +17,7 @@
 {
     <script>
         function getCreditCardDetails(id) {
-            const uri = `/financials/getCreditCardDetails?id=${id}`;
+            const uri = `/profile/financials/getCreditCardDetails?id=${id}`;
 
             const options = {
                 method: 'GET',
@@ -64,7 +64,7 @@
         };
 
         function deleteCreditCardDetails(id) {
-            const uri = `/financials/getCreditCardDetails?id=${id}`;
+            const uri = `/profile/financials/getCreditCardDetails?id=${id}`;
 
             const options = {
                 method: 'GET',
@@ -97,7 +97,7 @@
         };
 
         function getBankAccountsDetails(id) {
-            const uri = `/financials/getBankAccountDetails?id=${id}`;
+            const uri = `/profile/financials/getBankAccountDetails?id=${id}`;
 
             const options = {
                 method: 'GET',
@@ -159,7 +159,7 @@
                                 thru<br>
                             </span> <span class="text-4 opacity-9">@card.ExpiryDate</span>
                         </p>
-                        <p class="d-flex align-items-center m-0"> <span class="text-uppercase font-weight-500">@this.Model.FirstName @this.Model.LastName</span> <img class="ml-auto" src="/images/payment/@(@card.CardType.ToString()).png" alt="visa" title=""> </p>
+                        <p class="d-flex align-items-center m-0"> <span class="text-uppercase font-weight-500">@this.Model.FirstName @this.Model.LastName</span> <img class="ml-auto" src="/images/payment/@($"{card.CardType.ToString()}.png")" alt="@card.CardType.ToString()" title=""> </p>
                         <div class="account-card-overlay rounded">
                             <a onclick="getCreditCardDetails('@card.Id')" href="#" data-target="#edit-card-details" data-toggle="modal" class="text-light btn-link mx-2"><span class="mr-1"><i class="fas fa-edit"></i></span>Edit</a>
                             <a onclick="deleteCreditCardDetails('@card.Id')" data-target="#credit-card-details" data-toggle="modal" href="#" class="text-light btn-link mx-2"><span class="mr-1"><i class="fas fa-minus-circle"></i></span>Delete</a>
@@ -184,7 +184,7 @@
                     <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="updateCard" method="post" asp-area="" asp-controller="Financials" asp-action="EditCreditCard">
+                    <form id="updateCard" method="post" asp-area="Profile" asp-controller="Financials" asp-action="EditCreditCard">
                         <div class="form-group">
                             <label for="last-four-digits">Card Number</label>
                             <div class="input-group">
@@ -227,7 +227,7 @@
                     <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="addCard" method="post" asp-area="" asp-controller="Financials" asp-action="AddCreditCard">
+                    <form id="addCard" method="post" asp-area="Profile" asp-controller="Financials" asp-action="AddCreditCard">
                         <div class="btn-group d-flex btn-group-toggle mb-3" data-toggle="buttons">
                             <label class="btn btn-outline-secondary btn-sm shadow-none w-100 active">
                                 <input type="radio" name="isCredit" id="option1" checked value="false">
@@ -307,7 +307,7 @@
                                     <li id="credit-card-type" class="text-muted">Type</li>
                                 </ul>
                                 <div class="mb-2">
-                                    <form asp-area="" asp-controller="Financials" asp-action="DeleteCreditCard" method="post">
+                                    <form asp-area="Profile" asp-controller="Financials" asp-action="DeleteCreditCard" method="post">
                                         <input id="credit-credit-id" type="hidden" name="id" />
                                         <button type="submit" class="btn btn-sm btn-outline-danger btn-block shadow-none"><span class="mr-1"><i class="fas fa-minus-circle"></i></span>Delete Account</button>
                                     </form>
@@ -401,7 +401,7 @@
                                     <li id="status" class="text-muted"></li>
                                 </ul>
                                 <div class="mb-2">
-                                    <form asp-area="" asp-controller="Financials" asp-action="DeleteBankAccount" method="post">
+                                    <form asp-area="Profile" asp-controller="Financials" asp-action="DeleteBankAccount" method="post">
                                         <input id="bank-account-id" type="hidden" name="id" />
                                         <button type="submit" class="btn btn-sm btn-outline-danger btn-block shadow-none"><span class="mr-1"><i class="fas fa-minus-circle"></i></span>Delete Account</button>
                                     </form>
@@ -423,7 +423,7 @@
                     <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="addbankaccount" method="post" asp-area="" asp-controller="Financials" asp-action="AddBankAccount">
+                    <form id="addbankaccount" method="post" asp-area="Profile" asp-controller="Financials" asp-action="AddBankAccount">
                         <div class="form-group">
                             <label for="inputCountry">Country</label>
                             <select name="country" class="custom-select" id="inputCountry" asp-items="countriesSelectListItems">

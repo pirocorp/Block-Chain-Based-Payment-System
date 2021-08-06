@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.Controllers
+﻿namespace PaymentSystem.WalletApp.Web.Areas.Profile.Controllers
 {
     using System;
     using System.Globalization;
@@ -23,33 +23,30 @@
     public class UsersController : ProfileController
     {
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly ITransactionService transactionService;
 
         public UsersController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IMapper mapper,
             ICloudinaryService cloudinaryService,
-            IUserService userService,
-            ITransactionService transactionService) 
+            IUserService userService)
             : base(userManager, mapper, cloudinaryService, userService)
         {
             this.signInManager = signInManager;
-            this.transactionService = transactionService;
         }
 
         public async Task<IActionResult> Dashboard()
         {
-            var userId = this.userManager.GetUserId(this.User);
-            var dashboardUser = await this.userService.GetUser<DashboardUser>(userId);
+            var userId = this.UserManager.GetUserId(this.User);
+            var dashboardUser = await this.UserService.GetUser<DashboardUser>(userId);
 
             dashboardUser.ProfilePictureAddress =
-                this.cloudinaryService.GetProfileImageAddress(dashboardUser.ProfilePicture);
+                this.CloudinaryService.GetProfileImageAddress(dashboardUser.ProfilePicture);
 
             return this.View(dashboardUser);
         }
 
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> Index()
         {
             var profileUser = await this.GetProfileUser();
 
@@ -57,7 +54,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Profile(PersonalDetailsUpdateModel model)
+        public async Task<IActionResult> Index(PersonalDetailsUpdateModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -65,7 +62,7 @@
                 return this.View(profileUser);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
+            var user = await this.UserManager.GetUserAsync(this.User);
 
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
@@ -77,15 +74,14 @@
                 City = model.City,
                 StateProvince = model.StateProvince,
                 Zip = model.ZipCode,
-                Country = model.Country
+                Country = model.Country,
             };
 
             user.Address = address;
 
-            await this.userManager.UpdateAsync(user);
+            await this.UserManager.UpdateAsync(user);
 
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+            return this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
         }
 
         [HttpPost]
@@ -94,33 +90,42 @@
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Profile), profileUser);
+                return this.View(nameof(this.Index), profileUser);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
-            user.Email = model.Email;
-            await this.userManager.UpdateAsync(user);
+            var user = await this.UserManager.GetUserAsync(this.User);
 
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+            var emailChangeToken = await this.UserManager.GenerateChangeEmailTokenAsync(user, model.Email);
+            var identityResult = await this.UserManager.ChangeEmailAsync(user, model.Email, emailChangeToken);
+
+            if (!identityResult.Succeeded)
+            {
+                foreach (var error in identityResult.Errors)
+                {
+                    this.ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                var profileUser = await this.GetProfileUser();
+                return this.View(nameof(this.Index), profileUser);
+            }
+
+            return this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> PhoneUpdate(PhoneUpdateModel model)
         {
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
-
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Profile), profileUser);
+                return this.View(nameof(this.Index), profileUser);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
+            var user = await this.UserManager.GetUserAsync(this.User);
             user.PhoneNumber = model.Phone;
-            await this.userManager.UpdateAsync(user);
+            await this.UserManager.UpdateAsync(user);
 
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+            return this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
         }
 
         [HttpPost]
@@ -131,30 +136,28 @@
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Profile), profileUser);
+                return this.View(nameof(this.Index), profileUser);
             }
 
-            var profilePictureAddress = await this.cloudinaryService.Upload(profilePicture);
+            var profilePictureAddress = await this.CloudinaryService.Upload(profilePicture);
 
-            var user = await this.userManager.GetUserAsync(this.User);
+            var user = await this.UserManager.GetUserAsync(this.User);
             user.ProfilePicture = profilePictureAddress;
-            await this.userManager.UpdateAsync(user);
+            await this.UserManager.UpdateAsync(user);
 
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+            return this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
-
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Profile), profileUser);
+                return this.View(nameof(this.Index), profileUser);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
+            var user = await this.UserManager.GetUserAsync(this.User);
 
             var result = await this.signInManager.UserManager
                 .ChangePasswordAsync(user, model.Password, model.NewPassword);
@@ -167,10 +170,10 @@
                 }
 
                 var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Profile), profileUser);
+                return this.View(nameof(this.Index), profileUser);
             }
 
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+            return this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
         }
 
         private async Task<ProfileUserViewModel> GetProfileUser()

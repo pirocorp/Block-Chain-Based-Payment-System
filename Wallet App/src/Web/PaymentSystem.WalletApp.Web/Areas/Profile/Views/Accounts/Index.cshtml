@@ -8,7 +8,7 @@
     <script>
         async function getCoinAccountDetails(address) {
             console.log(address);
-            const uri = `/accounts/getAccountDetails?address=${address}`;
+            const uri = `/profile/accounts/getAccountDetails?address=${address}`;
 
             const options = {
                 method: 'GET',
@@ -99,7 +99,7 @@
                 </div>
             }
             <div class="col-12 col-sm-6">
-                <form asp-area="" asp-controller="Accounts" asp-action="CreateCoinAccount" method="post">
+                <form asp-area="Profile" asp-controller="Accounts" asp-action="CreateCoinAccount" method="post">
                     <button type="submit" class="account-card-new d-flex align-items-center rounded h-100 p-3 mb-4 mb-lg-0">
                         <p class="w-100 text-center line-height-4 m-0"> <span class="text-3"><i class="fas fa-plus-circle"></i></span> <span class="d-block text-body text-3">Create New Coin Account</span> </p>
                     </button>
@@ -141,7 +141,7 @@
                                     <li id="account-balance" disabled class="text-muted"></li>
                                 </ul>
                                 <div class="mb-2">
-                                    <form asp-area="" asp-controller="Accounts" asp-action="DeleteCoinAccount" method="post">
+                                    <form asp-area="Profile" asp-controller="Accounts" asp-action="DeleteCoinAccount" method="post">
                                         <input id="delete-account-address" type="hidden" name="address" />
                                         <button type="submit" class="btn btn-sm btn-outline-danger btn-block shadow-none"><span class="mr-1"><i class="fas fa-minus-circle"></i></span>Delete Account</button>
                                     </form>
@@ -163,7 +163,7 @@
                     <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="updateCard" method="post" asp-area="" asp-controller="Accounts" asp-action="EditAccountDetails">
+                    <form id="updateCard" method="post" asp-area="Profile" asp-controller="Accounts" asp-action="EditAccountDetails">
                         <div class="form-group">
                             <label for="edit-account-address">Account Address</label>
                             <input id="edit-account-address" name="address" type="text" class="form-control" data-bv-field="edircardNumber" readonly value="XXXXXXXXXXXXXXX" placeholder="Account Address">
@@ -178,7 +178,6 @@
             </div>
         </div>
     </div>
-
     <!-- Coin Accounts End ======================================== -->
 
 </div>

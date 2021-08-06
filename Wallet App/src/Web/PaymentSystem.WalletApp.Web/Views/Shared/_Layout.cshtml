@@ -87,20 +87,17 @@
                                 <ul class="navbar-nav mr-auto">
                                     @if (this.SignInManager.IsSignedIn(this.User))
                                     {
-                                        <li is-active-route="active" asp-area="" asp-controller="Users" asp-action="Dashboard">
-                                            <a asp-area="" asp-controller="Users" asp-action="Dashboard">Dashboard</a>
+                                        <li is-active-route="active" asp-area="Profile" asp-controller="Users" asp-action="Dashboard">
+                                            <a asp-area="Profile" asp-controller="Users" asp-action="Dashboard">Dashboard</a>
                                         </li>
-                                        <li is-active-route="active" asp-area="" asp-controller="Transfers" asp-action="Deposit">
-                                            <a asp-area="" asp-controller="Transfers" asp-action="Deposit">Deposit</a>
-                                        </li>
-                                        <li is-active-route="active" asp-area="" asp-controller="Transfers" asp-action="Withdraw">
-                                            <a asp-area="" asp-controller="Transfers" asp-action="Withdraw">Withdraw</a>
-                                        </li>
-                                        <li is-active-route="active" asp-area="" asp-controller="Activities" asp-action="Index">
-                                            <a asp-area="" asp-controller="Activities" asp-action="Index">Activities</a>
+                                        <li>
+                                            <a asp-area="" asp-controller="Transfers" asp-action="Deposit">Deposit / Withdraw</a>
                                         </li>
                                         <li is-active-route="active" asp-area="" asp-controller="Transactions" asp-action="SendCoins">
                                             <a asp-area="" asp-controller="Transactions" asp-action="SendCoins">Send Coins</a>
+                                        </li>
+                                        <li is-active-route="active" asp-area="" asp-controller="Activities" asp-action="Index">
+                                            <a asp-area="" asp-controller="Activities" asp-action="Index">Activities</a>
                                         </li>
                                     }
                                     else

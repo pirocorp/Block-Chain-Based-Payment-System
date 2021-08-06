@@ -1,7 +1,7 @@
 ﻿@model PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard.DashboardUser
 
 @{
-    Layout = "/Views/Shared/_ProfileLayout.cshtml";
+    //Layout = "/_ProfileLayout.cshtml";
     var completenessFactors = new[]
     {
         this.Model.HasEmailAdded,
@@ -39,7 +39,7 @@
                             <i class="far fa-circle "></i>
                         </span>
                         <p class="mb-0">
-                            <a class="btn-link stretched-link" asp-area="" asp-controller="Users" asp-action="Profile">Add Phone</a>
+                            <a class="btn-link stretched-link" asp-area="" asp-controller="Users" asp-action="Index">Add Phone</a>
                         </p>
                     }
                 </div>
@@ -63,7 +63,7 @@
                             <i class="far fa-circle "></i>
                         </span>
                         <p class="mb-0">
-                            <a class="btn-link stretched-link" asp-area="" asp-controller="Users" asp-action="Profile">Add Email</a>
+                            <a class="btn-link stretched-link" asp-area="" asp-controller="Users" asp-action="Index">Add Email</a>
                         </p>
                     }
                 </div>
@@ -87,7 +87,7 @@
                             <i class="far fa-circle "></i>
                         </span>
                         <p class="mb-0">
-                            <a class="btn-link stretched-link" asp-area="" asp-controller="Financials" asp-action="Profile">Add Card</a>
+                            <a class="btn-link stretched-link" asp-area="" asp-controller="Financials" asp-action="Index">Add Card</a>
                         </p>
                     }
                 </div>
@@ -110,7 +110,7 @@
                         <span class="text-5 d-block text-light mt-4 mb-3">
                             <i class="far fa-circle "></i>
                         </span>
-                        <p class="mb-0"><a class="btn-link stretched-link" asp-area="" asp-controller="Financials" asp-action="Profile">Add Bank</a></p>
+                        <p class="mb-0"><a class="btn-link stretched-link" asp-area="" asp-controller="Financials" asp-action="Index">Add Bank</a></p>
                     }
                 </div>
             </div>

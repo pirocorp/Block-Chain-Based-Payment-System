@@ -1,23 +1,39 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Controllers
 {
-    using System.Diagnostics;
     using System.Threading.Tasks;
-    using Common;
-    using Infrastructure.Helpers;
-    using PaymentSystem.WalletApp.Web.ViewModels;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Services.Data;
-    using ViewModels.Home;
-    using ViewModels.Home.Index;
+    using PaymentSystem.WalletApp.Common;
+    using PaymentSystem.WalletApp.Data.Models;
+    using PaymentSystem.WalletApp.Services;
+    using PaymentSystem.WalletApp.Services.Data;
+    using PaymentSystem.WalletApp.Web.Areas.Profile.Controllers;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
+    using PaymentSystem.WalletApp.Web.ViewModels;
+    using PaymentSystem.WalletApp.Web.ViewModels.Home;
+    using PaymentSystem.WalletApp.Web.ViewModels.Home.Index;
+    using PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard;
+
+    using Activity = System.Diagnostics.Activity;
 
     public class HomeController : BaseController
     {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly ICloudinaryService cloudinaryService;
         private readonly ITestimonialService testimonialService;
+        private readonly IUserService userService;
 
-        public HomeController(ITestimonialService testimonialService)
+        public HomeController(
+            UserManager<ApplicationUser> userManager,
+            ICloudinaryService cloudinaryService,
+            ITestimonialService testimonialService,
+            IUserService userService)
         {
+            this.userManager = userManager;
+            this.cloudinaryService = cloudinaryService;
             this.testimonialService = testimonialService;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> Index()
@@ -25,13 +41,15 @@
             if (this.User.Identity?.IsAuthenticated ?? false)
             {
                 var controller = ControllerHelpers.GetControllerName<UsersController>();
-                return this.Redirect($"/{controller}/{nameof(UsersController.Dashboard)}");
+                var area = ControllerHelpers.GetAreaName(typeof(ProfileController));
+
+                return this.RedirectToAction(nameof(UsersController.Dashboard), controller, new {area = area });
             }
 
             var model = new IndexModel
             {
                 Testimonials = await this.testimonialService
-                    .GetTestimonials<IndexTestimonialModel>(WalletConstants.TestimonialsCountOnHomePage)
+                    .GetTestimonials<IndexTestimonialModel>(WalletConstants.TestimonialsCountOnHomePage),
             };
 
             return this.View(model);

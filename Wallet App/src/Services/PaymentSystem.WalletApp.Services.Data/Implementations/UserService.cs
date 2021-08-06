@@ -1,21 +1,21 @@
 ﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Common;
+
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
-    using Models.Activities;
-    using PaymentSystem.Common;
+
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.Common.Transactions;
+    using PaymentSystem.WalletApp.Common;
     using PaymentSystem.WalletApp.Data;
+    using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Models;
+    using PaymentSystem.WalletApp.Services.Data.Models.Activities;
     using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
     using PaymentSystem.WalletApp.Services.Data.Models.CreditCards;
-    using WalletApp.Data.Models;
 
     public class UserService : IUserService
     {

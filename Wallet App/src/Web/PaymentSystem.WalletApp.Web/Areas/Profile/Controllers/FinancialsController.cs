@@ -1,9 +1,10 @@
-﻿namespace PaymentSystem.WalletApp.Web.Controllers
+﻿namespace PaymentSystem.WalletApp.Web.Areas.Profile.Controllers
 {
     using System.Text;
     using System.Threading.Tasks;
 
     using AutoMapper;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,7 @@
             ICreditCardService creditCardService,
             IBankAccountService bankAccountService,
             IFingerprintService fingerprintService,
-            IOptions<EncryptionOptions> encryptionOptions) 
+            IOptions<EncryptionOptions> encryptionOptions)
             : base(userManager, mapper, cloudinaryService, userService)
         {
             this.creditCardService = creditCardService;
@@ -43,7 +44,55 @@
             this.encryptionOptions = encryptionOptions;
         }
 
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> GetCreditCardDetails(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return this.BadRequest();
+            }
+
+            if (!await this.creditCardService.Exists(id))
+            {
+                return this.BadRequest();
+            }
+
+            var userId = this.UserManager.GetUserId(this.User);
+
+            if (!await this.creditCardService.UserOwnsCard(id, userId))
+            {
+                return this.BadRequest();
+            }
+
+            var key = Encoding.UTF8.GetBytes(this.encryptionOptions.Value.Key);
+
+            var model = await this.creditCardService.GetCardInformation(id, key);
+            return this.Ok(model);
+        }
+
+        public async Task<IActionResult> GetBankAccountDetails(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return this.BadRequest();
+            }
+
+            if (!await this.bankAccountService.Exists(id))
+            {
+                return this.BadRequest();
+            }
+
+            var userId = this.UserManager.GetUserId(this.User);
+
+            if (!await this.bankAccountService.UserOwnsAccount(id, userId))
+            {
+                return this.BadRequest();
+            }
+
+            var model = await this.bankAccountService.GetAccountInformation<ProfileDeleteBankAccountModel>(id);
+            return this.Ok(model);
+        }
+
+        public async Task<IActionResult> Index()
         {
             var profileUser = await this.GetUserProfile();
 
@@ -61,23 +110,22 @@
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetUserProfile();
-                return this.View(nameof(this.Profile), profileUser);
+                return this.View(nameof(this.Index), profileUser);
             }
 
-            var serviceModel = this.mapper.Map<AddCreditCardServiceModel>(model);
-            var userId = this.userManager.GetUserId(this.User);
+            var serviceModel = this.Mapper.Map<AddCreditCardServiceModel>(model);
+            var userId = this.UserManager.GetUserId(this.User);
             var key = Encoding.UTF8.GetBytes(this.encryptionOptions.Value.Key);
 
             await this.creditCardService.AddCreditCard(serviceModel, userId, key);
 
-            var controller = ControllerHelpers.GetControllerName<FinancialsController>();
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+            return this.RedirectToAction<ProfileController, FinancialsController>(nameof(this.Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> EditCreditCard(EditCreditCardModel model)
         {
-            var userId = this.userManager.GetUserId(this.User);
+            var userId = this.UserManager.GetUserId(this.User);
 
             if (!await this.creditCardService.UserOwnsCard(model.Id, userId))
             {
@@ -87,41 +135,15 @@
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetUserProfile();
-                return this.View(nameof(this.Profile), profileUser);
+                return this.View(nameof(this.Index), profileUser);
             }
 
             var key = Encoding.UTF8.GetBytes(this.encryptionOptions.Value.Key);
 
-            var serviceModel = this.mapper.Map<EditCreditCardServiceModel>(model);
+            var serviceModel = this.Mapper.Map<EditCreditCardServiceModel>(model);
             await this.creditCardService.UpdateCardInformation(key, serviceModel);
 
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
-        }
-
-        public async Task<IActionResult> GetCreditCardDetails(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                return this.BadRequest();
-            }
-
-            if (!await this.creditCardService.Exists(id))
-            {
-                return this.BadRequest();
-            }
-
-            var userId = this.userManager.GetUserId(this.User);
-
-            if (!await this.creditCardService.UserOwnsCard(id, userId))
-            {
-                return this.BadRequest();
-            }
-
-            var key = Encoding.UTF8.GetBytes(this.encryptionOptions.Value.Key);
-
-            var model = await this.creditCardService.GetCardInformation(id, key);
-            return this.Ok(model);
+            return this.RedirectToAction<ProfileController, FinancialsController>(nameof(this.Index));
         }
 
         [HttpPost]
@@ -137,7 +159,7 @@
                 return this.BadRequest();
             }
 
-            var userId = this.userManager.GetUserId(this.User);
+            var userId = this.UserManager.GetUserId(this.User);
 
             if (!await this.creditCardService.UserOwnsCard(id, userId))
             {
@@ -146,8 +168,7 @@
 
             await this.creditCardService.DeleteCreditCard(id);
 
-            var controller = ControllerHelpers.GetControllerName<FinancialsController>();
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+            return this.RedirectToAction<ProfileController, FinancialsController>(nameof(this.Index));
         }
 
         [HttpPost]
@@ -156,39 +177,15 @@
             if (!this.ModelState.IsValid)
             {
                 var profileUser = await this.GetUserProfile();
-                return this.View(nameof(this.Profile), profileUser);
+                return this.View(nameof(this.Index), profileUser);
             }
 
-            var userId = this.userManager.GetUserId(this.User);
+            var userId = this.UserManager.GetUserId(this.User);
 
-            var serviceModel = this.mapper.Map<AddBankAccountServiceModel>(model);
+            var serviceModel = this.Mapper.Map<AddBankAccountServiceModel>(model);
             await this.bankAccountService.AddAccount(serviceModel, userId);
 
-            var controller = ControllerHelpers.GetControllerName<FinancialsController>();
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
-        }
-
-        public async Task<IActionResult> GetBankAccountDetails(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                return this.BadRequest();
-            }
-
-            if (!await this.bankAccountService.Exists(id))
-            {
-                return this.BadRequest();
-            }
-
-            var userId = this.userManager.GetUserId(this.User);
-
-            if (!await this.bankAccountService.UserOwnsAccount(id, userId))
-            {
-                return this.BadRequest();
-            }
-
-            var model = await this.bankAccountService.GetAccountInformation<ProfileDeleteBankAccountModel>(id);
-            return this.Ok(model);
+            return this.RedirectToAction<ProfileController, FinancialsController>(nameof(this.Index));
         }
 
         [HttpPost]
@@ -206,8 +203,7 @@
 
             await this.bankAccountService.DeleteAccount(id);
 
-            var controller = ControllerHelpers.GetControllerName<FinancialsController>();
-            return this.Redirect($"/{controller}/{nameof(this.Profile)}");
+            return this.RedirectToAction<ProfileController, FinancialsController>(nameof(this.Index));
         }
 
         private async Task<ProfileFinancialViewModel> GetUserProfile()
