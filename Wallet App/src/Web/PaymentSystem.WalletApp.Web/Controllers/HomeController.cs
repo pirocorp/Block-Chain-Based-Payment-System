@@ -4,6 +4,7 @@
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+
     using PaymentSystem.WalletApp.Common;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services;
@@ -13,7 +14,6 @@
     using PaymentSystem.WalletApp.Web.ViewModels;
     using PaymentSystem.WalletApp.Web.ViewModels.Home;
     using PaymentSystem.WalletApp.Web.ViewModels.Home.Index;
-    using PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard;
 
     using Activity = System.Diagnostics.Activity;
 
@@ -55,10 +55,7 @@
             return this.View(model);
         }
 
-        public IActionResult Privacy()
-        {
-            return this.View();
-        }
+        public IActionResult Privacy() => this.View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

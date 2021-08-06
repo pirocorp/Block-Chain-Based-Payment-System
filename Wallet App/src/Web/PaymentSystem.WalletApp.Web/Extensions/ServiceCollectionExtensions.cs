@@ -6,7 +6,7 @@
     using CloudinaryDotNet;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Services;
+    using PaymentSystem.WalletApp.Services;
 
     public static class ServiceCollectionExtensions
     {

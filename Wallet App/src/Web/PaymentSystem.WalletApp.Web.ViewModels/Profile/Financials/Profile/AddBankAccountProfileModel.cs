@@ -1,11 +1,11 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Financials.Profile
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Profile.Financials.Profile
 {
     using System.ComponentModel.DataAnnotations;
 
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
 
-    using static PaymentSystem.WalletApp.Data.Common.DataConstants.BankAccount;
+    using static Data.Common.DataConstants.BankAccount;
 
     public class AddBankAccountProfileModel : IMapTo<AddBankAccountServiceModel>
     {

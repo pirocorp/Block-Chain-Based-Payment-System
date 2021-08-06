@@ -6,14 +6,16 @@
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+
     using Newtonsoft.Json;
+
     using PaymentSystem.Common.GrpcService;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services;
     using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Services.Data.Models.Accounts;
     using PaymentSystem.WalletApp.Services.Data.Models.AccountsKeys;
-    using PaymentSystem.WalletApp.Web.ViewModels.Accounts.Profile;
+    using PaymentSystem.WalletApp.Web.ViewModels.Profile.Accounts.Profile;
 
     public class AccountsController : ProfileController
     {

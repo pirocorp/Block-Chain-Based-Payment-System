@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Profile.Users.Dashboard
 {
     using System;
 

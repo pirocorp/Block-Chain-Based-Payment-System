@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Users.Dashboard
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Profile.Users.Dashboard
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -9,7 +9,7 @@
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Web.Infrastructure;
     using PaymentSystem.WalletApp.Web.ViewModels.Activities;
-    using PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout;
+    using PaymentSystem.WalletApp.Web.ViewModels.Profile.ProfileLayout;
 
     public class DashboardUser : ProfileLayoutUserModel, IHaveCustomMappings
     {

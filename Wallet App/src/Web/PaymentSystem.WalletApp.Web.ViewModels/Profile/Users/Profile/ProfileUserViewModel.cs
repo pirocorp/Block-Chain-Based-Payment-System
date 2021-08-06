@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Users.Profile
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Profile.Users.Profile
 {
     using System;
     using System.Linq;
@@ -7,7 +7,7 @@
 
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout;
+    using PaymentSystem.WalletApp.Web.ViewModels.Profile.ProfileLayout;
 
     public class ProfileUserViewModel : ProfileLayoutUserModel, IHaveCustomMappings
     {

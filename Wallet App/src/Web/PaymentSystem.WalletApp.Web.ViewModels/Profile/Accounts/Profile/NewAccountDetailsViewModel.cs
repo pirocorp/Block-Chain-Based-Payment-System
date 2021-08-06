@@ -1,7 +1,7 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Accounts.Profile
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Profile.Accounts.Profile
 {
     using PaymentSystem.Common.GrpcService;
-    using PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout;
+    using PaymentSystem.WalletApp.Web.ViewModels.Profile.ProfileLayout;
 
     public class NewAccountDetailsViewModel : ProfileLayoutUserModel
     {

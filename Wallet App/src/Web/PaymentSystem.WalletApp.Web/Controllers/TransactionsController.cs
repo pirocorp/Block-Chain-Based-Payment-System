@@ -13,7 +13,7 @@
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
-    using PaymentSystem.WalletApp.Web.ViewModels.Accounts;
+    using PaymentSystem.WalletApp.Web.ViewModels.Profile.Accounts;
     using PaymentSystem.WalletApp.Web.ViewModels.Transactions;
     using PaymentSystem.WalletApp.Web.ViewModels.Transactions.SendCoins;
     using PaymentSystem.WalletApp.Web.ViewModels.Transactions.SendCoinsConfirm;
@@ -84,8 +84,7 @@
 
             this.TempData[SendCoinTempData] = JsonConvert.SerializeObject(model);
 
-            var controller = ControllerHelpers.GetControllerName<TransactionsController>();
-            return this.Redirect($"/{controller}/{nameof(this.SendCoinsConfirm)}");
+            return this.RedirectToAction<TransactionsController>(nameof(this.SendCoinsConfirm));
         }
 
         public IActionResult SendCoinsConfirm()
@@ -121,7 +120,7 @@
             {
                 var viewModel = await this.GetSendCoinsViewModel();
 
-                return this.View(nameof(this.SendCoins));
+                return this.View(nameof(this.SendCoins), viewModel);
             }
 
             await this.userService.SendCoins(model.CoinAccount, model.Recipient, model.Amount, model.Secret, userId);

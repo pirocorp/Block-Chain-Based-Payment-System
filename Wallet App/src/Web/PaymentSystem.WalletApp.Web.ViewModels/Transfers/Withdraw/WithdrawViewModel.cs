@@ -9,7 +9,7 @@
 
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Web.ViewModels.Accounts;
+    using PaymentSystem.WalletApp.Web.ViewModels.Profile.Accounts;
 
     public class WithdrawViewModel : IMapFrom<ApplicationUser>, IHaveCustomMappings
     {

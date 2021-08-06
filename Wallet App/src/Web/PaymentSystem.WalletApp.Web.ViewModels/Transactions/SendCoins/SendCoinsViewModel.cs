@@ -4,8 +4,7 @@
     using System.Linq;
 
     using Microsoft.AspNetCore.Mvc.Rendering;
-
-    using PaymentSystem.WalletApp.Web.ViewModels.Accounts;
+    using PaymentSystem.WalletApp.Web.ViewModels.Profile.Accounts;
 
     public class SendCoinsViewModel
     {

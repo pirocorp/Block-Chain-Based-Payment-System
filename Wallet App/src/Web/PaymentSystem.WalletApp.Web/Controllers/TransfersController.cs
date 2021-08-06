@@ -67,7 +67,7 @@
 
             this.TempData[DepositTempData] = JsonConvert.SerializeObject(model);
 
-            return this.Redirect($"/{this.ControllerName}/{nameof(this.DepositConfirm)}");
+            return this.RedirectToAction<TransfersController>(nameof(this.DepositConfirm));
         }
 
         public async Task<IActionResult> DepositConfirm()
@@ -133,7 +133,7 @@
                 await this.bankAccountService.ConfirmAccount(model.PaymentMethod);
             }
 
-            return this.Redirect($"/{this.ControllerName}/{nameof(this.DepositSuccess)}");
+            return this.RedirectToAction<TransfersController>(nameof(this.DepositSuccess));
         }
 
         public IActionResult DepositSuccess() => this.View();
@@ -185,8 +185,7 @@
                 return this.View(viewModel);
             }
 
-            var controller = ControllerHelpers.GetControllerName<TransfersController>();
-            return this.Redirect($"/{controller}/{nameof(this.WithdrawSuccess)}");
+            return this.RedirectToAction<TransfersController>(nameof(this.WithdrawSuccess));
         }
 
         public IActionResult WithdrawSuccess() => this.View();

@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Accounts
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Profile.Accounts
 {
     using AutoMapper;
 

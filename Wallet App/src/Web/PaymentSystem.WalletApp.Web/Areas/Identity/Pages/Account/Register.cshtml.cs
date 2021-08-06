@@ -16,7 +16,7 @@ namespace PaymentSystem.WalletApp.Web.Areas.Identity.Pages.Account
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
 
-    using Data.Models;
+    using PaymentSystem.WalletApp.Data.Models;
 
     [AllowAnonymous]
     public class RegisterModel : PageModel

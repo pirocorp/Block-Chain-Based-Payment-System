@@ -17,7 +17,7 @@
     using PaymentSystem.WalletApp.Services.Data.Models.CreditCards;
     using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
     using PaymentSystem.WalletApp.Web.Infrastructure.Options;
-    using PaymentSystem.WalletApp.Web.ViewModels.Financials.Profile;
+    using PaymentSystem.WalletApp.Web.ViewModels.Profile.Financials.Profile;
 
     [Authorize]
     public class FinancialsController : ProfileController

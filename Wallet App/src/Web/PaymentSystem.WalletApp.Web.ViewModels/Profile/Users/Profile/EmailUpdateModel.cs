@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Users.Profile
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Profile.Users.Profile
 {
     using System.ComponentModel.DataAnnotations;
 

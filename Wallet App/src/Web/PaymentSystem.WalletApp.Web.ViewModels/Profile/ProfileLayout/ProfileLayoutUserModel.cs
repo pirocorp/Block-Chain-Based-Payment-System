@@ -1,4 +1,4 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Profile.ProfileLayout
 {
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;

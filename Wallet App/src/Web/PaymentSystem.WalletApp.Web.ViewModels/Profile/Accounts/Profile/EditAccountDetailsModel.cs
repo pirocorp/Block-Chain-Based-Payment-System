@@ -1,8 +1,7 @@
-﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Accounts.Profile
+﻿namespace PaymentSystem.WalletApp.Web.ViewModels.Profile.Accounts.Profile
 {
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data.Models;
-
     using PaymentSystem.WalletApp.Services.Data.Models.Accounts;
 
     public class EditAccountDetailsModel : IMapFrom<Account>, IMapTo<EditAccountServiceModel>

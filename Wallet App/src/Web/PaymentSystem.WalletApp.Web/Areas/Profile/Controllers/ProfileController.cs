@@ -12,7 +12,7 @@
     using PaymentSystem.WalletApp.Services;
     using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Web.Controllers;
-    using PaymentSystem.WalletApp.Web.ViewModels.ProfileLayout;
+    using PaymentSystem.WalletApp.Web.ViewModels.Profile.ProfileLayout;
 
     [Authorize]
     [Area("Profile")]

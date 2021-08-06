@@ -2,12 +2,11 @@
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
-
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Seeding;
+    using PaymentSystem.WalletApp.Services;
     using PaymentSystem.WalletApp.Services.Data;
-    using Services;
-    using Services.Data.Implementations;
+    using PaymentSystem.WalletApp.Services.Data.Implementations;
 
     public static class ApplicationBuilderExtensions
     {
