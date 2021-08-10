@@ -12,13 +12,13 @@
 
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data;
-    using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Filters.ActionFilters;
     using PaymentSystem.WalletApp.Web.ViewModels.Profile.Accounts;
     using PaymentSystem.WalletApp.Web.ViewModels.Transactions;
     using PaymentSystem.WalletApp.Web.ViewModels.Transactions.SendCoins;
     using PaymentSystem.WalletApp.Web.ViewModels.Transactions.SendCoinsConfirm;
 
-    using static Infrastructure.WebConstants.SendCoin;
+    using static Infrastructure.WebConstants.SendCoinErrorMessages;
 
     [Authorize]
     public class TransactionsController : BaseController
@@ -53,14 +53,21 @@
             return this.Ok(activity);
         }
 
+        [ImportModelState]
         public async Task<IActionResult> SendCoins()
         {
-            var viewModel = await this.GetSendCoinsViewModel();
+            var userId = this.userManager.GetUserId(this.User);
 
-            return this.View(viewModel);
+            var model = new SendCoinsViewModel()
+            {
+                Accounts = await this.accountService.GetUserAccounts<CoinAccountModel>(userId),
+            };
+
+            return this.View(model);
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> SendCoins(SendCoinInputModel model)
         {
             var userId = this.userManager.GetUserId(this.User);
@@ -69,17 +76,14 @@
             {
                 this.ModelState.AddModelError(string.Empty, CoinAccountErrorMessage);
             }
-
-            if (!await this.accountService.HasSufficientFunds(model.CoinAccount, model.Amount))
+            else if (!await this.accountService.HasSufficientFunds(model.CoinAccount, model.Amount))
             {
                 this.ModelState.AddModelError(string.Empty, InsufficientFundsErrorMessage);
             }
 
             if (!this.ModelState.IsValid)
             {
-                var viewModel = await this.GetSendCoinsViewModel();
-
-                return this.View(viewModel);
+                return this.RedirectToAction(nameof(this.SendCoins));
             }
 
             this.TempData[SendCoinTempData] = JsonConvert.SerializeObject(model);
@@ -102,6 +106,7 @@
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> SendCoinsConfirm(SendCoinConfirmInputModel model)
         {
             var userId = this.userManager.GetUserId(this.User);
@@ -110,17 +115,14 @@
             {
                 this.ModelState.AddModelError(string.Empty, CoinAccountErrorMessage);
             }
-
-            if (!await this.accountService.HasSufficientFunds(model.CoinAccount, model.Amount))
+            else if (!await this.accountService.HasSufficientFunds(model.CoinAccount, model.Amount))
             {
                 this.ModelState.AddModelError(string.Empty, InsufficientFundsErrorMessage);
             }
 
             if (!this.ModelState.IsValid)
             {
-                var viewModel = await this.GetSendCoinsViewModel();
-
-                return this.View(nameof(this.SendCoins), viewModel);
+                return this.RedirectToAction(nameof(this.SendCoins));
             }
 
             await this.userService.SendCoins(model.CoinAccount, model.Recipient, model.Amount, model.Secret, userId);
@@ -129,17 +131,5 @@
         }
 
         public IActionResult SendCoinsSuccess() => this.View();
-
-        private async Task<SendCoinsViewModel> GetSendCoinsViewModel()
-        {
-            var userId = this.userManager.GetUserId(this.User);
-
-            var model = new SendCoinsViewModel()
-            {
-                Accounts = await this.accountService.GetUserAccounts<CoinAccountModel>(userId),
-            };
-
-            return model;
-        }
     }
 }

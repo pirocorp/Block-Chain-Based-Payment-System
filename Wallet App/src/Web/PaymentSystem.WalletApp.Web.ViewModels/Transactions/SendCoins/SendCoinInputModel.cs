@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using static Infrastructure.WebConstants.SendCoin;
+    using static Infrastructure.WebConstants.SendCoinErrorMessages;
 
     public class SendCoinInputModel
     {

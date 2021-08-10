@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-
+    using Infrastructure.Filters.ActionFilters;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
@@ -46,6 +46,7 @@
             return this.View(dashboardUser);
         }
 
+        [ImportModelState]
         public async Task<IActionResult> Index()
         {
             var profileUser = await this.GetProfileUser();
@@ -54,12 +55,12 @@
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> Index(PersonalDetailsUpdateModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                var profileUser = await this.GetProfileUser();
-                return this.View(profileUser);
+                this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
             }
 
             var user = await this.UserManager.GetUserAsync(this.User);
@@ -85,12 +86,12 @@
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> EmailUpdate(EmailUpdateModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Index), profileUser);
+                this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
             }
 
             var user = await this.UserManager.GetUserAsync(this.User);
@@ -104,21 +105,18 @@
                 {
                     this.ModelState.AddModelError(string.Empty, error.Description);
                 }
-
-                var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Index), profileUser);
             }
 
             return this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> PhoneUpdate(PhoneUpdateModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Index), profileUser);
+                this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
             }
 
             var user = await this.UserManager.GetUserAsync(this.User);
@@ -129,14 +127,12 @@
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> UploadPicture([FromForm] IFormFile profilePicture)
         {
-            var controller = ControllerHelpers.GetControllerName<UsersController>();
-
             if (!this.ModelState.IsValid)
             {
-                var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Index), profileUser);
+                this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
             }
 
             var profilePictureAddress = await this.CloudinaryService.Upload(profilePicture);
@@ -149,12 +145,12 @@
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Index), profileUser);
+                this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));
             }
 
             var user = await this.UserManager.GetUserAsync(this.User);
@@ -168,9 +164,6 @@
                 {
                     this.ModelState.AddModelError(string.Empty, error.Description);
                 }
-
-                var profileUser = await this.GetProfileUser();
-                return this.View(nameof(this.Index), profileUser);
             }
 
             return this.RedirectToAction<ProfileController, UsersController>(nameof(this.Index));

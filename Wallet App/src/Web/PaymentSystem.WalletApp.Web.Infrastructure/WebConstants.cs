@@ -38,13 +38,28 @@
             public const string InsufficientFundsErrorMessage = "Insufficient Funds";
         }
 
-        public static class SendCoin
+        public static class SendCoinErrorMessages
         {
             public const string AmountErrorMessage = "Amount must be positive.";
 
             public const string CoinAccountErrorMessage = "Invalid Coin Account";
 
             public const string InsufficientFundsErrorMessage = "Insufficient Funds";
+        }
+
+        public static class TransfersErrorMessages
+        {
+            public const string InvalidPaymentMethod = "Invalid payment method.";
+
+            public const string UnSuccessfulDeposit = "Something went wrong try again.";
+
+            public const string UnSuccessfulWithdraw = "Something went wrong try again.";
+
+        }
+
+        public static class FinancialsErrorMessages
+        {
+            public const string DuplicateCreditCard = "Card number already exists.";
         }
     }
 }

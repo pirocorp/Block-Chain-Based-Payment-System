@@ -3,7 +3,6 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -16,9 +15,12 @@
     using PaymentSystem.WalletApp.Services.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Models.Transactions;
     using PaymentSystem.WalletApp.Web.Infrastructure;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Filters.ActionFilters;
     using PaymentSystem.WalletApp.Web.ViewModels.Transfers.Deposit;
     using PaymentSystem.WalletApp.Web.ViewModels.Transfers.DepositConfirm;
     using PaymentSystem.WalletApp.Web.ViewModels.Transfers.Withdraw;
+
+    using static PaymentSystem.WalletApp.Web.Infrastructure.WebConstants.TransfersErrorMessages;
 
     [Authorize]
     public class TransfersController : BaseController
@@ -51,17 +53,19 @@
             this.userService = userService;
         }
 
+        [ImportModelState]
         public IActionResult Deposit()
         {
             return this.View();
         }
 
         [HttpPost]
+        [ExportModelState]
         public IActionResult Deposit(DepositModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                return this.RedirectToAction(nameof(this.Deposit));
             }
 
             this.TempData[DepositTempData] = JsonConvert.SerializeObject(model);
@@ -93,11 +97,12 @@
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> DepositConfirm(DepositConfirmInputModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(nameof(this.Deposit));
+                return this.RedirectToAction(nameof(this.Deposit));
             }
 
             var userId = this.userManager.GetUserId(this.User);
@@ -111,7 +116,8 @@
 
             if (!userOwnsAccount || !isPaymentMethodValid)
             {
-                return this.BadRequest();
+                this.ModelState.AddModelError(string.Empty, InvalidPaymentMethod);
+                return this.RedirectToAction(nameof(this.Deposit));
             }
 
             var serviceModel = new DepositServiceModel()
@@ -123,8 +129,8 @@
 
             if (!await this.transferService.DepositToAccount(userId, serviceModel))
             {
-                this.ModelState.AddModelError(string.Empty, "Something went wrong try again.");
-                return this.View(nameof(this.Deposit));
+                this.ModelState.AddModelError(string.Empty, UnSuccessfulDeposit);
+                return this.RedirectToAction(nameof(this.Deposit));
             }
 
             if (model.PaymentType is PaymentMethod.BankAccount)
@@ -137,14 +143,17 @@
 
         public IActionResult DepositSuccess() => this.View();
 
+        [ImportModelState]
         public async Task<IActionResult> Withdraw()
         {
-            var model = await this.GetWithdrawViewModel();
+            var userId = this.userManager.GetUserId(this.User);
+            var model = await this.userService.GetUser<WithdrawViewModel>(userId);
 
             return this.View(model);
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> Withdraw(WithdrawInputModel model)
         {
             var userId = this.userManager.GetUserId(this.User);
@@ -161,40 +170,28 @@
             {
                 this.ModelState.AddModelError(string.Empty, WebConstants.WithdrawInputModel.CoinAccountErrorMessage);
             }
-
-            if (!await this.accountService.HasSufficientFunds(model.CoinAccount, model.Amount))
+            else if (!await this.accountService.HasSufficientFunds(model.CoinAccount, model.Amount))
             {
                 this.ModelState.AddModelError(string.Empty, WebConstants.WithdrawInputModel.InsufficientFundsErrorMessage);
             }
 
             if (!this.ModelState.IsValid)
             {
-                var viewModel = await this.GetWithdrawViewModel();
-
-                return this.View(viewModel);
+                return this.RedirectToAction(nameof(this.Withdraw));
             }
 
             var serviceModel = this.mapper.Map<WithdrawServiceModel>(model);
 
             if (!await this.transferService.WithdrawFromAccount(userId, serviceModel))
             {
-                this.ModelState.AddModelError(string.Empty, "Something went wrong try again.");
-                var viewModel = await this.GetWithdrawViewModel();
+                this.ModelState.AddModelError(string.Empty, UnSuccessfulWithdraw);
 
-                return this.View(viewModel);
+                this.RedirectToAction(nameof(this.Withdraw));
             }
 
             return this.RedirectToAction(nameof(this.WithdrawSuccess));
         }
 
         public IActionResult WithdrawSuccess() => this.View();
-
-        private async Task<WithdrawViewModel> GetWithdrawViewModel()
-        {
-            var userId = this.userManager.GetUserId(this.User);
-            var model = await this.userService.GetUser<WithdrawViewModel>(userId);
-
-            return model;
-        }
     }
 }

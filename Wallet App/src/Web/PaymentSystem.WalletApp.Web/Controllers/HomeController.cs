@@ -2,38 +2,24 @@
 {
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using PaymentSystem.WalletApp.Common;
-    using PaymentSystem.WalletApp.Data.Models;
-    using PaymentSystem.WalletApp.Services;
     using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Web.Areas.Profile.Controllers;
     using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
     using PaymentSystem.WalletApp.Web.ViewModels;
-    using PaymentSystem.WalletApp.Web.ViewModels.Home;
     using PaymentSystem.WalletApp.Web.ViewModels.Home.Index;
 
     using Activity = System.Diagnostics.Activity;
 
     public class HomeController : BaseController
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly ICloudinaryService cloudinaryService;
         private readonly ITestimonialService testimonialService;
-        private readonly IUserService userService;
 
-        public HomeController(
-            UserManager<ApplicationUser> userManager,
-            ICloudinaryService cloudinaryService,
-            ITestimonialService testimonialService,
-            IUserService userService)
+        public HomeController(ITestimonialService testimonialService)
         {
-            this.userManager = userManager;
-            this.cloudinaryService = cloudinaryService;
             this.testimonialService = testimonialService;
-            this.userService = userService;
         }
 
         public async Task<IActionResult> Index()

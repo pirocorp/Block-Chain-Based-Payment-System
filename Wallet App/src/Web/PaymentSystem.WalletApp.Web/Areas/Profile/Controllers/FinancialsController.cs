@@ -15,9 +15,11 @@
     using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
     using PaymentSystem.WalletApp.Services.Data.Models.CreditCards;
-    using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
+    using PaymentSystem.WalletApp.Web.Infrastructure.Filters.ActionFilters;
     using PaymentSystem.WalletApp.Web.Infrastructure.Options;
     using PaymentSystem.WalletApp.Web.ViewModels.Profile.Financials.Profile;
+
+    using static PaymentSystem.WalletApp.Web.Infrastructure.WebConstants.FinancialsErrorMessages;
 
     [Authorize]
     public class FinancialsController : ProfileController
@@ -44,6 +46,11 @@
             this.encryptionOptions = encryptionOptions;
         }
 
+        /// <summary>
+        /// This endpoint is used by site javascript.
+        /// </summary>
+        /// <param name="id">Credit Card id.</param>
+        /// <returns>Credit card information without credit card number.</returns>
         public async Task<IActionResult> GetCreditCardDetails(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -69,6 +76,11 @@
             return this.Ok(model);
         }
 
+        /// <summary>
+        /// This endpoint is used by site javascript.
+        /// </summary>
+        /// <param name="id">Bank account id.</param>
+        /// <returns>Bank account information.</returns>
         public async Task<IActionResult> GetBankAccountDetails(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -92,6 +104,7 @@
             return this.Ok(model);
         }
 
+        [ImportModelState]
         public async Task<IActionResult> Index()
         {
             var profileUser = await this.GetUserProfile();
@@ -100,17 +113,17 @@
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> AddCreditCard(AddCreditCardProfileModel model)
         {
             if (await this.fingerprintService.Exists(model.CardNumber))
             {
-                this.ModelState.AddModelError(string.Empty, "Card number already exists.");
+                this.ModelState.AddModelError(string.Empty, DuplicateCreditCard);
             }
 
             if (!this.ModelState.IsValid)
             {
-                var profileUser = await this.GetUserProfile();
-                return this.View(nameof(this.Index), profileUser);
+                return this.RedirectToAction<ProfileController, FinancialsController>(nameof(this.Index));
             }
 
             var serviceModel = this.Mapper.Map<AddCreditCardServiceModel>(model);
@@ -123,6 +136,7 @@
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> EditCreditCard(EditCreditCardModel model)
         {
             var userId = this.UserManager.GetUserId(this.User);
@@ -134,8 +148,7 @@
 
             if (!this.ModelState.IsValid)
             {
-                var profileUser = await this.GetUserProfile();
-                return this.View(nameof(this.Index), profileUser);
+                return this.RedirectToAction<ProfileController, FinancialsController>(nameof(this.Index));
             }
 
             var key = Encoding.UTF8.GetBytes(this.encryptionOptions.Value.Key);
@@ -172,12 +185,12 @@
         }
 
         [HttpPost]
+        [ExportModelState]
         public async Task<IActionResult> AddBankAccount(AddBankAccountProfileModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                var profileUser = await this.GetUserProfile();
-                return this.View(nameof(this.Index), profileUser);
+                return this.RedirectToAction<ProfileController, FinancialsController>(nameof(this.Index));
             }
 
             var userId = this.UserManager.GetUserId(this.User);

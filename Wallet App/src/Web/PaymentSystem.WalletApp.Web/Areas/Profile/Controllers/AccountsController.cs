@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-
+    using Infrastructure.Filters.ActionFilters;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +36,11 @@
             this.accountsKeyService = accountsKeyService;
         }
 
+        /// <summary>
+        /// This endpoint is used by site javascript.
+        /// </summary>
+        /// <param name="address">Account address.</param>
+        /// <returns>Serialized account information in JSON.</returns>
         public async Task<IActionResult> GetAccountDetails(string address)
             => this.Ok(await this.accountService.GetAccount<ProfileAccountModel>(address));
 

@@ -34,7 +34,11 @@
             var userId = this.userManager.GetUserId(this.User);
 
             var (total, activities) = await this.activityService
-                .GetUserActivities<DetailsActivityModel>(userId, page, WebConstants.DefaultActivitiesResultPageSize, dateRange);
+                .GetUserActivities<DetailsActivityModel>(
+                    userId,
+                    page,
+                    WebConstants.DefaultActivitiesResultPageSize,
+                    dateRange);
 
             var model = new ActivitiesIndexViewModel()
             {
