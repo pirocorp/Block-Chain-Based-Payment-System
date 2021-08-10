@@ -6,6 +6,7 @@ Payment system using block chain technology for clearing (settling) the transact
 ## Project Architecture
 ![Project Architecture][Project_Architecture]
 
+
 ## Concepts
 
 ### Transaction
