@@ -29,6 +29,8 @@
 
         public async Task<IActionResult> Index(int page = 1, string dateRange = "")
         {
+            page = Math.Max(page, 1);
+
             var userId = this.userManager.GetUserId(this.User);
 
             var (total, activities) = await this.activityService

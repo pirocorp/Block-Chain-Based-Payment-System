@@ -1,0 +1,38 @@
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Accounts.Index.AccountsIndexVewModel
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="py-4">
+    <h2 class="px-4 font-weight-400 mb-3">Accounts</h2>
+
+    <!-- Accounts Table =============================== -->
+    <div class="px-4 table-responsive">
+        <table class="table table-striped table-hover table-borderless mw-100">
+
+            <!-- Title =============================== -->
+            <thead>
+            <tr class="row mw-100 ml-0 py-3">
+                <th class="col-md-10 col-sm-9 text-center text-4">Address</th>
+                <th class="col-md-2 col-sm-3 text-center text-4">Balance</th>
+            </tr>
+            </thead>
+            <!-- Title End -->
+            <tbody>
+            @foreach (var account in this.Model.Accounts)
+            {
+                <tr class="row text-center mw-100 ml-0 py-3">
+                    <td class="col-md-10 col-sm-9 text-2 text-wrap">
+                        <a asp-area="" asp-controller="Accounts" asp-action="Transactions" asp-route-address="@account.Address">@account.FriendlyAddress</a>
+                    </td>
+                    <td class="col-md-2 col-sm-3 text-center text-4">
+                        <span class="text-nowrap">@($"{account.Balance:F2}") P</span>
+                    </td>
+                </tr>
+            }    
+            </tbody>
+            <!-- Accounts Table End =============================== -->
+        </table>
+    </div>
+</div>

@@ -10,7 +10,11 @@
 
         public const string ReceiveDescription = "Receive {0} amount from address {1}";
 
+        public const string SendDescription = "Send {0} amount to address {1}";
+
         public const int DefaultActivitiesResultPageSize = 10;
+
+        public const int DefaultTransactionsResultPageSize = 10;
 
         public static class DepositConfirmInputModel
         {

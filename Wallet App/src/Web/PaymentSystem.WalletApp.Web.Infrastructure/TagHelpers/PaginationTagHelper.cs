@@ -1,6 +1,7 @@
 ﻿namespace PaymentSystem.WalletApp.Web.Infrastructure.TagHelpers
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
@@ -9,7 +10,14 @@
 
     public class PaginationTagHelper : TagHelper
     {
+        private const string RouteValuesDictionaryName = "asp-all-route-data";
+        private const string RouteValuesPrefix = "asp-route-";
         private const int Offset = 2;
+
+        public PaginationTagHelper()
+        {
+            this.RouteValues = new Dictionary<string, string>();
+        }
 
         public int CurrentPage { get; set; }
 
@@ -45,7 +53,8 @@
         [Range(2, int.MaxValue)]
         public int Boundary { get; set; }
 
-        public string DateRange { get; set; }
+        [HtmlAttributeName(RouteValuesDictionaryName, DictionaryAttributePrefix = RouteValuesPrefix)]
+        public IDictionary<string, string> RouteValues { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -119,12 +128,12 @@
             var activePage = page == this.CurrentPage ? " active" : string.Empty;
             var currentPage = page == this.CurrentPage ? "<span class=\"sr-only\">(current)</span>": string.Empty;
 
-            var dateRange = string.IsNullOrWhiteSpace(this.DateRange)
+            var routeValues = this.RouteValues.Count == 0
                 ? string.Empty
-                : $"&dateRange={this.DateRange}";
+                : $"&{string.Join("&", this.RouteValues.Select(r => $"{r.Key}={r.Value}"))}";
 
             content.AppendLine($"<li class=\"{this.PageItemClass}{activePage}\">");
-            content.AppendLine($"<a class=\"{this.PageLinkClass}\" href=\"{this.GetLinkAddress()}?page={page}{dateRange}\">{page}{currentPage}</a>");
+            content.AppendLine($"<a class=\"{this.PageLinkClass}\" href=\"{this.GetLinkAddress()}?page={page}{routeValues}\">{page}{currentPage}</a>");
             content.AppendLine("</li>");
         }
 

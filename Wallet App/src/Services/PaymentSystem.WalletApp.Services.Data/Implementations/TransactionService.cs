@@ -1,6 +1,7 @@
 ﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -29,6 +30,23 @@
                 .Where(t => t.Hash == hash)
                 .To<T>()
                 .FirstOrDefaultAsync();
+
+        public async Task<(int Total, IEnumerable<T> Transactions)> GetTransactionsForAddress<T>(string address, int page, int pageSize)
+        {
+            var query = this.dbContext.Transactions
+                .Where(t => t.Sender == address || t.Recipient == address);
+
+            var total = await query.CountAsync();
+
+            var transactions = await query
+                .OrderByDescending(t => t.TimeStamp)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .To<T>()
+                .ToListAsync();
+
+            return (total, transactions);
+        }
 
         public async Task<(TransactionStatus Status, string Hash)> CreateTransaction(
             string senderAddress,

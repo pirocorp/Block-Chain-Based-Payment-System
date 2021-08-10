@@ -16,7 +16,6 @@
     using PaymentSystem.WalletApp.Services.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Models.Transactions;
     using PaymentSystem.WalletApp.Web.Infrastructure;
-    using PaymentSystem.WalletApp.Web.Infrastructure.Helpers;
     using PaymentSystem.WalletApp.Web.ViewModels.Transfers.Deposit;
     using PaymentSystem.WalletApp.Web.ViewModels.Transfers.DepositConfirm;
     using PaymentSystem.WalletApp.Web.ViewModels.Transfers.Withdraw;
@@ -133,7 +132,7 @@
                 await this.bankAccountService.ConfirmAccount(model.PaymentMethod);
             }
 
-            return this.RedirectToAction<TransfersController>(nameof(this.DepositSuccess));
+            return this.RedirectToAction(nameof(this.DepositSuccess));
         }
 
         public IActionResult DepositSuccess() => this.View();
@@ -185,7 +184,7 @@
                 return this.View(viewModel);
             }
 
-            return this.RedirectToAction<TransfersController>(nameof(this.WithdrawSuccess));
+            return this.RedirectToAction(nameof(this.WithdrawSuccess));
         }
 
         public IActionResult WithdrawSuccess() => this.View();
