@@ -17,6 +17,8 @@
     using PaymentSystem.WalletApp.Services.Data.Models.BankAccounts;
     using PaymentSystem.WalletApp.Services.Data.Models.CreditCards;
 
+    using static PaymentSystem.WalletApp.Web.Infrastructure.WebConstants;
+
     public class UserService : IUserService
     {
         private const int BankAccountLastDigitCount = 4;
@@ -85,6 +87,13 @@
                 .ToListAsync())
                 .Select(a => new SelectListItem($"XXXX - {a.Address[^CoinAccountLastDigitCount..]}", a.Address))
                 .ToList();
+
+        public async Task<IEnumerable<T>> GetLatestRegisteredUsers<T>()
+            => await this.dbContext.Users
+                .OrderByDescending(u => u.CreatedOn)
+                .To<T>()
+                .Take(DefaultUsersResultPageSize)
+                .ToListAsync();
 
         public async Task<bool> SendCoins(string senderAddress, string recipientAddress, double amount, string secret, string userId)
         {

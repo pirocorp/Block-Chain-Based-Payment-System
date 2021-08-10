@@ -19,6 +19,8 @@
 
         Task<IEnumerable<SelectListItem>> GetCoinAccounts(string userId);
 
+        Task<IEnumerable<T>> GetLatestRegisteredUsers<T>();
+
         Task<bool> SendCoins(string senderAddress, string recipientAddress, double amount, string secret, string userId);
     }
 }

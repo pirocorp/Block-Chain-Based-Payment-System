@@ -43,4 +43,9 @@
     <ProjectReference Include="..\PaymentSystem.WalletApp.Web.Infrastructure\PaymentSystem.WalletApp.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\PaymentSystem.WalletApp.Web.ViewModels\PaymentSystem.WalletApp.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Administration\Views\Blocks\" />
+    <Folder Include="Areas\Administration\Views\Transactions\" />
+  </ItemGroup>
 </Project>

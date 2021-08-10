@@ -19,7 +19,7 @@
     <!-- Title End -->
     
     <!-- Transaction List  =============================== -->
-    <div class="transaction-list">
+    <div>
         @foreach (var transaction in this.Model.Transactions)
         {
             <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail" onclick="getTransactionInfo('@transaction.Hash')">

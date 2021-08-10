@@ -12,6 +12,8 @@
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Models.Accounts;
 
+    using static Web.Infrastructure.WebConstants;
+
     public class AccountService : IAccountService
     {
         private readonly ApplicationDbContext dbContext;
@@ -47,6 +49,13 @@
                 .Where(a => a.Address == address)
                 .To<T>()
                 .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<T>> GetLatestAccounts<T>()
+            => await this.dbContext.Accounts
+                .OrderByDescending(a => a.CreatedOn)
+                .To<T>()
+                .Take(DefaultAccountsResultPageSize)
+                .ToListAsync();
 
         public async Task<IEnumerable<T>> GetUserAccounts<T>(string userId)
             => await this.dbContext.Accounts

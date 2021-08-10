@@ -5,8 +5,8 @@
     using PaymentSystem.WalletApp.Common;
     using PaymentSystem.WalletApp.Web.Controllers;
 
-    [Authorize(Roles = WalletConstants.AdministratorRoleName)]
     [Area("Administration")]
+    [Authorize(Roles = WalletConstants.AdministratorRoleName)]
     public class AdministrationController : BaseController
     {
     }

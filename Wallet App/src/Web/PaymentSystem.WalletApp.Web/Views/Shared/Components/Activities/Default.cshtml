@@ -13,7 +13,7 @@
 <!-- Title End -->
 
 <!-- Transaction List  =============================== -->
-<div class="transaction-list">
+<div>
     @foreach (var activity in this.Model.OrderByDescending(a => a.TimeStamp))
     {
         <div class="transaction-item px-4 py-3" data-toggle="modal" data-target="#transaction-detail" onclick="getTransactionInfo('@activity.TransactionHash')">

@@ -20,6 +20,8 @@
 
         Task<T> GetAccount<T>(string address);
 
+        Task<IEnumerable<T>> GetLatestAccounts<T>();
+
         Task<IEnumerable<T>> GetUserAccounts<T>(string userId);
 
         Task<AccountCreationResponse> Create(string userId);

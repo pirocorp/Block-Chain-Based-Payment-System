@@ -1,0 +1,52 @@
+﻿@model PaymentSystem.WalletApp.Web.ViewModels.Administration.Users.UsersListingAdminPartialModel
+
+<div class="bg-light shadow-sm rounded py-4 mb-4">
+    <h3 class="text-5 font-weight-400 d-flex align-items-center px-4 mb-3">@Model.Title</h3>
+
+    <!-- Title =============================== -->
+    <div class="transaction-title py-2 px-4">
+        <div class="row">
+            <div class="col-2">Username</div>
+            <div class="col-2">Has Phone</div>
+            <div class="col-2">Has Email</div>
+            <div class="col-2">Coin Accounts</div>
+            <div class="col-2">Bank Accounts</div>
+            <div class="col-2">Credit Cards</div>
+        </div>
+    </div>
+    <!-- Title End -->
+
+    <div >
+        @foreach (var user in this.Model.Users)
+        {
+            <div class="transaction-item px-4 py-3">
+                <a asp-area="Administration" asp-controller="Users" asp-action="Details" asp-route-id="@user.Id" class="text-reset text-decoration-none row align-items-center flex-row">
+                    <div class="col-2">
+                        <span class="d-block text-1 font-weight-300">@user.UserName</span>
+                    </div>
+                    <div class="col-2">
+                        <has-data class="text-5 d-block text-success mt-4 mb-3" exists="@user.HasPhoneAdded"></has-data>
+                    </div>
+                    <div class="col-2">
+                        <has-data class="text-5 d-block text-success mt-4 mb-3" exists="@user.HasEmailAdded"></has-data>
+                    </div>
+                    <div class="col-2 text-4">
+                        <span data-toggle="tooltip" title="Stored Secrets">@user.AccountKeysCount</span>
+                        <span>/</span>
+                        <span data-toggle="tooltip" title="Total Accounts">@user.AccountsCount</span>
+                    </div>
+                    <div class="col-2 text-4">
+                        <span data-toggle="tooltip" title="Total Bank Accounts">
+                            @user.BankAccountsCount
+                        </span>
+                    </div>
+                    <div class="col-2 text-4">
+                        <span data-toggle="tooltip" title="Total Credit Cards">
+                            @user.CreditCardsCount
+                        </span>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
