@@ -10,6 +10,10 @@
     {
         Task<Block> GetLastBlock();
 
-        public Task ReceiveBlock(Block notificationBlock, IEnumerable<CanceledTransaction> canceledTransactions);
+        Task<IEnumerable<T>> GetLatestBlocks<T>();
+
+        Task ReceiveBlock(Block notificationBlock, IEnumerable<CanceledTransaction> canceledTransactions);
+
+        Task<(int Total, IEnumerable<T> Blocks)> GetBlocks<T>(int page, int currentPageSize);
     }
 }

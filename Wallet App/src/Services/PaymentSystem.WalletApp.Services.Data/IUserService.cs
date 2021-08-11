@@ -21,6 +21,8 @@
 
         Task<IEnumerable<T>> GetLatestRegisteredUsers<T>();
 
+        Task<(int Total, IEnumerable<T> Users)> GetUsers<T>(int page, int pageSize);
+
         Task<bool> SendCoins(string senderAddress, string recipientAddress, double amount, string secret, string userId);
     }
 }

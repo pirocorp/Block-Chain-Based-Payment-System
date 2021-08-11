@@ -9,7 +9,7 @@
         this.Model.HasCardAdded,
     };
 
-    var completeness = (completenessFactors.Count() / (double) completenessFactors.Count(f => f)) * 100;
+    var completeness = (completenessFactors.Count(f => f)) / (double)completenessFactors.Count() * 100;
 }
 
 <!-- Middle Panel ============================================= -->

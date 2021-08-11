@@ -9,6 +9,7 @@
 
     using PaymentSystem.Common.Data.Models;
     using PaymentSystem.Common.Hubs.Models;
+    using PaymentSystem.Common.Mapping;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data;
@@ -16,31 +17,40 @@
     using PaymentSystem.WalletApp.Web.Infrastructure;
     using PaymentSystem.WalletApp.Web.Infrastructure.Options;
 
+    using static Web.Infrastructure.WebConstants;
+
     public class BlockService : IBlockService
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly IBlockChainGrpcService blockChainGrpcService;
-        private readonly IActivityService activityService;
         private readonly IAccountService accountService;
+        private readonly IActivityService activityService;
+        private readonly IBlockChainGrpcService blockChainGrpcService;
         private readonly IOptions<WalletProviderOptions> walletProviderOptions;
 
         public BlockService(
             ApplicationDbContext dbContext,
-            IBlockChainGrpcService blockChainGrpcService,
-            IActivityService activityService,
             IAccountService accountService,
+            IActivityService activityService,
+            IBlockChainGrpcService blockChainGrpcService,
             IOptions<WalletProviderOptions> walletProviderOptions)
         {
             this.dbContext = dbContext;
-            this.blockChainGrpcService = blockChainGrpcService;
-            this.activityService = activityService;
             this.accountService = accountService;
+            this.activityService = activityService;
+            this.blockChainGrpcService = blockChainGrpcService;
             this.walletProviderOptions = walletProviderOptions;
         }
 
         public async Task<Block> GetLastBlock() => await this.dbContext.Blocks
             .OrderByDescending(b => b.Height)
             .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<T>> GetLatestBlocks<T>()
+            => await this.dbContext.Blocks
+                .OrderByDescending(b => b.Height)
+                .Take(DefaultBlocksResultPageSize)
+                .To<T>()
+                .ToListAsync();
 
         public async Task ReceiveBlock(Block notificationBlock, IEnumerable<CanceledTransaction> canceledTransactions)
         {
@@ -63,6 +73,20 @@
             // Process current last block.
             await this.ProcessBlock(notificationBlock);
             await this.ProcessCanceledTransactions(canceledTransactions);
+        }
+
+        public async Task<(int Total, IEnumerable<T> Blocks)> GetBlocks<T>(int page, int pageSize)
+        {
+            var total = await this.dbContext.Blocks.CountAsync();
+
+            var blocks = await this.dbContext.Blocks
+                .OrderByDescending(b => b.Height)
+                .To<T>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (total, blocks);
         }
 
         private async Task GetMissingBlocks(long start, long end)

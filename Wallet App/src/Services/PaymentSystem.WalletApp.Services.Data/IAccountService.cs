@@ -22,6 +22,8 @@
 
         Task<IEnumerable<T>> GetLatestAccounts<T>();
 
+        Task<(int Total, IEnumerable<T> Accounts)> GetAccounts<T>(int page, int pageSize);
+
         Task<IEnumerable<T>> GetUserAccounts<T>(string userId);
 
         Task<AccountCreationResponse> Create(string userId);

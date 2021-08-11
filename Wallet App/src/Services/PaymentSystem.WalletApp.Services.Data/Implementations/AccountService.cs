@@ -57,6 +57,20 @@
                 .Take(DefaultAccountsResultPageSize)
                 .ToListAsync();
 
+        public async Task<(int Total, IEnumerable<T> Accounts)> GetAccounts<T>(int page, int pageSize)
+        {
+            var total = await this.dbContext.Accounts.CountAsync();
+
+            var accounts = await this.dbContext.Accounts
+                .OrderBy(a => a.Address)
+                .To<T>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (total, accounts);
+        }
+
         public async Task<IEnumerable<T>> GetUserAccounts<T>(string userId)
             => await this.dbContext.Accounts
                 .Where(a => a.UserId == userId)

@@ -45,7 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Administration\Views\Blocks\" />
     <Folder Include="Areas\Administration\Views\Transactions\" />
   </ItemGroup>
 </Project>

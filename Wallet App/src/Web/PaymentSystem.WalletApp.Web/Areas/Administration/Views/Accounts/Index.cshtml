@@ -1,0 +1,27 @@
+﻿@using PaymentSystem.WalletApp.Web.ViewModels.Administration.Accounts
+@model PaymentSystem.WalletApp.Web.ViewModels.Administration.Accounts.AccountIndexAdminViewModel
+
+@{
+    Layout = "/Areas/Administration/Views/_AdminLayout.cshtml";
+    this.ViewData["Title"] = "Admin Accounts";
+}
+
+<div class="container pb-4">
+    <partial name="/Areas/Administration/Views/Accounts/AccountsListingAdminPartial.cshtml"
+             model="@(new AccountListingAdminPartialModel() {
+                        Title = "Accounts",
+                        Accounts = this.Model.Accounts
+                    })" />
+
+    <pagination class="pagination justify-content-center mt-4 mb-0"
+                active-page-class="active"
+                disabled-page-class="disabled"
+                current-page="@this.Model.CurrentPage"
+                total-pages="@this.Model.TotalPages"
+                asp-area=""
+                boundary="3"
+                page-item-class="page-item"
+                page-link-class="page-link"
+                empty-link-class="page-item d-flex align-content-center flex-wrap text-muted text-5 mx-1">
+    </pagination>
+</div>

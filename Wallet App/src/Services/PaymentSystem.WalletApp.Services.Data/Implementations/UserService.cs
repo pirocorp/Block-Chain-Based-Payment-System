@@ -95,6 +95,20 @@
                 .Take(DefaultUsersResultPageSize)
                 .ToListAsync();
 
+        public async Task<(int Total, IEnumerable<T> Users)> GetUsers<T>(int page, int pageSize)
+        {
+            var count = await this.dbContext.Users.CountAsync();
+
+            var users = await this.dbContext.Users
+                .OrderBy(u => u.UserName)
+                .To<T>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (count, users);
+        }
+
         public async Task<bool> SendCoins(string senderAddress, string recipientAddress, double amount, string secret, string userId)
         {
             if (string.IsNullOrWhiteSpace(secret))

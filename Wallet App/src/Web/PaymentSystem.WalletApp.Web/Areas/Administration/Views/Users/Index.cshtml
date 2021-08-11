@@ -1,0 +1,27 @@
+﻿@using PaymentSystem.WalletApp.Web.ViewModels.Administration.Users
+@model PaymentSystem.WalletApp.Web.ViewModels.Administration.Users.UsersIndexAdminViewModel
+
+@{
+    Layout = "/Areas/Administration/Views/_AdminLayout.cshtml";
+    this.ViewData["Title"] = "Admin Users";
+}
+
+<div class="container pb-4">
+    <partial name="/Areas/Administration/Views/Users/UsersListingAdminPartial.cshtml"
+             model="@(new UsersListingAdminPartialModel {
+                        Title = "Users",
+                        Users = this.Model.Users
+                    })" />
+
+    <pagination class="pagination justify-content-center mt-4 mb-0"
+                active-page-class="active"
+                disabled-page-class="disabled"
+                current-page="@this.Model.CurrentPage"
+                total-pages="@this.Model.TotalPages"
+                asp-area=""
+                boundary="3"
+                page-item-class="page-item"
+                page-link-class="page-link"
+                empty-link-class="page-item d-flex align-content-center flex-wrap text-muted text-5 mx-1">
+    </pagination>
+</div>

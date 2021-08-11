@@ -20,6 +20,8 @@
 
         public const int DefaultAccountsResultPageSize = 10;
 
+        public const int DefaultBlocksResultPageSize = 10;
+
         public static class DepositConfirmInputModel
         {
             public const int PaymentMethodMinLength = 30;

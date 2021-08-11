@@ -1,23 +1,34 @@
 ﻿@using PaymentSystem.WalletApp.Web.ViewModels.Administration.Users
 @using PaymentSystem.WalletApp.Web.ViewModels.Administration.Accounts
+@using PaymentSystem.WalletApp.Web.ViewModels.Administration.Blocks
 @model PaymentSystem.WalletApp.Web.ViewModels.Administration.Dashboard.AdminDashboardIndexViewModel
 @{
     Layout = "/Areas/Administration/Views/_AdminLayout.cshtml";
     this.ViewData["Title"] = "Admin Dashboard";
 }
 
-<partial 
-    name="/Areas/Administration/Views/Users/UsersListingAdminPartial.cshtml" 
-    model="@(new UsersListingAdminPartialModel {
-               Title = "Latest Registered Users", 
-               Users = this.Model.Users
-           })" 
-/>
+<div class="container">
+    <partial 
+        name="/Areas/Administration/Views/Users/UsersListingAdminPartial.cshtml" 
+        model="@(new UsersListingAdminPartialModel {
+                   Title = "Latest Registered Users", 
+                   Users = this.Model.Users
+               })" 
+    />
 
-<partial
-    name="/Areas/Administration/Views/Accounts/AccountListingAdminPartial.cshtml"
-    model="@(new AccountListingAdminPartialModel{
-               Title = "Latest Created Coin Accounts",
-               Accounts = this.Model.Accounts
-           })"
-/>
+    <partial
+        name="/Areas/Administration/Views/Accounts/AccountsListingAdminPartial.cshtml"
+        model="@(new AccountListingAdminPartialModel{
+                   Title = "Latest Created Coin Accounts",
+                   Accounts = this.Model.Accounts
+               })"
+    />
+
+    <partial
+        name="/Areas/Administration/Views/Blocks/BlocksListingAdminPartial.cshtml"
+        model="@(new BlockListingAdminPartialModel{
+                   Title = "Latest Mined Blocks",
+                   Blocks = this.Model.Blocks
+               })"
+    />
+</div>
