@@ -3,6 +3,15 @@
 # Block Chain Based Payment System
 Payment system using block chain technology for clearing (settling) the transactions.
 
+## Getting Started
+
+In order to start the project please use Multiple startup projects:
+- PaymentSystem.BlockChain.Web
+- PaymentSystem.WalletApp.Web
+
+Databases conection strings can be found in appsettings.json for every startup project.
+
+
 ## Project Architecture
 ![Project Architecture][Project_Architecture]
 
@@ -430,5 +439,4 @@ public interface IBlockNotificationServer
 
 
 #### TODOs
-- Notification must be signed.
 - gRPC method for gething part of block chain.
