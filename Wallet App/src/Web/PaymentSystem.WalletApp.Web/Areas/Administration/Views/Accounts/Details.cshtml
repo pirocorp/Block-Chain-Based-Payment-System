@@ -41,7 +41,7 @@
                         <h5>Username</h5>
                     </div>
                     <div class="text">
-                        <span>@this.Model.Account.UserUserName</span>
+                        <a class="text-reset text-decoration-none" asp-area="Administration" asp-controller="Users" asp-action="Details" asp-route-id="@this.Model.Account.UserId">@this.Model.Account.UserUserName</a>
                         <span data-toggle="tooltip" title="@(this.Model.Account.UserIsDeleted ? "User is deleted" : "Active user")">
                             <has-data exists="@(!this.Model.Account.UserIsDeleted)"></has-data>
                         </span>

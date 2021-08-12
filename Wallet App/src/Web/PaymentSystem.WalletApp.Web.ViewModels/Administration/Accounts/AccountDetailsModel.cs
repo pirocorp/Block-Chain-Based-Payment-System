@@ -21,8 +21,6 @@
 
         public string UserLastName { get; set; }
 
-        public DateTime UserDateOfBirth { get; set; }
-
         public string UserAddressStreet { get; set; }
 
         public string UserAddressCity { get; set; }

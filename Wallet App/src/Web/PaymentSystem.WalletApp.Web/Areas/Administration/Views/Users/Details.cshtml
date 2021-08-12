@@ -1,0 +1,119 @@
+﻿@using PaymentSystem.WalletApp.Web.ViewModels.Administration.Accounts
+@model PaymentSystem.WalletApp.Web.ViewModels.Administration.Users.UserDetailsAdminModel
+
+@{
+    Layout = "/Areas/Administration/Views/_AdminLayout.cshtml";
+    this.ViewData["Title"] = "Admin User Details";
+}
+
+@section Styles
+{
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/block-explorer.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/block-explorer.min.css" asp-append-version="true" />
+    </environment>
+}
+
+<section class="block-explorer-features section">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="center-heading">
+                    <h2 class="section-title">User Information</h2>
+                </div>
+            </div>
+            <div class="offset-lg-3 col-lg-6">
+                <div class="center-text">
+                    <p>User information plus user accounts.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Username</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.UserName</span>
+                        <span data-toggle="tooltip" title="@(this.Model.IsDeleted ? "User is deleted" : "Active user")">
+                            <has-data exists="@(!this.Model.IsDeleted)"></has-data>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Full Name</h5>
+                    </div>
+                    <div class="text">
+                        <span>@(this.Model.FirstName + " " + this.Model.LastName)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Email</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Email</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Phone</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.PhoneNumber</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Address</h5>
+                    </div>
+                    <div class="text">
+                        <span>
+                            @((string.IsNullOrWhiteSpace(this.Model.AddressStreet)
+                                ? string.Empty
+                                : $"{this.Model.AddressStreet}, ")
+                              + (string.IsNullOrWhiteSpace(this.Model.AddressZip)
+                                  ? $"{this.Model.AddressCity}, "
+                                  : $"{this.Model.AddressZip} {this.Model.AddressCity}, ")
+                              + (string.IsNullOrWhiteSpace(this.Model.AddressStateProvince)
+                                  ? string.Empty
+                                  : $"{this.Model.AddressStateProvince}, ")
+                              + this.Model.AddressCountry)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <partial name="/Areas/Administration/Views/Accounts/AccountsListingAdminPartial.cshtml"
+                 model="@(new AccountListingAdminPartialModel{
+                       Title = "User's Coin Accounts",
+                       Accounts = this.Model.Accounts
+                   })" />
+
+    </div>
+</section>

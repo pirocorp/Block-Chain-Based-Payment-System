@@ -20,15 +20,15 @@
             <div class="transaction-item px-4 py-3">
                 <a asp-area="Administration" asp-controller="Accounts" asp-action="Details" asp-route-address="@account.Address" class="text-reset text-decoration-none row align-items-center flex-row">
                     <div class="col-2">
-                        <span class="text-2">@account.User</span>
+                        <span>@account.User</span>
                     </div>
                     <div class="col-7">
-                        <span class="text-4">
+                        <span>
                             @account.FriendlyAddress
                         </span>
                     </div>
                     <div class="col-2">
-                        <span class="text-4">
+                        <span data-toggle="tooltip" title="@account.Balance">
                             @account.Balance.ToString("F2") P
                         </span>
                     </div>
