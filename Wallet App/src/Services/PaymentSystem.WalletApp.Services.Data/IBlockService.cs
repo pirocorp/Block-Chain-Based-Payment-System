@@ -14,6 +14,8 @@
 
         Task ReceiveBlock(Block notificationBlock, IEnumerable<CanceledTransaction> canceledTransactions);
 
+        Task<T> GetBlock<T>(string hash);
+
         Task<(int Total, IEnumerable<T> Blocks)> GetBlocks<T>(int page, int currentPageSize);
     }
 }

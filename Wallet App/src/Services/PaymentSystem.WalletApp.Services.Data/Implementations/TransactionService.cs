@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
+    using PaymentSystem.Common.Data.Models;
     using PaymentSystem.Common.GrpcService;
     using PaymentSystem.Common.Mapping;
     using PaymentSystem.Common.Transactions;
@@ -70,6 +71,49 @@
             var hash = sendRequest.TransactionId;
 
             return (status, hash);
+        }
+
+        public async Task<(int Total, IEnumerable<T> Transactions)> GetBlockTransactions<T>(string blockHash, int page, int pageSize)
+        {
+            var query = this.dbContext.Transactions
+                .Where(t => t.BlockHash == blockHash)
+                .OrderBy(t => t.TimeStamp);
+
+            return await GetTransactionsByPages<T>(query, page, pageSize);
+        }
+
+        public async Task<(int Total, IEnumerable<T> Transactions)> GetAccountTransactions<T>(string address, int page, int pageSize)
+        {
+            var query = this.dbContext.Transactions
+                .Where(t => t.Recipient == address || t.Sender == address)
+                .OrderByDescending(t => t.TimeStamp);
+
+            return await GetTransactionsByPages<T>(query, page, pageSize);
+        }
+
+        public async Task<(double TotalInflow, double TotalOutflow)> GetAccountMoneyFlow(string address)
+        {
+            var inflow = await this.dbContext.Transactions
+                .Where(t => t.Recipient == address)
+                .SumAsync(t => t.Amount);
+
+            var outflow = await this.dbContext.Transactions
+                .Where(t => t.Sender == address)
+                .SumAsync(t => t.Amount + t.Fee);
+
+            return (inflow, outflow);
+        }
+
+        private static async Task<(int Total, IEnumerable<T>)> GetTransactionsByPages<T>(IQueryable<Transaction> query, int page, int pageSize)
+        {
+            var total = await query.CountAsync();
+            var transactions = await query
+                .To<T>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (total, transactions);
         }
 
         private static SendRequest CreateTransactionRequest(

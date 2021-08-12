@@ -75,6 +75,12 @@
             await this.ProcessCanceledTransactions(canceledTransactions);
         }
 
+        public async Task<T> GetBlock<T>(string hash)
+            => await this.dbContext.Blocks
+                .Where(b => b.Hash == hash)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
         public async Task<(int Total, IEnumerable<T> Blocks)> GetBlocks<T>(int page, int pageSize)
         {
             var total = await this.dbContext.Blocks.CountAsync();

@@ -1,0 +1,66 @@
+﻿@using System.Globalization
+@model PaymentSystem.WalletApp.Web.ViewModels.Administration.Transactions.TransactionsListingAdminPartialViewModel
+
+<div class="bg-light shadow-sm rounded py-4 mb-4">
+    <h3 class="text-5 font-weight-400 d-flex align-items-center px-4 mb-3">@Model.Title</h3>
+
+    <!-- Title =============================== -->
+    <div class="transaction-title py-2 px-4">
+        <div class="row">
+            <div class="col-xl-1 text-center">Date</div>
+            <div class="col-xl-2 text-center">Hash</div>
+            <div class="col-xl-2 text-center">Sender</div>
+            <div class="col-xl-2 text-center">Recipient</div>
+            <div class="col-xl-2 text-center">Block</div>
+            <div class="col-xl-2 text-center">Amount</div>
+            <div class="col-xl-1 text-center">Fee</div>
+        </div>
+    </div>
+    <!-- Title End -->
+
+    <div>
+        @foreach (var transaction in this.Model.Transactions)
+        {
+            <div class="row transaction-item px-4 py-3">
+                <div class="col-xl-1 text-center">
+                    <span class="d-block text-4 font-weight-300">@transaction.Date.Day</span> 
+                    <span class="d-block text-1 font-weight-300 text-uppercase">@transaction.Date.ToString("MMM", CultureInfo.InvariantCulture)</span>
+                </div>
+                <div class="col-xl-2 text-center">
+                    <span data-toggle="tooltip" title="@transaction.Hash">
+                        @transaction.Hash[..12]
+                    </span>
+                </div>
+                <div class="col-xl-2 text-center">
+                    <span data-toggle="tooltip" title="@transaction.Sender">
+                        <a class="text-reset text-decoration-none" asp-area="Administration" asp-controller="Accounts" asp-action="Details" asp-route-address="@transaction.Sender">
+                            @(transaction.Sender.Length > 12 ? transaction.Sender[..12] : transaction.Sender)
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xl-2 text-center">
+                    <span data-toggle="tooltip" title="@transaction.Recipient">
+                        <a class="text-reset text-decoration-none" asp-area="Administration" asp-controller="Accounts" asp-action="Details" asp-route-address="@transaction.Recipient">
+                            @(transaction.Recipient.Length > 12 ? transaction.Recipient[..12] : transaction.Recipient)
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xl-2 text-center">
+                    <a class="text-reset text-decoration-none" asp-area="Administration" asp-controller="Blocks" asp-action="Details" asp-route-hash="@transaction.BlockHash">
+                        @(transaction.BlockHash.Length > 12 ? transaction.BlockHash[..12] : transaction.BlockHash)
+                    </a>
+                </div>
+                <div class="col-xl-2 text-center">
+                    <span data-toggle="tooltip" title="@transaction.Amount">
+                        @transaction.Amount.ToString("F2")
+                    </span>
+                </div>
+                <div class="col-xl-1 text-center">
+                    <span data-toggle="tooltip" title="@transaction.Fee">
+                        @transaction.Fee.ToString("F2")
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+</div>

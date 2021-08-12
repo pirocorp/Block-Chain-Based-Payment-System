@@ -1,0 +1,158 @@
+﻿@using System.Globalization
+@using PaymentSystem.WalletApp.Web.ViewModels.Administration.Transactions
+@model PaymentSystem.WalletApp.Web.ViewModels.Administration.Blocks.BlockDetailsAdminViewModel
+
+@{
+    Layout = "/Areas/Administration/Views/_AdminLayout.cshtml";
+    this.ViewData["Title"] = "Admin Block Details";
+}
+
+@section Styles
+{
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/block-explorer.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/block-explorer.min.css" asp-append-version="true" />
+    </environment>
+}
+
+<section class="block-explorer-features section">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="center-heading">
+                    <h2 class="section-title">Block Information</h2>
+                </div>
+            </div>
+            <div class="offset-lg-3 col-lg-6">
+                <div class="center-text">
+                    <p>Block data plus transactions data for the given block.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Block Hash</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Block.Hash</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Previous Block Hash</h5>
+                    </div>
+                    <div class="text">
+                        <span>
+                            <a asp-area="Administration" asp-controller="Blocks" asp-action="Details" asp-route-hash="@this.Model.Block.BlockHeaderPreviousHash">@this.Model.Block.BlockHeaderPreviousHash</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Block Height</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Block.Height</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Block Version</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Block.BlockHeaderVersion</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Block Difficulty</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Block.BlockHeaderDifficulty</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Block Difficulty</h5>
+                    </div>
+                    <div class="text">
+                        <span>@(this.Model.Block.Date.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture))</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Block Validator</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Block.BlockHeaderValidator</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Block Merkle Root</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Block.BlockHeaderMerkleRoot</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <partial
+            name="/Areas/Administration/Views/Transactions/TransactionsListingAdminPartial.cshtml"
+            model="@(new TransactionsListingAdminPartialViewModel() 
+                   {
+                       Title = "Block Transactions", 
+                       Transactions = this.Model.Transactions
+                   })"
+        />
+
+        <pagination class="pagination justify-content-center mt-4 mb-0"
+                    active-page-class="active"
+                    disabled-page-class="disabled"
+                    current-page="@this.Model.CurrentPage"
+                    total-pages="@this.Model.TotalPages"
+                    asp-area=""
+                    boundary="3"
+                    page-item-class="page-item"
+                    page-link-class="page-link"
+                    empty-link-class="page-item d-flex align-content-center flex-wrap text-muted text-5 mx-1"
+                    asp-route-hash="@this.Model.Block.Hash"></pagination>
+    </div>
+</section>

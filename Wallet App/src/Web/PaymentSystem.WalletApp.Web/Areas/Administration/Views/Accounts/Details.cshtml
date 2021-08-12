@@ -1,0 +1,205 @@
+﻿@using PaymentSystem.WalletApp.Web.ViewModels.Administration.Transactions
+@model PaymentSystem.WalletApp.Web.ViewModels.Administration.Accounts.AccountDetailsAdminViewModel
+
+@{
+    Layout = "/Areas/Administration/Views/_AdminLayout.cshtml";
+    this.ViewData["Title"] = "Admin Account Details";
+}
+
+@section Styles
+{
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/block-explorer.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/block-explorer.min.css" asp-append-version="true" />
+    </environment>
+}
+
+<section class="block-explorer-features section">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="center-heading">
+                    <h2 class="section-title">Account Information</h2>
+                </div>
+            </div>
+            <div class="offset-lg-3 col-lg-6">
+                <div class="center-text">
+                    <p>Account information plus transactions data for the given address. If there is no account information, then the account is external for this system.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+
+            <div class="col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Username</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Account.UserUserName</span>
+                        <span data-toggle="tooltip" title="@(this.Model.Account.UserIsDeleted ? "User is deleted" : "Active user")">
+                            <has-data exists="@(!this.Model.Account.UserIsDeleted)"></has-data>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Full Name</h5>
+                    </div>
+                    <div class="text">
+                        <span>@(this.Model.Account.UserFirstName + " " + this.Model.Account.UserLastName)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Email</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Account.UserEmail</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Phone</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Account.UserPhoneNumber</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Address</h5>
+                    </div>
+                    <div class="text">
+                        <span>
+                            @((string.IsNullOrWhiteSpace(this.Model.Account.UserAddressStreet)
+                                ? string.Empty
+                                : $"{this.Model.Account.UserAddressStreet}, ")
+                              + (string.IsNullOrWhiteSpace(this.Model.Account.UserAddressZip)
+                                  ? $"{this.Model.Account.UserAddressCity}, "
+                                  : $"{this.Model.Account.UserAddressZip} {this.Model.Account.UserAddressCity}, ")
+                              + (string.IsNullOrWhiteSpace(this.Model.Account.UserAddressStateProvince)
+                                  ? string.Empty
+                                  : $"{this.Model.Account.UserAddressStateProvince}, ")
+                              + this.Model.Account.UserAddressCountry)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Account Address</h5>
+                    </div>
+                    <div class="text">
+                        <span>@this.Model.Account.AccountAddress</span>
+                        <span data-toggle="tooltip" title="@(this.Model.Account.HasAccountKey ? "Has stored key" : "No stored key")">
+                            <has-data exists="@this.Model.Account.HasAccountKey"></has-data>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Balance</h5>
+                    </div>
+                    <div class="text">
+                        <span data-toggle="tooltip" title="@this.Model.Account.Balance">
+                            @this.Model.Account.Balance.ToString("F2")
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Blocked Balance</h5>
+                    </div>
+                    <div class="text" data-toggle="tooltip" title="@this.Model.Account.BlockedBalance">
+                        <span>
+                            @this.Model.Account.BlockedBalance.ToString("F2")
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Total Inflow</h5>
+                    </div>
+                    <div class="text" data-toggle="tooltip" title="@this.Model.Account.TotalInflow">
+                        <span>
+                            @this.Model.Account.TotalInflow.ToString("F2")
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="item">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <h5>Total Outflow</h5>
+                    </div>
+                    <div class="text" data-toggle="tooltip" title="@this.Model.Account.TotalOutflow">
+                        <span>
+                            @this.Model.Account.TotalOutflow.ToString("F2")
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <partial
+            name="/Areas/Administration/Views/Transactions/TransactionsListingAdminPartial.cshtml"
+            model="@(new TransactionsListingAdminPartialViewModel() 
+                   {
+                       Title = "Account Transactions", 
+                       Transactions = this.Model.Transactions
+                   })"
+        />
+            
+        <pagination class="pagination justify-content-center mt-4 mb-0"
+                    active-page-class="active"
+                    disabled-page-class="disabled"
+                    current-page="@this.Model.CurrentPage"
+                    total-pages="@this.Model.TotalPages"
+                    asp-area=""
+                    boundary="3"
+                    page-item-class="page-item"
+                    page-link-class="page-link"
+                    empty-link-class="page-item d-flex align-content-center flex-wrap text-muted text-5 mx-1"
+                    asp-route-address="@this.Model.Account.AccountAddress"></pagination>
+    </div>
+</section>
