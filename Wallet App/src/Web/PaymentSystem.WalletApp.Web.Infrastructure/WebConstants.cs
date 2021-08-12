@@ -51,6 +51,10 @@
             public const string CoinAccountErrorMessage = "Invalid Coin Account";
 
             public const string InsufficientFundsErrorMessage = "Insufficient Funds";
+
+            public const string MissingAccountKey = "Account Secret Is Required";
+
+            public const string UnSuccessfulOperation = "Something went wrong. Please try again later.";
         }
 
         public static class TransfersErrorMessages

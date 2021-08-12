@@ -30,6 +30,9 @@
             this.dbContext = dbContext;
         }
 
+        public async Task<bool> KeyExists(string address)
+            => await this.dbContext.AccountsKeys.AnyAsync(a => a.Address == address);
+
         public async Task StoreKeys(StoreAccountKeyServiceModel model, string userId)
         {
             var salt = this.saltService.GetSalt();

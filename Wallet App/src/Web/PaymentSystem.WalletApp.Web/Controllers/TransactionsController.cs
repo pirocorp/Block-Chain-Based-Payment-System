@@ -26,6 +26,7 @@
         private const string SendCoinTempData = "Send Coin Temp Data";
 
         private readonly IAccountService accountService;
+        private readonly IAccountsKeyService accountsKeyService;
         private readonly IMapper mapper;
         private readonly ITransactionService transactionService;
         private readonly UserManager<ApplicationUser> userManager;
@@ -33,12 +34,14 @@
 
         public TransactionsController(
             IAccountService accountService,
+            IAccountsKeyService accountsKeyService,
             IMapper mapper,
             ITransactionService transactionService,
             UserManager<ApplicationUser> userManager,
             IUserService userService)
         {
             this.accountService = accountService;
+            this.accountsKeyService = accountsKeyService;
             this.mapper = mapper;
             this.transactionService = transactionService;
             this.userManager = userManager;
@@ -120,12 +123,25 @@
                 this.ModelState.AddModelError(string.Empty, InsufficientFundsErrorMessage);
             }
 
+            if (string.IsNullOrWhiteSpace(model.Secret))
+            {
+                if (!(await this.accountsKeyService.KeyExists(model.CoinAccount)))
+                {
+                    this.ModelState.AddModelError(string.Empty, MissingAccountKey);
+                }
+            }
+
+            var success = await this.userService.SendCoins(model.CoinAccount, model.Recipient, model.Amount, model.Secret, userId);
+
+            if (!success)
+            {
+                this.ModelState.AddModelError(string.Empty, UnSuccessfulOperation);
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.RedirectToAction(nameof(this.SendCoins));
             }
-
-            await this.userService.SendCoins(model.CoinAccount, model.Recipient, model.Amount, model.Secret, userId);
 
             return this.RedirectToAction(nameof(this.SendCoinsSuccess));
         }

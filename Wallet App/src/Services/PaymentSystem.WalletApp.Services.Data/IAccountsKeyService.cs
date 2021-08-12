@@ -7,6 +7,8 @@
 
     public interface IAccountsKeyService
     {
+        Task<bool> KeyExists(string address);
+
         Task StoreKeys(StoreAccountKeyServiceModel model, string userId);
 
         Task<KeyData> GetKeyData(string address, string userId);
