@@ -9,7 +9,7 @@ In order to start the project please use Multiple startup projects:
 - PaymentSystem.BlockChain.Web
 - PaymentSystem.WalletApp.Web
 
-Databases conection strings can be found in appsettings.json for every startup project.
+Databases conection strings can be found in ```appsettings.json``` for every startup project.
 
 
 ## Project Architecture
