@@ -439,5 +439,4 @@ public interface IBlockNotificationServer
 
 
 #### TODOs
-- Notification must be signed.
 - gRPC method for gething part of block chain.
