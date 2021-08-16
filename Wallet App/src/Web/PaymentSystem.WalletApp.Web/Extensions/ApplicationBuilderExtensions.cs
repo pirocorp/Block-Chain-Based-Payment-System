@@ -25,7 +25,8 @@
 
         public static IApplicationBuilder UseBlockNotifications(this IApplicationBuilder builder)
         {
-            var signalRNotificationService = new BlockChainSignalRService(builder.ApplicationServices);
+            var signalRNotificationService =
+                (IBlockChainSignalRService)builder.ApplicationServices.GetService(typeof(IBlockChainSignalRService));
 
             signalRNotificationService
                 .Run()

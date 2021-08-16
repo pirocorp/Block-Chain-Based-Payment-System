@@ -46,8 +46,7 @@
         {
             if (hash is null)
             {
-                return this.RedirectToAction<AdministrationController, DashboardController>(
-                    nameof(DashboardController.Index));
+                return this.RedirectToAction<AdministrationController, DashboardController>(nameof(DashboardController.Index));
             }
 
             var currentPageSize = DefaultTransactionsResultPageSize;
@@ -56,8 +55,7 @@
 
             var (totalPages, transactions) = await this
                 .Pagination(
-                    async (p, c) => await this.transactionService
-                        .GetBlockTransactions<TransactionListingAdminModel>(hash, p, c),
+                    async (p, c) => await this.transactionService.GetBlockTransactions<TransactionListingAdminModel>(hash, p, c),
                     page,
                     currentPageSize);
 

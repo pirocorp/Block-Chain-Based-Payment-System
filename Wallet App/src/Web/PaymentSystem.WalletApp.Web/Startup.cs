@@ -1,6 +1,7 @@
 ﻿namespace PaymentSystem.WalletApp.Web
 {
     using System.Reflection;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -26,7 +27,6 @@
 
     public class Startup
     {
-        private const string MyCorsPolicy = "MyCors";
         private readonly IConfiguration configuration;
 
         public Startup(IConfiguration configuration)
@@ -49,10 +49,6 @@
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //services
-            //    .AddIdentity<ApplicationUser, ApplicationRole>(IdentityOptionsProvider.GetIdentityOptions)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-
             services.Configure<CookiePolicyOptions>(
                 options =>
                     {
@@ -68,22 +64,6 @@
                         })
                 .AddRazorRuntimeCompilation();
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy(
-            //        name: MyCorsPolicy,
-            //        builder =>
-            //        {
-            //            builder
-            //                .WithOrigins(
-            //                    "https://192.168.1.5",
-            //                    "https://loclahost")
-            //                .AllowAnyHeader()
-            //                .AllowAnyMethod()
-            //                .AllowCredentials();
-            //        });
-            //});
-
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -96,6 +76,7 @@
 
             // Additional Services
             services.AddTransient<IBlockChainGrpcService, BlockChainGrpcService>();
+            services.AddSingleton<IBlockChainSignalRService, BlockChainSignalRService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<ISaltService, SaltService>();
             services.AddTransient<ISecurelyEncryptDataService, SecurelyEncryptDataService>();
@@ -130,7 +111,6 @@
             app.UseCookiePolicy();
 
             app.UseRouting();
-            //app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

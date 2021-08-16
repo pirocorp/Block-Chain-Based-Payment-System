@@ -58,8 +58,6 @@
             var (totalTransactions, transactions) = await this.transactionService
                 .GetTransactionsForAddress<AccountsTransactionsListingModel>(address, page, DefaultTransactionsResultPageSize);
 
-            var user = await this.userManager.GetUserAsync(this.User);
-
             transactions = transactions.ToList();
 
             foreach (var transaction in transactions)

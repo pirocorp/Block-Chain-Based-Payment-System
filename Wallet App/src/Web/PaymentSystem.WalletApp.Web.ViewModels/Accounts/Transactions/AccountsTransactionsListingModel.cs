@@ -27,7 +27,7 @@
         public string CurrentAccountAddress { get; set; }
 
         [IgnoreMap]
-        public DateTime Date => new DateTime(this.TimeStamp);
+        public DateTime Date => new (this.TimeStamp);
 
         [IgnoreMap]
         public string CounterpartyAddress

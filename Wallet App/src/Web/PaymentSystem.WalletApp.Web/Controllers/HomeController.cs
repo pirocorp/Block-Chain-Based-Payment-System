@@ -29,7 +29,7 @@
                 var controller = ControllerHelpers.GetControllerName<UsersController>();
                 var area = ControllerHelpers.GetAreaName(typeof(ProfileController));
 
-                return this.RedirectToAction(nameof(UsersController.Dashboard), controller, new {area = area });
+                return this.RedirectToAction(nameof(UsersController.Dashboard), controller, new { area });
             }
 
             var model = new IndexModel

@@ -1,8 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
+
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -13,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.16.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.9" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
@@ -22,16 +25,19 @@
     </PackageReference>
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\PaymentSystem.WalletApp.Data\PaymentSystem.WalletApp.Data.csproj" />
     <ProjectReference Include="..\..\Services\PaymentSystem.WalletApp.Services.Data\PaymentSystem.WalletApp.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\PaymentSystem.WalletApp.Services\PaymentSystem.WalletApp.Services.csproj" />
     <ProjectReference Include="..\..\Web\PaymentSystem.WalletApp.Web.ViewModels\PaymentSystem.WalletApp.Web.ViewModels.csproj" />
-    <ProjectReference Include="..\PaymentSystem.WalletApp.Tests\PaymentSystem.WalletApp.Tests.csproj" />
   </ItemGroup>
 
 </Project>

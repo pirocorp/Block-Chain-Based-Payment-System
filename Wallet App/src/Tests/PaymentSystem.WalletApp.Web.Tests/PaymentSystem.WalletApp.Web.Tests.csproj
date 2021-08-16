@@ -17,6 +17,10 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="Selenium.WebDriver" Version="4.0.0-alpha07" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="92.0.4515.4300" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
@@ -26,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Web\PaymentSystem.WalletApp.Web\PaymentSystem.WalletApp.Web.csproj" />
+    <ProjectReference Include="..\PaymentSystem.WalletApp.Tests\PaymentSystem.WalletApp.Tests.csproj" />
   </ItemGroup>
 
 </Project>
