@@ -91,14 +91,14 @@
 
             this.TempData[SendCoinTempData] = JsonConvert.SerializeObject(model);
 
-            return this.RedirectToAction<TransactionsController>(nameof(this.SendCoinsConfirm));
+            return this.RedirectToAction(nameof(this.SendCoinsConfirm));
         }
 
         public IActionResult SendCoinsConfirm()
         {
             if (!this.TempData.ContainsKey(SendCoinTempData))
             {
-                return this.Redirect($"/{this.ControllerName}/{nameof(this.SendCoins)}");
+                return this.RedirectToAction<TransactionsController>(nameof(this.SendCoins));
             }
 
             var serializedObject = (string)this.TempData[SendCoinTempData];

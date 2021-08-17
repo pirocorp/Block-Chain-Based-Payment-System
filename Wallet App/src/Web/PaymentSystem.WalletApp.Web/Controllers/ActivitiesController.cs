@@ -45,7 +45,7 @@
                 Activities = activities,
                 DateRange = dateRange,
                 CurrentPage = page,
-                TotalPages = (int)Math.Ceiling(total / (double) WebConstants.DefaultActivitiesResultPageSize),
+                TotalPages = (int)Math.Ceiling(total / (double)WebConstants.DefaultActivitiesResultPageSize),
             };
 
             return this.View(model);

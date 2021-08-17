@@ -7,6 +7,7 @@
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+
     using PaymentSystem.Common.Data.Models;
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
@@ -28,6 +29,9 @@
         private readonly IAccountService accountService;
         private readonly ITransactionService transactionService;
 
+        private readonly string userId;
+        private readonly string userName;
+
         public AccountsControllerTests()
         {
             MapperHelpers.Load();
@@ -36,43 +40,36 @@
             this.dbContext = ApplicationDbContextMocks.Instance;
             this.accountService = new AccountService(this.dbContext, BlockChainGrpcServiceMock.Instance);
             this.transactionService = new TransactionService(this.dbContext, BlockChainGrpcServiceMock.Instance);
+
+            this.userId = Guid.NewGuid().ToString();
+            this.userName = "piroman";
         }
 
         [Fact]
         public async Task IndexReturnsCorrectUserAccounts()
         {
-            var userId = Guid.NewGuid().ToString();
-            var userName = "piroman";
+            var accountsCount = 5;
 
+            // Add users accounts
             this.dbContext.Users.Add(new ApplicationUser()
             {
-                Id = userId,
-                UserName = userName,
-                Accounts = new List<Account>()
-                {
-                    new Account()
+                Id = this.userId,
+                UserName = this.userName,
+                Accounts = Enumerable.Range(0, accountsCount)
+                    .Select(i => new Account()
                     {
                         Address = Guid.NewGuid().ToString(),
-                        UserId = userId,
-                    },
-                    new Account()
-                    {
-                        Address = Guid.NewGuid().ToString(),
-                        UserId = userId,
-                    },
-                    new Account()
-                    {
-                        Address = Guid.NewGuid().ToString(),
-                        UserId = userId,
-                    },
-                },
+                        UserId = this.userId,
+                    }).ToList(),
             });
 
-            this.dbContext.Accounts.Add(new Account()
-            {
-                Address = Guid.NewGuid().ToString(),
-                UserId = "Unique user",
-            });
+            // Add random accounts
+            this.dbContext.Accounts.AddRange(Enumerable.Range(0, accountsCount + 3)
+                    .Select(i => new Account()
+                    {
+                        Address = Guid.NewGuid().ToString(),
+                        UserId = $"Random user account {i}",
+                    }).ToList());
 
             await this.dbContext.SaveChangesAsync();
 
@@ -81,7 +78,7 @@
                 this.accountService,
                 this.transactionService)
             {
-                ControllerContext = ControllerContextMocks.LoggedInUser(userId, userName),
+                ControllerContext = ControllerContextMocks.LoggedInUser(this.userId, this.userName),
             };
 
             var result = await accountsController.Index();
@@ -89,19 +86,16 @@
             Assert.NotNull(result);
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<AccountsIndexVewModel>(viewResult.Model);
-            Assert.Equal(3, model.Accounts.Count());
+            Assert.Equal(accountsCount, model.Accounts.Count());
         }
 
         [Fact]
         public async Task TransactionForAddressIsMappedCorrectly()
         {
-            var userId = Guid.NewGuid().ToString();
-            var userName = "piroman";
-
             this.dbContext.Users.Add(new ApplicationUser()
             {
-                UserName = userName,
-                Id = userId,
+                UserName = this.userName,
+                Id = this.userId,
             });
 
             var address = Guid.NewGuid().ToString();
@@ -109,7 +103,7 @@
             this.dbContext.Accounts.Add(new Account()
             {
                 Address = address,
-                UserId = userId,
+                UserId = this.userId,
             });
 
             var dateTime = new DateTime(2021, 8, 16);
@@ -133,7 +127,7 @@
                 this.accountService,
                 this.transactionService)
             {
-                ControllerContext = ControllerContextMocks.LoggedInUser(userId, userName),
+                ControllerContext = ControllerContextMocks.LoggedInUser(this.userId, this.userName),
             };
 
             var result = await accountsController.Transactions(address);
@@ -170,13 +164,10 @@
         [InlineData(100, 2)]
         public async Task TransactionsReturnsCorrectTransactionsForAddress(int count, int page)
         {
-            var userId = Guid.NewGuid().ToString();
-            var userName = "piroman";
-
             this.dbContext.Users.Add(new ApplicationUser()
             {
-                UserName = userName,
-                Id = userId,
+                UserName = this.userName,
+                Id = this.userId,
             });
 
             var address = Guid.NewGuid().ToString();
@@ -184,36 +175,24 @@
             this.dbContext.Accounts.Add(new Account()
             {
                 Address = address,
-                UserId = userId,
+                UserId = this.userId,
             });
 
-            for (var i = 0; i < count; i++)
-            {
-                Transaction transaction = null;
-
-                if (i % 2 == 0)
+            // Add address's transactions.
+            await this.dbContext.AddRangeAsync(Enumerable.Range(0, count)
+                .Select(i => new Transaction()
                 {
-                    transaction = new Transaction()
-                    {
-                        Recipient = address,
-                    };
-                }
-                else
-                {
-                    transaction = new Transaction()
-                    {
-                        Sender = address,
-                    };
-                }
+                    Recipient = i % 2 == 0 ? address : null,
+                    Sender = i % 2 != 0 ? address : null,
+                    Hash = Guid.NewGuid().ToString(),
+                }));
 
-                transaction.Hash = Guid.NewGuid().ToString();
-
-                this.dbContext.Transactions.Add(transaction);
-                this.dbContext.Transactions.Add(new Transaction()
+            // Add random transactions.
+            await this.dbContext.AddRangeAsync(Enumerable.Range(0, count)
+                .Select(i => new Transaction()
                 {
                     Hash = Guid.NewGuid().ToString(),
-                });
-            }
+                }));
 
             await this.dbContext.SaveChangesAsync();
 
@@ -222,7 +201,7 @@
                 this.accountService,
                 this.transactionService)
             {
-                ControllerContext = ControllerContextMocks.LoggedInUser(userId, userName),
+                ControllerContext = ControllerContextMocks.LoggedInUser(this.userId, this.userName),
             };
 
             var result = await accountsController.Transactions(address, page);
@@ -245,13 +224,10 @@
         [Fact]
         public async Task TransactionsReturnsRedirectIfAddressIsNotBelongingToUser()
         {
-            var userId = Guid.NewGuid().ToString();
-            var userName = "piroman";
-
             this.dbContext.Users.Add(new ApplicationUser()
             {
-                UserName = userName,
-                Id = userId,
+                UserName = this.userName,
+                Id = this.userId,
             });
 
             var address = Guid.NewGuid().ToString();
@@ -267,7 +243,7 @@
                 this.accountService,
                 this.transactionService)
             {
-                ControllerContext = ControllerContextMocks.LoggedInUser(userId, userName),
+                ControllerContext = ControllerContextMocks.LoggedInUser(this.userId, this.userName),
             };
 
             var result = await accountsController.Transactions(address);

@@ -1,5 +1,6 @@
 ﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -115,6 +116,11 @@
             {
                 var keyData = await this.accountsKeyService.GetKeyData(senderAddress, userId);
                 secret = keyData?.Secret;
+            }
+
+            if (amount < 1)
+            {
+                return false;
             }
 
             var publicKey = await this.accountService.GetPublicKey(senderAddress);
