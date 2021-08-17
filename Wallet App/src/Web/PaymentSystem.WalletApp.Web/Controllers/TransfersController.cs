@@ -70,14 +70,14 @@
 
             this.TempData[DepositTempData] = JsonConvert.SerializeObject(model);
 
-            return this.RedirectToAction<TransfersController>(nameof(this.DepositConfirm));
+            return this.RedirectToAction(nameof(this.DepositConfirm));
         }
 
         public async Task<IActionResult> DepositConfirm()
         {
             if (!this.TempData.ContainsKey(DepositTempData))
             {
-                return this.Redirect($"/{this.ControllerName}/{nameof(this.Deposit)}");
+                return this.RedirectToAction(nameof(this.Deposit));
             }
 
             var serializedObject = (string)this.TempData[DepositTempData];

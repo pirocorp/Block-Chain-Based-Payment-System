@@ -8,7 +8,7 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -69,6 +69,16 @@
 
             this.userId = Guid.NewGuid().ToString();
             this.username = "piroman";
+        }
+
+        [Fact]
+        public void TransactionsControllerHasAuthorizeAttribute()
+        {
+            var authorizeAttribute =
+                Attribute.GetCustomAttribute(typeof(TransactionsController), typeof(AuthorizeAttribute));
+
+            Assert.NotNull(authorizeAttribute);
+            Assert.IsType<AuthorizeAttribute>(authorizeAttribute);
         }
 
         [Fact]
