@@ -1,5 +1,6 @@
 ﻿namespace PaymentSystem.WalletApp.Services.Data.Implementations
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
@@ -60,6 +61,11 @@
         {
             var accountKey = await this.dbContext.AccountsKeys
                 .FirstOrDefaultAsync(a => a.Address == address && a.UserId == userId);
+
+            if (accountKey is null)
+            {
+                return new KeyData();
+            }
 
             var encryptedData = accountKey.Key.HexToBytes();
             var keyData = this.secretOptions.Value.Key.ToByteArray();
