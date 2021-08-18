@@ -12,7 +12,7 @@
     using PaymentSystem.WalletApp.Services.Data.Models.Accounts;
     using PaymentSystem.WalletApp.Tests.Mocks;
     using PaymentSystem.WalletApp.Web.Infrastructure;
-
+    using PaymentSystem.WalletApp.Web.ViewModels.Administration.Accounts;
     using Xunit;
 
     public class AccountServiceTests
@@ -27,7 +27,7 @@
 
         public AccountServiceTests()
         {
-            MapperHelpers.Load<Account, AccountDerivative>();
+            MapperHelpers.Load();
 
             this.dbContext = ApplicationDbContextMocks.Instance;
             this.blockChainGrpcService = BlockChainGrpcServiceMock.Instance;
@@ -100,46 +100,44 @@
         [Fact]
         public async Task AccountServiceGetAccountReturnsCorrectModel()
         {
+            this.SeedCurrentUser();
             this.SeedAccounts(25);
 
             var expected = this.dbContext.Accounts
                 .OrderBy(a => Guid.NewGuid().ToString())
                 .First();
 
-            var actual = await this.accountService.GetAccount<AccountDerivative>(expected.Address);
+            var actual = await this.accountService.GetAccount<AccountListingAdminModel>(expected.Address);
 
             Assert.Equal(expected.Address, actual.Address);
-            Assert.Equal(expected.Name, actual.Name);
-            Assert.Equal(expected.PublicKey, actual.PublicKey);
             Assert.Equal(expected.Balance, actual.Balance);
             Assert.Equal(expected.BlockedBalance, actual.BlockedBalance);
-            Assert.Equal(expected.UserId, actual.UserId);
-            Assert.Equal(expected.CreatedOn, actual.CreatedOn);
-            Assert.Equal(expected.ModifiedOn, actual.ModifiedOn);
         }
 
         [Fact]
         public async Task AccountServiceGetLatestAccountsReturnsCorrectResult()
         {
+            this.SeedCurrentUser();
             this.SeedAccounts(25);
 
-            var actual = await this.accountService.GetLatestAccounts<AccountDerivative>();
-            var expected = actual.OrderByDescending(a => a.CreatedOn);
+            var actual = await this.accountService
+                .GetLatestAccounts<AccountListingAdminModel>();
 
             Assert.Equal(WebConstants.DefaultAccountsResultPageSize, actual.Count());
-            Assert.Equal(actual, expected);
         }
 
         [Theory]
-        [InlineData(25, 3, 5)]
+        [InlineData(25, 1, 5)]
         [InlineData(18, 3, 10)]
         [InlineData(18, 2, 10)]
         public async Task AccountServiceGetAccountsPaginationWorksFine(int total, int page, int pageSize)
         {
+            this.SeedCurrentUser();
             this.SeedAccounts(total);
 
             var expected = Math.Max(0, Math.Min(pageSize, total - ((page - 1) * pageSize)));
-            var (all, accounts) = await this.accountService.GetAccounts<AccountDerivative>(page, pageSize);
+            var (all, accounts) = await this.accountService
+                .GetAccounts<AccountListingAdminModel>(page, pageSize);
 
             Assert.Equal(total, all);
             Assert.Equal(expected, accounts.Count());
@@ -278,7 +276,7 @@
                 .Select(i => new Account()
                 {
                     Address = Guid.NewGuid().ToString(),
-                    UserId = Guid.NewGuid().ToString(),
+                    UserId = this.userId,
                     PublicKey = Guid.NewGuid().ToString(),
                     Balance = rnd.Next(50, 5000),
                     BlockedBalance = rnd.Next(50, 5000),
@@ -299,25 +297,6 @@
             });
 
             this.dbContext.SaveChanges();
-        }
-
-        private class AccountDerivative
-        {
-            public string Address { get; set; }
-
-            public string Name { get; set; }
-
-            public string PublicKey { get; set; }
-
-            public double Balance { get; set; }
-
-            public double BlockedBalance { get; set; }
-
-            public string UserId { get; set; }
-
-            public DateTime CreatedOn { get; set; }
-
-            public DateTime? ModifiedOn { get; set; }
         }
     }
 }

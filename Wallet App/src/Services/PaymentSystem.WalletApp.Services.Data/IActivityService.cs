@@ -14,8 +14,6 @@
 
         Task SetActivityStatus(string transactionHash, ActivityStatus status);
 
-        Task<T> GetActivity<T>(string id);
-
         Task<(int Total, IEnumerable<T> Activities)> GetUserActivities<T>(string userId, int page, int pageSize, string dateRange = "");
 
         Task ReturnBlockedAmount(string transactionHash);

@@ -24,7 +24,7 @@
 
         public ActivityServiceTests()
         {
-            MapperHelpers.Load<Activity, ActivityDerivative>();
+            MapperHelpers.Load();
 
             this.dbContext = ApplicationDbContextMocks.Instance;
             this.mapper = MapperHelpers.Instance;
@@ -118,24 +118,6 @@
         }
 
         [Fact]
-        public async Task GetActivityReturnsCorrectActivity()
-        {
-            var activity = new Activity()
-            {
-                TransactionHash = Guid.NewGuid().ToString(),
-                Status = ActivityStatus.Completed,
-            };
-
-            this.dbContext.Add(activity);
-            await this.dbContext.SaveChangesAsync();
-
-            var derivative = await this.activityService
-                .GetActivity<ActivityDerivative>(activity.Id);
-
-            Assert.Equal(activity.TransactionHash, derivative.TransactionHash);
-        }
-
-        [Fact]
         public async Task ReturnBlockedAmountHandlesStringEmpty()
         {
             await this.activityService.ReturnBlockedAmount(null);
@@ -178,11 +160,6 @@
             Assert.Equal(650, account.Balance);
             Assert.Equal(200, account.BlockedBalance);
             Assert.Equal(0, activity.BlockedAmount);
-        }
-
-        private class ActivityDerivative
-        {
-            public string TransactionHash { get; set; }
         }
     }
 }

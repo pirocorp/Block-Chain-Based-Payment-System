@@ -58,12 +58,6 @@
             await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task<T> GetActivity<T>(string id)
-            => await this.dbContext.Activities
-                .Where(a => a.Id == id)
-                .To<T>()
-                .FirstOrDefaultAsync();
-
         public async Task<(int Total, IEnumerable<T> Activities)> GetUserActivities<T>(
             string userId,
             int page,
