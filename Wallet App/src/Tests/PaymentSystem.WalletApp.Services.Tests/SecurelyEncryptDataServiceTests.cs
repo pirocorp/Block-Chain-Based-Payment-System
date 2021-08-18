@@ -17,7 +17,7 @@ namespace PaymentSystem.WalletApp.Services.Tests
             {
                 CardHolderName = "Piroman Piromanov",
                 CVV = "555",
-                CardNumber = "4176449266512499"
+                CardNumber = "4176449266512499",
             };
 
             var encryptService = new SecurelyEncryptDataService();

@@ -39,10 +39,10 @@
                 .AnyAsync(a => a.Address == address && a.Balance >= amount);
 
         public async Task<string> GetPublicKey(string address)
-            => (await this.dbContext.Accounts.FirstOrDefaultAsync(a => a.Address == address)).PublicKey;
+            => (await this.dbContext.Accounts.FirstOrDefaultAsync(a => a.Address == address))?.PublicKey;
 
         public async Task<string> GetUserId(string address)
-            => (await this.dbContext.Accounts.FirstOrDefaultAsync(a => a.Address == address)).UserId;
+            => (await this.dbContext.Accounts.FirstOrDefaultAsync(a => a.Address == address))?.UserId;
 
         public async Task<T> GetAccount<T>(string address)
             => await this.dbContext.Accounts
