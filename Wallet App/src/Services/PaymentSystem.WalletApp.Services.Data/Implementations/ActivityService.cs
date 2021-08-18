@@ -32,6 +32,11 @@
 
         public async Task AddActivity(ActivityServiceModel model)
         {
+            if (model is null)
+            {
+                return;
+            }
+
             var activity = this.mapper.Map<Activity>(model);
             activity.TimeStamp = DateTime.UtcNow.Ticks;
 
@@ -42,6 +47,11 @@
         public async Task SetActivityStatus(string transactionHash, ActivityStatus status)
         {
             var activity = await this.GetActivity(transactionHash);
+
+            if (activity is null)
+            {
+                return;
+            }
 
             activity.Status = status;
 
@@ -95,14 +105,31 @@
 
         public async Task ReturnBlockedAmount(string transactionHash)
         {
+            if (string.IsNullOrWhiteSpace(transactionHash))
+            {
+                return;
+            }
+
             var activity = await this.dbContext.Activities
-                .FirstOrDefaultAsync(a => a.TransactionHash == transactionHash);
+                .FirstAsync(a => a.TransactionHash == transactionHash);
+
+            var transaction = await this.dbContext.Transactions
+                .FirstAsync(t => t.Hash == transactionHash);
+
+            var accountAddress = transaction.Recipient == activity.CounterpartyAddress
+                ? transaction.Sender
+                : transaction.Recipient;
 
             var account = await this.dbContext.Accounts
-                .FirstOrDefaultAsync(a => a.UserId == activity.UserId);
+                .FirstAsync(a => a.Address == accountAddress);
 
-            account.BlockedBalance -= activity.BlockedAmount;
-            account.Balance += activity.BlockedAmount;
+            if (account.BlockedBalance >= activity.BlockedAmount)
+            {
+                account.BlockedBalance -= activity.BlockedAmount;
+                account.Balance += activity.BlockedAmount;
+
+                activity.BlockedAmount = 0;
+            }
 
             await this.dbContext.SaveChangesAsync();
         }

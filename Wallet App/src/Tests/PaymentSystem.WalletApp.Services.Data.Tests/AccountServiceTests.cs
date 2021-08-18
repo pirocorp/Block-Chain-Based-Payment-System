@@ -5,12 +5,14 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-    using Models.Accounts;
+
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data.Implementations;
+    using PaymentSystem.WalletApp.Services.Data.Models.Accounts;
     using PaymentSystem.WalletApp.Tests.Mocks;
-    using Web.Infrastructure;
+    using PaymentSystem.WalletApp.Web.Infrastructure;
+
     using Xunit;
 
     public class AccountServiceTests
