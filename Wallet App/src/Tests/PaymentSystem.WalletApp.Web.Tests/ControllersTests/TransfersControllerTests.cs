@@ -4,22 +4,26 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using AutoMapper;
 
+    using AutoMapper;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+
     using Newtonsoft.Json;
-    using PaymentSystem.Common.Utilities;
+
     using PaymentSystem.WalletApp.Data;
     using PaymentSystem.WalletApp.Data.Models;
     using PaymentSystem.WalletApp.Services.Data;
     using PaymentSystem.WalletApp.Services.Data.Implementations;
+    using PaymentSystem.WalletApp.Services.Data.Models;
+    using PaymentSystem.WalletApp.Services.Implementations;
     using PaymentSystem.WalletApp.Tests.Mocks;
     using PaymentSystem.WalletApp.Web.Controllers;
-    using Services.Data.Models;
-    using Services.Implementations;
-    using ViewModels.Transfers.Deposit;
-    using ViewModels.Transfers.DepositConfirm;
+    using PaymentSystem.WalletApp.Web.ViewModels.Transfers.Deposit;
+    using PaymentSystem.WalletApp.Web.ViewModels.Transfers.DepositConfirm;
+    using PaymentSystem.WalletApp.Web.ViewModels.Transfers.Withdraw;
+
     using Xunit;
 
     public class TransfersControllerTests
@@ -80,6 +84,16 @@
 
             this.userId = Guid.NewGuid().ToString();
             this.username = "piroman";
+        }
+
+        [Fact]
+        public void TransfersControllerHasAuthorizeAttribute()
+        {
+            var authorizeAttribute =
+                Attribute.GetCustomAttribute(typeof(TransfersController), typeof(AuthorizeAttribute));
+
+            Assert.NotNull(authorizeAttribute);
+            Assert.IsType<AuthorizeAttribute>(authorizeAttribute);
         }
 
         [Fact]
@@ -372,6 +386,372 @@
             Assert.IsType<ViewResult>(result);
         }
 
+        [Theory]
+        [InlineData(5, 3)]
+        [InlineData(0, 3)]
+        [InlineData(6, 0)]
+        public async Task WithdrawReturnsViewWithCorrectModel(int bankAccounts, int coinAccounts)
+        {
+            this.SeedLoggedUser();
+            this.SeedBankAccounts(bankAccounts);
+            this.SeedCoinAccounts(coinAccounts);
+
+            var expectedBankAccounts = bankAccounts / 2;
+            this.ConfirmBankAccounts(expectedBankAccounts);
+
+            var result = await this.transfersController.Withdraw();
+
+            Assert.NotNull(result);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<WithdrawViewModel>(viewResult.Model);
+            Assert.Equal(expectedBankAccounts, model.BankAccounts.Count());
+            Assert.Equal(coinAccounts, model.CoinAccounts.Count());
+        }
+
+        [Fact]
+        public async Task WithdrawPostRedirectsWithModelErrorWhenBankAccountDoNotExists()
+        {
+            this.SeedLoggedUser();
+
+            var bankAccount = new BankAccount()
+            {
+                IBAN = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                IsApproved = true,
+            };
+
+            var coinAccount = new Account()
+            {
+                Address = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                Balance = 5000,
+            };
+
+            this.dbContext.Add(bankAccount);
+            this.dbContext.Add(coinAccount);
+
+            await this.dbContext.SaveChangesAsync();
+
+            var model = new WithdrawInputModel()
+            {
+                Amount = 5,
+                BankAccount = Guid.NewGuid().ToString(),
+                CoinAccount = coinAccount.Address,
+                Secret = Guid.NewGuid().ToString(),
+            };
+
+            var result = await this.transfersController.Withdraw(model);
+
+            Assert.NotNull(result);
+            Assert.False(this.transfersController.ModelState.IsValid);
+            Assert.Single(this.transfersController.ModelState);
+            var redirectToAction = Assert.IsType<RedirectToActionResult>(result);
+            Assert.NotNull(redirectToAction.ActionName);
+            Assert.False(redirectToAction.Permanent);
+        }
+
+        [Fact]
+        public async Task WithdrawPostRedirectsWithModelErrorWhenUserDoNotOwnBankAccount()
+        {
+            this.SeedLoggedUser();
+
+            var bankAccount = new BankAccount()
+            {
+                IBAN = Guid.NewGuid().ToString(),
+                UserId = Guid.NewGuid().ToString(),
+                IsApproved = true,
+            };
+
+            var coinAccount = new Account()
+            {
+                Address = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                Balance = 5000,
+            };
+
+            this.dbContext.Add(bankAccount);
+            this.dbContext.Add(coinAccount);
+
+            await this.dbContext.SaveChangesAsync();
+
+            var model = new WithdrawInputModel()
+            {
+                Amount = 5,
+                BankAccount = bankAccount.Id,
+                CoinAccount = coinAccount.Address,
+                Secret = Guid.NewGuid().ToString(),
+            };
+
+            var result = await this.transfersController.Withdraw(model);
+
+            Assert.NotNull(result);
+            Assert.False(this.transfersController.ModelState.IsValid);
+            Assert.Single(this.transfersController.ModelState);
+            var redirectToAction = Assert.IsType<RedirectToActionResult>(result);
+            Assert.NotNull(redirectToAction.ActionName);
+            Assert.False(redirectToAction.Permanent);
+        }
+
+        [Fact]
+        public async Task WithdrawPostRedirectsWithModelErrorWhenBankAccountIsNotConfirmed()
+        {
+            this.SeedLoggedUser();
+
+            var bankAccount = new BankAccount()
+            {
+                IBAN = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                IsApproved = false,
+            };
+
+            var coinAccount = new Account()
+            {
+                Address = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                Balance = 5000,
+            };
+
+            this.dbContext.Add(bankAccount);
+            this.dbContext.Add(coinAccount);
+
+            await this.dbContext.SaveChangesAsync();
+
+            var model = new WithdrawInputModel()
+            {
+                Amount = 5,
+                BankAccount = bankAccount.Id,
+                CoinAccount = coinAccount.Address,
+                Secret = Guid.NewGuid().ToString(),
+            };
+
+            var result = await this.transfersController.Withdraw(model);
+
+            Assert.NotNull(result);
+            Assert.False(this.transfersController.ModelState.IsValid);
+            Assert.Single(this.transfersController.ModelState);
+            var redirectToAction = Assert.IsType<RedirectToActionResult>(result);
+            Assert.NotNull(redirectToAction.ActionName);
+            Assert.False(redirectToAction.Permanent);
+        }
+
+        [Fact]
+        public async Task WithdrawPostRedirectsWithModelErrorWhenCoinAccountNotExists()
+        {
+            this.SeedLoggedUser();
+
+            var bankAccount = new BankAccount()
+            {
+                IBAN = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                IsApproved = true,
+            };
+
+            var coinAccount = new Account()
+            {
+                Address = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                Balance = 5000,
+            };
+
+            this.dbContext.Add(bankAccount);
+            this.dbContext.Add(coinAccount);
+
+            await this.dbContext.SaveChangesAsync();
+
+            var model = new WithdrawInputModel()
+            {
+                Amount = 5,
+                BankAccount = bankAccount.Id,
+                CoinAccount = Guid.NewGuid().ToString(),
+                Secret = Guid.NewGuid().ToString(),
+            };
+
+            var result = await this.transfersController.Withdraw(model);
+
+            Assert.NotNull(result);
+            Assert.False(this.transfersController.ModelState.IsValid);
+            Assert.Single(this.transfersController.ModelState);
+            var redirectToAction = Assert.IsType<RedirectToActionResult>(result);
+            Assert.NotNull(redirectToAction.ActionName);
+            Assert.False(redirectToAction.Permanent);
+        }
+
+        [Fact]
+        public async Task WithdrawPostRedirectsWithModelErrorWhenUserDoNotOwnCoinAccount()
+        {
+            this.SeedLoggedUser();
+
+            var bankAccount = new BankAccount()
+            {
+                IBAN = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                IsApproved = true,
+            };
+
+            var coinAccount = new Account()
+            {
+                Address = Guid.NewGuid().ToString(),
+                UserId = Guid.NewGuid().ToString(),
+                Balance = 5000,
+            };
+
+            this.dbContext.Add(bankAccount);
+            this.dbContext.Add(coinAccount);
+
+            await this.dbContext.SaveChangesAsync();
+
+            var model = new WithdrawInputModel()
+            {
+                Amount = 5,
+                BankAccount = bankAccount.Id,
+                CoinAccount = coinAccount.Address,
+                Secret = Guid.NewGuid().ToString(),
+            };
+
+            var result = await this.transfersController.Withdraw(model);
+
+            Assert.NotNull(result);
+            Assert.False(this.transfersController.ModelState.IsValid);
+            Assert.Single(this.transfersController.ModelState);
+            var redirectToAction = Assert.IsType<RedirectToActionResult>(result);
+            Assert.NotNull(redirectToAction.ActionName);
+            Assert.False(redirectToAction.Permanent);
+        }
+
+        [Fact]
+        public async Task WithdrawPostRedirectsWithModelErrorWhenCoinAccountHasInsufficientFunds()
+        {
+            this.SeedLoggedUser();
+
+            var bankAccount = new BankAccount()
+            {
+                IBAN = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                IsApproved = true,
+            };
+
+            var coinAccount = new Account()
+            {
+                Address = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                Balance = 5,
+            };
+
+            this.dbContext.Add(bankAccount);
+            this.dbContext.Add(coinAccount);
+
+            await this.dbContext.SaveChangesAsync();
+
+            var model = new WithdrawInputModel()
+            {
+                Amount = 50,
+                BankAccount = bankAccount.Id,
+                CoinAccount = coinAccount.Address,
+                Secret = Guid.NewGuid().ToString(),
+            };
+
+            var result = await this.transfersController.Withdraw(model);
+
+            Assert.NotNull(result);
+            Assert.False(this.transfersController.ModelState.IsValid);
+            Assert.Single(this.transfersController.ModelState);
+            var redirectToAction = Assert.IsType<RedirectToActionResult>(result);
+            Assert.NotNull(redirectToAction.ActionName);
+            Assert.False(redirectToAction.Permanent);
+        }
+
+        [Fact]
+        public async Task WithdrawPostRedirectsWithModelErrorWhenWithdrawFromAccountFails()
+        {
+            this.SeedLoggedUser();
+
+            var bankAccount = new BankAccount()
+            {
+                IBAN = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                IsApproved = true,
+            };
+
+            var coinAccount = new Account()
+            {
+                Address = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                Balance = 5000,
+            };
+
+            this.dbContext.Add(bankAccount);
+            this.dbContext.Add(coinAccount);
+
+            await this.dbContext.SaveChangesAsync();
+
+            var model = new WithdrawInputModel()
+            {
+                Amount = -50,
+                BankAccount = bankAccount.Id,
+                CoinAccount = coinAccount.Address,
+                Secret = Guid.NewGuid().ToString(),
+            };
+
+            var result = await this.transfersController.Withdraw(model);
+
+            Assert.NotNull(result);
+            Assert.False(this.transfersController.ModelState.IsValid);
+            Assert.Single(this.transfersController.ModelState);
+            var redirectToAction = Assert.IsType<RedirectToActionResult>(result);
+            Assert.NotNull(redirectToAction.ActionName);
+            Assert.False(redirectToAction.Permanent);
+        }
+
+        [Fact]
+        public async Task WithdrawPostRedirectsToWithdrawSuccessOnSuccessWithdraw()
+        {
+            this.SeedLoggedUser();
+
+            var bankAccount = new BankAccount()
+            {
+                IBAN = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                IsApproved = true,
+            };
+
+            var coinAccount = new Account()
+            {
+                Address = Guid.NewGuid().ToString(),
+                UserId = this.userId,
+                Balance = 5000,
+            };
+
+            this.dbContext.Add(bankAccount);
+            this.dbContext.Add(coinAccount);
+
+            await this.dbContext.SaveChangesAsync();
+
+            var model = new WithdrawInputModel()
+            {
+                Amount = 50,
+                BankAccount = bankAccount.Id,
+                CoinAccount = coinAccount.Address,
+                Secret = Guid.NewGuid().ToString(),
+            };
+
+            var result = await this.transfersController.Withdraw(model);
+
+            Assert.NotNull(result);
+            Assert.True(this.transfersController.ModelState.IsValid);
+            var redirectToAction = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("WithdrawSuccess", redirectToAction.ActionName);
+            Assert.False(redirectToAction.Permanent);
+        }
+
+        [Fact]
+        public void WithdrawSuccessReturnsView()
+        {
+            var result = this.transfersController.WithdrawSuccess();
+
+            Assert.NotNull(result);
+            Assert.IsType<ViewResult>(result);
+        }
+
         private void SeedLoggedUser()
         {
             this.dbContext.Add(new ApplicationUser()
@@ -403,6 +783,18 @@
                     IBAN = Guid.NewGuid().ToString(),
                     UserId = $"Random user {i}",
                 }));
+
+            this.dbContext.SaveChanges();
+        }
+
+        private void ConfirmBankAccounts(int count)
+        {
+            var accounts = this.dbContext.BankAccounts
+                .Where(a => a.UserId == this.userId)
+                .Take(count)
+                .ToList();
+
+            accounts.ForEach(a => a.IsApproved = true);
 
             this.dbContext.SaveChanges();
         }

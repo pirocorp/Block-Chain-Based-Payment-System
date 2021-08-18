@@ -26,6 +26,20 @@
                             It.Is<DepositServiceModel>(d => d.Amount > 0)))
                     .ReturnsAsync(true);
 
+                transferService
+                    .Setup(x
+                        => x.WithdrawFromAccount(
+                            It.IsAny<string>(),
+                            It.Is<WithdrawServiceModel>(w => w.Amount <= 0)))
+                    .ReturnsAsync(false);
+
+                transferService
+                    .Setup(x
+                        => x.WithdrawFromAccount(
+                            It.IsAny<string>(),
+                            It.Is<WithdrawServiceModel>(w => w.Amount > 0)))
+                    .ReturnsAsync(true);
+
                 return transferService.Object;
             }
         }
