@@ -5,7 +5,6 @@
 
     using AutoMapper;
 
-    using Common.Utilities;
     using Coravel.Invocable;
 
     using Microsoft.AspNetCore.SignalR;
@@ -14,6 +13,7 @@
     using PaymentSystem.BlockChain.Services.Hubs;
     using PaymentSystem.Common.Hubs;
     using PaymentSystem.Common.Hubs.Models;
+    using PaymentSystem.Common.Utilities;
 
     public class BlockJob : IInvocable
     {
@@ -39,7 +39,7 @@
 
         public async Task Invoke()
         {
-            var block = await this.blockChainService.MineBlock() 
+            var block = await this.blockChainService.MineBlock()
                         ?? await this.blockChainService.GetLastBlock();
 
             var notificationBlock = this.mapper.Map<NotificationBlock>(block);
