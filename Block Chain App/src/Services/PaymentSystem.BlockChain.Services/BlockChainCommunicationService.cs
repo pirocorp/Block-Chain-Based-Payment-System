@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    
+
     using Grpc.Core;
 
     using PaymentSystem.BlockChain.Services.Data;
@@ -153,7 +153,7 @@
 
             return await Task.FromResult(response);
         }
-        
+
         private static TransactionResponse InvalidTransactionResponse()
         {
             var response = new TransactionResponse()
